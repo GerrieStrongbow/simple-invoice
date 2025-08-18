@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
+import CurrencySelector from './invoice-editor/CurrencySelector'
 
 export default function FlexibleInvoice() {
   const invoiceRef = useRef<HTMLDivElement>(null)
@@ -38,6 +39,10 @@ export default function FlexibleInvoice() {
   const [taxPercentage, setTaxPercentage] = useState('15')
   const [discountEnabled, setDiscountEnabled] = useState(false)  
   const [discountPercentage, setDiscountPercentage] = useState('10')
+  
+  // Currency state - default to ZAR to maintain current behavior
+  const [currencyCode, setCurrencyCode] = useState('ZAR')
+  const [currencySymbol, setCurrencySymbol] = useState('R')
 
   // Date helper functions
   const getCurrentDate = () => {
@@ -54,6 +59,18 @@ export default function FlexibleInvoice() {
   // Date state
   const [invoiceDate, setInvoiceDate] = useState(getCurrentDate())
   const [dueDate, setDueDate] = useState(getEndOfMonth())
+  
+  // Section headers state
+  const [invoiceTitle, setInvoiceTitle] = useState('INVOICE')
+  const [fromTitle, setFromTitle] = useState('From:')
+  const [toTitle, setToTitle] = useState('To:')
+  const [paymentTitle, setPaymentTitle] = useState('Payment Details:')
+  
+  // Field labels state
+  const [invoiceNumberLabel, setInvoiceNumberLabel] = useState('Invoice #:')
+  const [dateLabel, setDateLabel] = useState('Issue Date:')
+  const [dueDateLabel, setDueDateLabel] = useState('Due Date:')
+  const [totalLabel, setTotalLabel] = useState('Total Amount Due:')
 
   // Format date for display (DD/MM/YYYY)
   const formatDateForDisplay = (dateString: string) => {
@@ -206,9 +223,7 @@ export default function FlexibleInvoice() {
     }
   }
 
-  const addColumn = () => {
-    // Insert new column before the Amount column
-    const amountColIndex = columns.findIndex(col => col.isAmount)
+  const addColumn = (afterColumnId?: string) => {
     const newColumn = {
       id: Date.now().toString(),
       name: 'New Column',
@@ -218,9 +233,23 @@ export default function FlexibleInvoice() {
       isAmount: false
     }
     
-    const newColumns = [...columns]
-    newColumns.splice(amountColIndex, 0, newColumn)
-    setColumns(newColumns)
+    if (afterColumnId) {
+      // Insert after specific column
+      const afterIndex = columns.findIndex(col => col.id === afterColumnId)
+      const newColumns = [...columns]
+      newColumns.splice(afterIndex + 1, 0, newColumn)
+      setColumns(newColumns)
+    } else {
+      // Default: Insert before the Amount column if it exists, otherwise at the end
+      const amountColIndex = columns.findIndex(col => col.isAmount)
+      if (amountColIndex !== -1) {
+        const newColumns = [...columns]
+        newColumns.splice(amountColIndex, 0, newColumn)
+        setColumns(newColumns)
+      } else {
+        setColumns([...columns, newColumn])
+      }
+    }
     
     // Add empty cell to all existing rows
     setRows(rows.map(row => ({
@@ -334,35 +363,6 @@ export default function FlexibleInvoice() {
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       padding: '40px 20px'
     }}>
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        marginBottom: '30px'
-      }}>
-        {/* Header */}
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '40px'
-        }}>
-          <h1 style={{
-            fontSize: '32px',
-            fontWeight: '700',
-            color: 'white',
-            margin: '0 0 8px 0',
-            textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-          }}>
-            Invoice Generator
-          </h1>
-          <p style={{
-            fontSize: '16px',
-            color: 'rgba(255,255,255,0.9)',
-            margin: 0,
-            fontWeight: '400'
-          }}>
-            Professional invoices made simple
-          </p>
-        </div>
-      </div>
 
       <div ref={invoiceRef} className="invoice-container" style={{
         maxWidth: '900px',
@@ -392,8 +392,35 @@ export default function FlexibleInvoice() {
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               margin: 0,
-              letterSpacing: '-0.02em'
-            }}>INVOICE</h1>
+              letterSpacing: '-0.02em',
+              minWidth: '200px',
+              display: 'inline-block',
+              position: 'relative'
+            }}>
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                style={{
+                  outline: 'none',
+                  cursor: 'text',
+                  display: 'inline-block',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  transition: 'all 0.2s ease'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'
+                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.3)'
+                }}
+                onBlur={(e) => {
+                  setInvoiceTitle(e.target.textContent || 'INVOICE')
+                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.boxShadow = 'none'
+                }}
+              >
+                {invoiceTitle}
+              </span>
+            </h1>
           </div>
           <div className="invoice-details" style={{
             textAlign: 'right'
@@ -405,11 +432,34 @@ export default function FlexibleInvoice() {
               justifyContent: 'flex-end',
               gap: '12px'
             }}>
-              <strong style={{ 
-                fontSize: '15px', 
-                fontWeight: '600', 
-                color: '#374151' 
-              }}>Invoice #:</strong>
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                style={{
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  color: '#374151',
+                  outline: 'none',
+                  cursor: 'text',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: 'transparent',
+                  minWidth: '80px',
+                  display: 'inline-block'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#ffffff'
+                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                }}
+                onBlur={(e) => {
+                  setInvoiceNumberLabel(e.target.textContent || 'Invoice #:')
+                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.boxShadow = 'none'
+                }}
+              >
+                {invoiceNumberLabel}
+              </span>
               <input
                 type="text"
                 placeholder="INV-2025-08"
@@ -445,11 +495,34 @@ export default function FlexibleInvoice() {
               justifyContent: 'flex-end',
               gap: '12px'
             }}>
-              <strong style={{ 
-                fontSize: '15px', 
-                fontWeight: '600', 
-                color: '#374151' 
-              }}>Date:</strong> 
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                style={{
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  color: '#374151',
+                  outline: 'none',
+                  cursor: 'text',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: 'transparent',
+                  minWidth: '80px',
+                  display: 'inline-block'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#ffffff'
+                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                }}
+                onBlur={(e) => {
+                  setDateLabel(e.target.textContent || 'Issue Date:')
+                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.boxShadow = 'none'
+                }}
+              >
+                {dateLabel}
+              </span> 
               <div style={{ position: 'relative', display: 'inline-block' }}>
                 <input
                   type="date"
@@ -501,11 +574,34 @@ export default function FlexibleInvoice() {
               justifyContent: 'flex-end',
               gap: '12px'
             }}>
-              <strong style={{ 
-                fontSize: '15px', 
-                fontWeight: '600', 
-                color: '#374151' 
-              }}>Due Date:</strong> 
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                style={{
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  color: '#374151',
+                  outline: 'none',
+                  cursor: 'text',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: 'transparent',
+                  minWidth: '80px',
+                  display: 'inline-block'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#ffffff'
+                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                }}
+                onBlur={(e) => {
+                  setDueDateLabel(e.target.textContent || 'Due Date:')
+                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.boxShadow = 'none'
+                }}
+              >
+                {dueDateLabel}
+              </span> 
               <div style={{ position: 'relative', display: 'inline-block' }}>
                 <input
                   type="date"
@@ -582,7 +678,30 @@ export default function FlexibleInvoice() {
                 borderRadius: '50%',
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
               }}></span>
-              From:
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                style={{
+                  outline: 'none',
+                  cursor: 'text',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: 'transparent',
+                  minWidth: '60px'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#ffffff'
+                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                }}
+                onBlur={(e) => {
+                  setFromTitle(e.target.textContent || 'From:')
+                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.boxShadow = 'none'
+                }}
+              >
+                {fromTitle}
+              </span>
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {fromFields.map((field) => (
@@ -714,7 +833,30 @@ export default function FlexibleInvoice() {
                 borderRadius: '50%',
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
               }}></span>
-              To:
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                style={{
+                  outline: 'none',
+                  cursor: 'text',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: 'transparent',
+                  minWidth: '60px'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#ffffff'
+                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                }}
+                onBlur={(e) => {
+                  setToTitle(e.target.textContent || 'To:')
+                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.boxShadow = 'none'
+                }}
+              >
+                {toTitle}
+              </span>
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {toFields.map((field) => (
@@ -831,7 +973,9 @@ export default function FlexibleInvoice() {
           marginBottom: '40px',
           borderRadius: '12px',
           overflow: 'hidden',
-          border: '1px solid #e2e8f0'
+          border: '1px solid #e2e8f0',
+          marginRight: '40px',
+          position: 'relative'
         }}>
         <table className="services-table" style={{
           width: '100%',
@@ -839,132 +983,198 @@ export default function FlexibleInvoice() {
         }}>
           <thead>
             <tr style={{
-              background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)'
+              background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+              position: 'relative'
             }}>
-              {columns.map((column) => (
-                <th key={column.id} style={{
-                  padding: '20px 16px',
-                  textAlign: column.align as any,
-                  fontWeight: '700',
-                  color: '#1f2937',
-                  width: column.width,
-                  position: 'relative',
-                  fontSize: '15px'
-                }}>
-                  <span 
-                    contentEditable 
-                    suppressContentEditableWarning
-                    onBlur={(e) => updateColumnName(column.id, e.target.textContent || column.name)}
-                    style={{
-                      backgroundColor: '#ffffff',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      border: '2px solid #e2e8f0',
-                      minWidth: '80px',
-                      display: 'inline-block',
-                      transition: 'all 0.2s ease',
-                      cursor: 'text'
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#667eea'
-                      e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-                    }}
-                    onBlur={(e) => {
-                      updateColumnName(column.id, e.target.textContent || column.name)
-                      e.target.style.borderColor = '#e2e8f0'
-                      e.target.style.boxShadow = 'none'
-                    }}
-                  >
-                    {column.name}
-                  </span>
-                  {!column.isDescription && !column.isAmount && columns.length > 2 && (
-                    <button 
-                      className="no-print remove-btn"
-                      onClick={() => removeColumn(column.id)}
+              {columns.map((column, index) => (
+                <React.Fragment key={column.id}>
+                  <th style={{
+                    padding: '20px 16px',
+                    textAlign: 'center',
+                    fontWeight: '700',
+                    color: '#1f2937',
+                    width: column.width,
+                    position: 'relative',
+                    fontSize: '15px'
+                  }}>
+                    {/* Add button between columns (appears on hover) - allows adding before Amount */}
+                    {index > 0 && (
+                      <div 
+                        className="no-print"
+                        style={{
+                          position: 'absolute',
+                          left: '-20px',
+                          top: '0',
+                          bottom: '0',
+                          width: '40px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          zIndex: 10
+                        }}
+                        onMouseEnter={(e) => {
+                          const btn = e.currentTarget.querySelector('button')
+                          if (btn) btn.style.opacity = '1'
+                        }}
+                        onMouseLeave={(e) => {
+                          const btn = e.currentTarget.querySelector('button')
+                          if (btn) btn.style.opacity = '0'
+                        }}
+                      >
+                        <button 
+                          onClick={() => addColumn(columns[index - 1].id)}
+                          style={{
+                            width: '24px',
+                            height: '24px',
+                            backgroundColor: '#0284c7',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '50%',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            lineHeight: 1,
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                            fontWeight: '600',
+                            opacity: 0,
+                            transition: 'opacity 0.2s ease'
+                          }}
+                          title="Add column here"
+                        >+</button>
+                      </div>
+                    )}
+                    
+                    <span 
+                      contentEditable 
+                      suppressContentEditableWarning
+                      style={{
+                        backgroundColor: '#ffffff',
+                        padding: '8px 12px',
+                        borderRadius: '6px',
+                        border: '2px solid #e2e8f0',
+                        minWidth: '80px',
+                        display: 'inline-block',
+                        transition: 'all 0.2s ease',
+                        cursor: 'text'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = '#667eea'
+                        e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                      }}
+                      onBlur={(e) => {
+                        updateColumnName(column.id, e.target.textContent || column.name)
+                        e.target.style.borderColor = '#e2e8f0'
+                        e.target.style.boxShadow = 'none'
+                      }}
+                    >
+                      {column.name}
+                    </span>
+                    
+                    {/* Delete button - now centered horizontally */}
+                    {!column.isDescription && columns.length > 2 && (
+                      <button 
+                        className="no-print remove-btn"
+                        onClick={() => removeColumn(column.id)}
+                        style={{
+                          position: 'absolute',
+                          top: '4px',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          width: '24px',
+                          height: '24px',
+                          backgroundColor: '#fef2f2',
+                          color: '#dc2626',
+                          border: '2px solid #fecaca',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          lineHeight: 1,
+                          transition: 'all 0.2s ease',
+                          fontWeight: '600',
+                          marginLeft: '0',
+                          marginRight: '0',
+                          boxSizing: 'border-box'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#dc2626'
+                          e.currentTarget.style.color = 'white'
+                          e.currentTarget.style.borderColor = '#dc2626'
+                          e.currentTarget.style.transform = 'translateX(-50%) scale(1.05)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#fef2f2'
+                          e.currentTarget.style.color = '#dc2626'
+                          e.currentTarget.style.borderColor = '#fecaca'
+                          e.currentTarget.style.transform = 'translateX(-50%) scale(1)'
+                        }}
+                        title="Remove column"
+                      >×</button>
+                    )}
+                  </th>
+                  
+                  {/* Add button after the last column - only if Amount is not the last column */}
+                  {index === columns.length - 1 && !column.isAmount && (
+                    <div 
+                      className="no-print"
                       style={{
                         position: 'absolute',
-                        top: '4px',
-                        right: '4px',
-                        width: '24px',
-                        height: '24px',
-                        backgroundColor: '#fef2f2',
-                        color: '#dc2626',
-                        border: '2px solid #fecaca',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        fontSize: '14px',
+                        right: '-20px',
+                        top: '0',
+                        bottom: '0',
+                        width: '40px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        lineHeight: 1,
-                        transition: 'all 0.2s ease',
-                        fontWeight: '600'
+                        zIndex: 10
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#dc2626'
-                        e.currentTarget.style.color = 'white'
-                        e.currentTarget.style.borderColor = '#dc2626'
-                        e.currentTarget.style.transform = 'scale(1.05)'
+                        const btn = e.currentTarget.querySelector('button')
+                        if (btn) btn.style.opacity = '1'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '#fef2f2'
-                        e.currentTarget.style.color = '#dc2626'
-                        e.currentTarget.style.borderColor = '#fecaca'
-                        e.currentTarget.style.transform = 'scale(1)'
+                        const btn = e.currentTarget.querySelector('button')
+                        if (btn) btn.style.opacity = '0'
                       }}
-                      title="Remove column"
-                    >×</button>
+                    >
+                      <button 
+                        onClick={() => addColumn(column.id)}
+                        style={{
+                          width: '24px',
+                          height: '24px',
+                          backgroundColor: '#0284c7',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '50%',
+                          cursor: 'pointer',
+                          fontSize: '16px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          lineHeight: 1,
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                          fontWeight: '600',
+                          opacity: 0,
+                          transition: 'opacity 0.2s ease'
+                        }}
+                        title="Add column here"
+                      >+</button>
+                    </div>
                   )}
-                </th>
+                </React.Fragment>
               ))}
-              <th className="no-print" style={{ 
-                width: '40px', 
-                borderBottom: '1px solid #e9ecef', 
-                backgroundColor: '#f8f9fa',
-                padding: '12px',
-                textAlign: 'center'
-              }}>
-                <button 
-                  className="add-btn"
-                  onClick={addColumn}
-                  style={{
-                    width: '28px',
-                    height: '28px',
-                    backgroundColor: '#f0f9ff',
-                    color: '#0284c7',
-                    border: '2px solid #0284c7',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '16px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    lineHeight: 1,
-                    transition: 'all 0.2s ease',
-                    fontWeight: '600'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#0284c7'
-                    e.currentTarget.style.color = 'white'
-                    e.currentTarget.style.borderColor = '#0284c7'
-                    e.currentTarget.style.transform = 'scale(1.05)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#f0f9ff'
-                    e.currentTarget.style.color = '#0284c7'
-                    e.currentTarget.style.borderColor = '#0284c7'
-                    e.currentTarget.style.transform = 'scale(1)'
-                  }}
-                  title="Add column"
-                >+</button>
-              </th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row, index) => (
               <tr key={row.id} style={{ 
                 height: '80px',
-                backgroundColor: index % 2 === 0 ? '#ffffff' : '#fafbfc'
+                backgroundColor: index % 2 === 0 ? '#ffffff' : '#fafbfc',
+                position: 'relative'
               }}>
                 {columns.map((column) => (
                   <td key={`${row.id}-${column.id}`} style={{
@@ -1078,13 +1288,18 @@ export default function FlexibleInvoice() {
                     )}
                   </td>
                 ))}
-                <td className="no-print" style={{ 
-                  borderBottom: '1px solid #e9ecef', 
-                  padding: '12px',
-                  textAlign: 'center',
-                  verticalAlign: 'middle'
-                }}>
-                  {rows.length > 1 && (
+                {/* Remove row button - positioned absolutely to avoid table structure issues */}
+                {rows.length > 1 && (
+                  <div 
+                    className="no-print"
+                    style={{
+                      position: 'absolute',
+                      right: '-20px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      zIndex: 10
+                    }}
+                  >
                     <button 
                       className="remove-btn"
                       onClick={() => removeRow(row.id)}
@@ -1101,7 +1316,6 @@ export default function FlexibleInvoice() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         lineHeight: 1,
-                        margin: '0 auto',
                         transition: 'all 0.2s ease',
                         fontWeight: '600'
                       }}
@@ -1119,8 +1333,8 @@ export default function FlexibleInvoice() {
                       }}
                       title="Remove row"
                     >×</button>
-                  )}
-                </td>
+                  </div>
+                )}
               </tr>
             ))}
           </tbody>
@@ -1129,7 +1343,7 @@ export default function FlexibleInvoice() {
         </div>
 
         {/* Add Row Button */}
-        <div className="no-print" style={{ marginBottom: '32px' }}>
+        <div className="no-print" style={{ marginBottom: '16px', marginTop: '-8px' }}>
           <button 
             onClick={addRow}
             style={{
@@ -1169,6 +1383,33 @@ export default function FlexibleInvoice() {
           </button>
         </div>
 
+        {/* Currency Selector */}
+        <div className="currency-section no-print" style={{
+          marginTop: '20px',
+          marginBottom: '20px',
+          padding: '16px',
+          backgroundColor: '#f8fafc',
+          borderRadius: '12px',
+          border: '1px solid #e2e8f0',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
+        }}>
+          <span style={{
+            fontSize: '15px',
+            fontWeight: '600',
+            color: '#374151'
+          }}>Currency:</span>
+          <CurrencySelector
+            value={currencyCode}
+            symbol={currencySymbol}
+            onChange={(code, symbol) => {
+              setCurrencyCode(code)
+              setCurrencySymbol(symbol)
+            }}
+          />
+        </div>
+
         {/* Totals Section */}
         <div className="total-section" style={{
           marginTop: '20px',
@@ -1190,7 +1431,7 @@ export default function FlexibleInvoice() {
               padding: '2px 4px',
               borderRadius: '3px',
               border: '1px solid #e9ecef'
-            }}>R{calculateSubtotal()}</span>
+            }}>{currencySymbol}{calculateSubtotal()}</span>
           </div>
 
           {/* Discount Row - Only show when enabled */}
@@ -1212,7 +1453,7 @@ export default function FlexibleInvoice() {
                 padding: '2px 4px',
                 borderRadius: '3px',
                 border: '1px solid #e9ecef'
-              }}>(R{calculateDiscountAmount()})</span>
+              }}>({currencySymbol}{calculateDiscountAmount()})</span>
             </div>
           )}
 
@@ -1235,7 +1476,7 @@ export default function FlexibleInvoice() {
                 padding: '2px 4px',
                 borderRadius: '3px',
                 border: '1px solid #e9ecef'
-              }}>R{calculateTaxAmount()}</span>
+              }}>{currencySymbol}{calculateTaxAmount()}</span>
             </div>
           )}
 
@@ -1344,7 +1585,31 @@ export default function FlexibleInvoice() {
             borderTop: '1px solid #ccc',
             paddingTop: '10px'
           }}>
-            <span>Total Amount Due:</span>
+            <span
+              contentEditable
+              suppressContentEditableWarning
+              style={{
+                outline: 'none',
+                cursor: 'text',
+                padding: '4px 8px',
+                borderRadius: '6px',
+                transition: 'all 0.2s ease',
+                backgroundColor: 'transparent',
+                minWidth: '140px',
+                display: 'inline-block'
+              }}
+              onFocus={(e) => {
+                e.target.style.backgroundColor = '#ffffff'
+                e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+              }}
+              onBlur={(e) => {
+                setTotalLabel(e.target.textContent || 'Total Amount Due:')
+                e.target.style.backgroundColor = 'transparent'
+                e.target.style.boxShadow = 'none'
+              }}
+            >
+              {totalLabel}
+            </span>
             <span style={{
               textAlign: 'right',
               display: 'inline-block',
@@ -1354,7 +1619,7 @@ export default function FlexibleInvoice() {
               borderRadius: '3px',
               border: '1px solid #e9ecef',
               fontWeight: 'bold'
-            }}>R{calculateTotal()}</span>
+            }}>{currencySymbol}{calculateTotal()}</span>
           </div>
         </div>
 
@@ -1381,7 +1646,30 @@ export default function FlexibleInvoice() {
               borderRadius: '50%',
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
             }}></span>
-            Payment Details:
+            <span
+              contentEditable
+              suppressContentEditableWarning
+              style={{
+                outline: 'none',
+                cursor: 'text',
+                padding: '4px 8px',
+                borderRadius: '6px',
+                transition: 'all 0.2s ease',
+                backgroundColor: 'transparent',
+                minWidth: '140px'
+              }}
+              onFocus={(e) => {
+                e.target.style.backgroundColor = '#ffffff'
+                e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+              }}
+              onBlur={(e) => {
+                setPaymentTitle(e.target.textContent || 'Payment Details:')
+                e.target.style.backgroundColor = 'transparent'
+                e.target.style.boxShadow = 'none'
+              }}
+            >
+              {paymentTitle}
+            </span>
           </h4>
           <div style={{ 
             display: 'grid',
@@ -1551,6 +1839,28 @@ export default function FlexibleInvoice() {
       <style jsx>{`
         .print-only {
           display: none;
+        }
+        
+        /* Hover zone indicators for column addition */
+        thead tr th:hover {
+          position: relative;
+        }
+        
+        thead tr th:not(:first-child)::before {
+          content: '';
+          position: absolute;
+          left: -2px;
+          top: 20%;
+          bottom: 20%;
+          width: 4px;
+          background: transparent;
+          transition: background 0.2s ease;
+          pointer-events: none;
+        }
+        
+        thead tr th:not(:first-child):hover::before {
+          background: linear-gradient(to bottom, transparent, #0284c7, transparent);
+          opacity: 0.3;
         }
         
         @media print {
