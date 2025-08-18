@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-invoice-gray;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@media print {
+  body {
+    @apply bg-white;
+    margin: 0 !important;
+    padding: 0 !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  
+  /* Hide all interactive elements and buttons */
+  .no-print, 
+  button,
+  .cursor-pointer,
+  [type="button"],
+  [role="button"],
+  input[type="button"],
+  .relative button,
+  .absolute,
+  .opacity-0,
+  .group:hover .opacity-0,
+  svg,
+  .border.border-gray-300 {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+  
+  /* Remove any interactive hover elements */
+  .hover\\:bg-gray-50,
+  .hover\\:bg-blue-700,
+  .hover\\:text-blue-800,
+  .hover\\:bg-red-50,
+  .transition-opacity,
+  .group-hover\\:opacity-100 {
+    display: none !important;
+  }
+  
+  /* Ensure table borders and colors print correctly */
+  table {
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #e9ecef !important;
+  }
+  
+  /* Make sure all colors print */
+  * {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+  
+  /* Compact spacing for print */
+  .print\\:p-0 {
+    padding: 0 !important;
+  }
+  
+  .print\\:shadow-none {
+    box-shadow: none !important;
+  }
+  
+  /* Hide all dropdowns and selectors in print */
+  select,
+  .relative > div,
+  .absolute {
+    display: none !important;
+  }
+  
+  /* Ensure clean invoice content shows */
+  .bg-white {
+    background-color: white !important;
+  }
+  
+  /* Clean up the layout for print */
+  .rounded-lg {
+    border-radius: 0 !important;
+  }
+  
+  .shadow-lg {
+    box-shadow: none !important;
+  }
+  
+  /* Show only essential content */
+  .print\\:hidden {
+    display: none !important;
+  }
+  
+  /* Hide editable field indicators in print */
+  [contenteditable="true"],
+  .cursor-text,
+  input:not([type="hidden"]),
+  textarea {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  
+  /* Ensure background colors still print */
+  .bg-\\[\\#f8f9fa\\] {
+    background-color: #f8f9fa !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
