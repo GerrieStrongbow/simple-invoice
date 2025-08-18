@@ -1244,36 +1244,52 @@ export default function FlexibleInvoice() {
             display: 'flex',
             gap: '20px',
             marginBottom: '10px',
-            padding: '10px',
-            backgroundColor: '#f8f9fa',
-            borderRadius: '5px',
-            fontSize: '14px'
+            padding: '16px',
+            backgroundColor: '#f8fafc',
+            borderRadius: '8px',
+            fontSize: '14px',
+            border: '1px solid #e2e8f0'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <input
                 type="checkbox"
                 checked={discountEnabled}
                 onChange={(e) => setDiscountEnabled(e.target.checked)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', width: '16px', height: '16px' }}
               />
-              <span style={{ color: discountEnabled ? '#000' : '#6c757d' }}>Add Discount:</span>
+              <span style={{ color: discountEnabled ? '#1f2937' : '#9ca3af', fontWeight: '500' }}>Add Discount:</span>
               <input
                 type="text"
                 value={discountPercentage}
                 onChange={(e) => setDiscountPercentage(e.target.value)}
                 disabled={!discountEnabled}
                 style={{
-                  width: '50px',
-                  backgroundColor: discountEnabled ? '#fff3cd' : '#e9ecef',
-                  border: discountEnabled ? '1px dashed #ffc107' : '1px solid #ced4da',
-                  borderRadius: '3px',
-                  padding: '2px 4px',
-                  fontSize: '11pt',
+                  width: '60px',
+                  backgroundColor: discountEnabled ? '#ffffff' : '#f3f4f6',
+                  border: discountEnabled ? '2px solid #e2e8f0' : '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  padding: '6px 8px',
+                  fontSize: '14px',
                   textAlign: 'center',
-                  color: discountEnabled ? '#000' : '#6c757d'
+                  color: discountEnabled ? '#1f2937' : '#9ca3af',
+                  fontWeight: '500',
+                  transition: 'all 0.2s ease',
+                  outline: 'none'
+                }}
+                onFocus={(e) => {
+                  if (discountEnabled) {
+                    e.target.style.borderColor = '#667eea'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                  }
+                }}
+                onBlur={(e) => {
+                  if (discountEnabled) {
+                    e.target.style.borderColor = '#e2e8f0'
+                    e.target.style.boxShadow = 'none'
+                  }
                 }}
               />
-              <span style={{ color: discountEnabled ? '#000' : '#6c757d' }}>%</span>
+              <span style={{ color: discountEnabled ? '#1f2937' : '#9ca3af', fontWeight: '500' }}>%</span>
             </div>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -1281,26 +1297,41 @@ export default function FlexibleInvoice() {
                 type="checkbox"
                 checked={taxEnabled}
                 onChange={(e) => setTaxEnabled(e.target.checked)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', width: '16px', height: '16px' }}
               />
-              <span style={{ color: taxEnabled ? '#000' : '#6c757d' }}>Add Tax:</span>
+              <span style={{ color: taxEnabled ? '#1f2937' : '#9ca3af', fontWeight: '500' }}>Add Tax:</span>
               <input
                 type="text"
                 value={taxPercentage}
                 onChange={(e) => setTaxPercentage(e.target.value)}
                 disabled={!taxEnabled}
                 style={{
-                  width: '50px',
-                  backgroundColor: taxEnabled ? '#fff3cd' : '#e9ecef',
-                  border: taxEnabled ? '1px dashed #ffc107' : '1px solid #ced4da',
-                  borderRadius: '3px',
-                  padding: '2px 4px',
-                  fontSize: '11pt',
+                  width: '60px',
+                  backgroundColor: taxEnabled ? '#ffffff' : '#f3f4f6',
+                  border: taxEnabled ? '2px solid #e2e8f0' : '2px solid #e5e7eb',
+                  borderRadius: '6px',
+                  padding: '6px 8px',
+                  fontSize: '14px',
                   textAlign: 'center',
-                  color: taxEnabled ? '#000' : '#6c757d'
+                  color: taxEnabled ? '#1f2937' : '#9ca3af',
+                  fontWeight: '500',
+                  transition: 'all 0.2s ease',
+                  outline: 'none'
+                }}
+                onFocus={(e) => {
+                  if (taxEnabled) {
+                    e.target.style.borderColor = '#667eea'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                  }
+                }}
+                onBlur={(e) => {
+                  if (taxEnabled) {
+                    e.target.style.borderColor = '#e2e8f0'
+                    e.target.style.boxShadow = 'none'
+                  }
                 }}
               />
-              <span style={{ color: taxEnabled ? '#000' : '#6c757d' }}>%</span>
+              <span style={{ color: taxEnabled ? '#1f2937' : '#9ca3af', fontWeight: '500' }}>%</span>
             </div>
           </div>
 
