@@ -16,7 +16,7 @@ Create an extremely flexible, non-restrictive invoice generator web application 
 - Next.js 15+ with App Router
 - TypeScript
 - Tailwind CSS
-- React 18
+- React 19
 - Local Storage for data persistence
 - PDF generation library (react-pdf/jsPDF)
 - Deployment: Vercel

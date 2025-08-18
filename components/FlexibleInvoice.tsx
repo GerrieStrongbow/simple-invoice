@@ -328,84 +328,166 @@ export default function FlexibleInvoice() {
 
   return (
     <div style={{ 
-      fontFamily: "'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      fontSize: '11pt',
-      maxWidth: '800px',
-      margin: '0 auto',
-      padding: '20px',
-      backgroundColor: '#f8f9fa'
+      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      fontSize: '14px',
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      padding: '40px 20px'
     }}>
-      <div ref={invoiceRef} className="invoice-container" style={{
-        backgroundColor: 'white',
-        padding: '30px',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+      <div style={{
+        maxWidth: '900px',
+        margin: '0 auto',
+        marginBottom: '30px'
       }}>
-        
         {/* Header */}
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '40px'
+        }}>
+          <h1 style={{
+            fontSize: '32px',
+            fontWeight: '700',
+            color: 'white',
+            margin: '0 0 8px 0',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+          }}>
+            Invoice Generator
+          </h1>
+          <p style={{
+            fontSize: '16px',
+            color: 'rgba(255,255,255,0.9)',
+            margin: 0,
+            fontWeight: '400'
+          }}>
+            Professional invoices made simple
+          </p>
+        </div>
+      </div>
+
+      <div ref={invoiceRef} className="invoice-container" style={{
+        maxWidth: '900px',
+        margin: '0 auto',
+        backgroundColor: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1)',
+        overflow: 'hidden'
+      }}>
+        <div style={{ padding: '40px' }}>
+        
+        {/* Invoice Header */}
         <div className="header" style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          marginBottom: '30px',
-          borderBottom: '2px solid #e9ecef',
-          paddingBottom: '20px'
+          marginBottom: '40px',
+          paddingBottom: '30px',
+          borderBottom: '3px solid #f1f3f5'
         }}>
           <div>
             <h1 className="invoice-title" style={{
-              fontSize: '28px',
-              fontWeight: 'bold',
-              color: '#2c3e50',
-              margin: 0
+              fontSize: '36px',
+              fontWeight: '800',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              margin: 0,
+              letterSpacing: '-0.02em'
             }}>INVOICE</h1>
           </div>
           <div className="invoice-details" style={{
-            textAlign: 'right',
-            color: '#666'
+            textAlign: 'right'
           }}>
-            <div style={{ marginBottom: '4px' }}>
-              <strong>Invoice #:</strong> <input
+            <div style={{ 
+              marginBottom: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '12px'
+            }}>
+              <strong style={{ 
+                fontSize: '15px', 
+                fontWeight: '600', 
+                color: '#374151' 
+              }}>Invoice #:</strong>
+              <input
                 type="text"
                 placeholder="INV-2025-08"
                 style={{
-                  backgroundColor: '#fff3cd',
-                  padding: '2px 6px',
-                  borderRadius: '3px',
-                  border: '1px dashed #ffc107',
-                  minWidth: '120px',
-                  fontSize: '11pt',
+                  backgroundColor: '#f8fafc',
+                  padding: '10px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid #e2e8f0',
+                  minWidth: '140px',
+                  fontSize: '14px',
+                  fontWeight: '500',
                   outline: 'none',
-                  textAlign: 'right'
+                  textAlign: 'right',
+                  transition: 'all 0.2s ease',
+                  color: '#1f2937'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#667eea'
+                  e.target.style.backgroundColor = '#ffffff'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e2e8f0'
+                  e.target.style.backgroundColor = '#f8fafc'
+                  e.target.style.boxShadow = 'none'
                 }}
               />
             </div>
-            <div style={{ marginBottom: '4px' }}>
-              <strong>Date:</strong> 
+            <div style={{ 
+              marginBottom: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '12px'
+            }}>
+              <strong style={{ 
+                fontSize: '15px', 
+                fontWeight: '600', 
+                color: '#374151' 
+              }}>Date:</strong> 
               <div style={{ position: 'relative', display: 'inline-block' }}>
                 <input
                   type="date"
                   value={invoiceDate}
                   onChange={(e) => setInvoiceDate(e.target.value)}
                   style={{
-                    backgroundColor: '#fff3cd',
-                    padding: '2px 6px',
-                    borderRadius: '3px',
-                    border: '1px dashed #ffc107',
-                    minWidth: '120px',
-                    fontSize: '11pt',
+                    backgroundColor: '#f8fafc',
+                    padding: '10px 16px',
+                    borderRadius: '8px',
+                    border: '2px solid #e2e8f0',
+                    minWidth: '140px',
+                    fontSize: '14px',
+                    fontWeight: '500',
                     outline: 'none',
                     textAlign: 'right',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    color: '#1f2937'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#667eea'
+                    e.target.style.backgroundColor = '#ffffff'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#e2e8f0'
+                    e.target.style.backgroundColor = '#f8fafc'
+                    e.target.style.boxShadow = 'none'
                   }}
                 />
                 <span 
                   style={{
                     position: 'absolute',
-                    right: '6px',
-                    top: '2px',
+                    right: '16px',
+                    top: '10px',
                     pointerEvents: 'none',
-                    fontSize: '11pt',
-                    color: '#666'
+                    fontSize: '14px',
+                    color: '#1f2937'
                   }}
                   className="print-only"
                 >
@@ -413,33 +495,55 @@ export default function FlexibleInvoice() {
                 </span>
               </div>
             </div>
-            <div>
-              <strong>Due Date:</strong> 
+            <div style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '12px'
+            }}>
+              <strong style={{ 
+                fontSize: '15px', 
+                fontWeight: '600', 
+                color: '#374151' 
+              }}>Due Date:</strong> 
               <div style={{ position: 'relative', display: 'inline-block' }}>
                 <input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
                   style={{
-                    backgroundColor: '#fff3cd',
-                    padding: '2px 6px',
-                    borderRadius: '3px',
-                    border: '1px dashed #ffc107',
-                    minWidth: '120px',
-                    fontSize: '11pt',
+                    backgroundColor: '#f8fafc',
+                    padding: '10px 16px',
+                    borderRadius: '8px',
+                    border: '2px solid #e2e8f0',
+                    minWidth: '140px',
+                    fontSize: '14px',
+                    fontWeight: '500',
                     outline: 'none',
                     textAlign: 'right',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    color: '#1f2937'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#667eea'
+                    e.target.style.backgroundColor = '#ffffff'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#e2e8f0'
+                    e.target.style.backgroundColor = '#f8fafc'
+                    e.target.style.boxShadow = 'none'
                   }}
                 />
                 <span 
                   style={{
                     position: 'absolute',
-                    right: '6px',
-                    top: '2px',
+                    right: '16px',
+                    top: '10px',
                     pointerEvents: 'none',
-                    fontSize: '11pt',
-                    color: '#666'
+                    fontSize: '14px',
+                    color: '#1f2937'
                   }}
                   className="print-only"
                 >
@@ -454,14 +558,35 @@ export default function FlexibleInvoice() {
         <div className="details-grid" style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '30px',
-          marginBottom: '30px'
+          gap: '32px',
+          marginBottom: '40px'
         }}>
-          <div className="contractor-details" style={{ marginBottom: '25px' }}>
-            <h3 style={{ color: '#2c3e50', marginBottom: '10px', fontSize: '16px' }}>From:</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="contractor-details" style={{
+            backgroundColor: '#f8fafc',
+            borderRadius: '12px',
+            padding: '24px',
+            border: '1px solid #e2e8f0'
+          }}>
+            <h3 style={{ 
+              color: '#1f2937', 
+              marginBottom: '20px', 
+              fontSize: '18px',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+              }}></span>
+              From:
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {fromFields.map((field) => (
-                <div key={field.id} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div key={field.id} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <input
                     type="text"
                     value={field.value}
@@ -470,13 +595,23 @@ export default function FlexibleInvoice() {
                     autoComplete="off"
                     style={{
                       flex: 1,
-                      backgroundColor: '#fff3cd',
-                      border: '1px dashed #ffc107',
-                      borderRadius: '3px',
-                      padding: '6px 8px',
-                      fontSize: '11pt',
+                      backgroundColor: '#ffffff',
+                      border: '2px solid #e2e8f0',
+                      borderRadius: '8px',
+                      padding: '12px 16px',
+                      fontSize: '14px',
                       outline: 'none',
-                      paddingRight: '8px'
+                      transition: 'all 0.2s ease',
+                      fontWeight: '500',
+                      color: '#1f2937'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#667eea'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#e2e8f0'
+                      e.target.style.boxShadow = 'none'
                     }}
                   />
                   {fromFields.length > 1 && (
@@ -484,29 +619,32 @@ export default function FlexibleInvoice() {
                       className="no-print remove-btn"
                       onClick={() => removeFromField(field.id)}
                       style={{
-                        width: '20px',
-                        height: '20px',
-                        backgroundColor: 'transparent',
-                        color: '#6c757d',
-                        border: '1px solid transparent',
-                        borderRadius: '50%',
+                        width: '32px',
+                        height: '32px',
+                        backgroundColor: '#fef2f2',
+                        color: '#dc2626',
+                        border: '2px solid #fecaca',
+                        borderRadius: '8px',
                         cursor: 'pointer',
-                        fontSize: '14px',
+                        fontSize: '16px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         lineHeight: 1,
-                        transition: 'all 0.2s ease'
+                        transition: 'all 0.2s ease',
+                        fontWeight: '600'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#dc3545'
+                        e.currentTarget.style.backgroundColor = '#dc2626'
                         e.currentTarget.style.color = 'white'
-                        e.currentTarget.style.border = '1px solid #dc3545'
+                        e.currentTarget.style.borderColor = '#dc2626'
+                        e.currentTarget.style.transform = 'scale(1.05)'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent'
-                        e.currentTarget.style.color = '#6c757d'
-                        e.currentTarget.style.border = '1px solid transparent'
+                        e.currentTarget.style.backgroundColor = '#fef2f2'
+                        e.currentTarget.style.color = '#dc2626'
+                        e.currentTarget.style.borderColor = '#fecaca'
+                        e.currentTarget.style.transform = 'scale(1)'
                       }}
                       title="Remove field"
                     >×</button>
@@ -517,41 +655,70 @@ export default function FlexibleInvoice() {
                 className="no-print add-btn"
                 onClick={addFromField}
                 style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: 'transparent',
-                  color: '#6c757d',
-                  border: '1px solid transparent',
-                  borderRadius: '50%',
+                  width: '100%',
+                  height: '40px',
+                  backgroundColor: '#f0f9ff',
+                  color: '#0284c7',
+                  border: '2px dashed #0284c7',
+                  borderRadius: '8px',
                   cursor: 'pointer',
-                  fontSize: '16px',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  gap: '6px',
                   lineHeight: 1,
-                  marginTop: '4px',
+                  marginTop: '8px',
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#28a745'
+                  e.currentTarget.style.backgroundColor = '#0284c7'
                   e.currentTarget.style.color = 'white'
-                  e.currentTarget.style.border = '1px solid #28a745'
+                  e.currentTarget.style.borderColor = '#0284c7'
+                  e.currentTarget.style.borderStyle = 'solid'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent'
-                  e.currentTarget.style.color = '#6c757d'
-                  e.currentTarget.style.border = '1px solid transparent'
+                  e.currentTarget.style.backgroundColor = '#f0f9ff'
+                  e.currentTarget.style.color = '#0284c7'
+                  e.currentTarget.style.borderColor = '#0284c7'
+                  e.currentTarget.style.borderStyle = 'dashed'
+                  e.currentTarget.style.transform = 'translateY(0)'
                 }}
                 title="Add field"
-              >+</button>
+              >
+                + Add Field
+              </button>
             </div>
           </div>
 
-          <div className="company-details" style={{ marginBottom: '25px' }}>
-            <h3 style={{ color: '#2c3e50', marginBottom: '10px', fontSize: '16px' }}>To:</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="company-details" style={{
+            backgroundColor: '#f8fafc',
+            borderRadius: '12px',
+            padding: '24px',
+            border: '1px solid #e2e8f0'
+          }}>
+            <h3 style={{ 
+              color: '#1f2937', 
+              marginBottom: '20px', 
+              fontSize: '18px',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+              }}></span>
+              To:
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {toFields.map((field) => (
-                <div key={field.id} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div key={field.id} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <input
                     type="text"
                     value={field.value}
@@ -560,13 +727,23 @@ export default function FlexibleInvoice() {
                     autoComplete="off"
                     style={{
                       flex: 1,
-                      backgroundColor: '#fff3cd',
-                      border: '1px dashed #ffc107',
-                      borderRadius: '3px',
-                      padding: '6px 8px',
-                      fontSize: '11pt',
+                      backgroundColor: '#ffffff',
+                      border: '2px solid #e2e8f0',
+                      borderRadius: '8px',
+                      padding: '12px 16px',
+                      fontSize: '14px',
                       outline: 'none',
-                      paddingRight: '8px'
+                      transition: 'all 0.2s ease',
+                      fontWeight: '500',
+                      color: '#1f2937'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#667eea'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#e2e8f0'
+                      e.target.style.boxShadow = 'none'
                     }}
                   />
                   {toFields.length > 1 && (
@@ -574,29 +751,32 @@ export default function FlexibleInvoice() {
                       className="no-print remove-btn"
                       onClick={() => removeToField(field.id)}
                       style={{
-                        width: '20px',
-                        height: '20px',
-                        backgroundColor: 'transparent',
-                        color: '#6c757d',
-                        border: '1px solid transparent',
-                        borderRadius: '50%',
+                        width: '32px',
+                        height: '32px',
+                        backgroundColor: '#fef2f2',
+                        color: '#dc2626',
+                        border: '2px solid #fecaca',
+                        borderRadius: '8px',
                         cursor: 'pointer',
-                        fontSize: '14px',
+                        fontSize: '16px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         lineHeight: 1,
-                        transition: 'all 0.2s ease'
+                        transition: 'all 0.2s ease',
+                        fontWeight: '600'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#dc3545'
+                        e.currentTarget.style.backgroundColor = '#dc2626'
                         e.currentTarget.style.color = 'white'
-                        e.currentTarget.style.border = '1px solid #dc3545'
+                        e.currentTarget.style.borderColor = '#dc2626'
+                        e.currentTarget.style.transform = 'scale(1.05)'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent'
-                        e.currentTarget.style.color = '#6c757d'
-                        e.currentTarget.style.border = '1px solid transparent'
+                        e.currentTarget.style.backgroundColor = '#fef2f2'
+                        e.currentTarget.style.color = '#dc2626'
+                        e.currentTarget.style.borderColor = '#fecaca'
+                        e.currentTarget.style.transform = 'scale(1)'
                       }}
                       title="Remove field"
                     >×</button>
@@ -607,67 +787,92 @@ export default function FlexibleInvoice() {
                 className="no-print add-btn"
                 onClick={addToField}
                 style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: 'transparent',
-                  color: '#6c757d',
-                  border: '1px solid transparent',
-                  borderRadius: '50%',
+                  width: '100%',
+                  height: '40px',
+                  backgroundColor: '#f0f9ff',
+                  color: '#0284c7',
+                  border: '2px dashed #0284c7',
+                  borderRadius: '8px',
                   cursor: 'pointer',
-                  fontSize: '16px',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  gap: '6px',
                   lineHeight: 1,
-                  marginTop: '4px',
+                  marginTop: '8px',
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#28a745'
+                  e.currentTarget.style.backgroundColor = '#0284c7'
                   e.currentTarget.style.color = 'white'
-                  e.currentTarget.style.border = '1px solid #28a745'
+                  e.currentTarget.style.borderColor = '#0284c7'
+                  e.currentTarget.style.borderStyle = 'solid'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent'
-                  e.currentTarget.style.color = '#6c757d'
-                  e.currentTarget.style.border = '1px solid transparent'
+                  e.currentTarget.style.backgroundColor = '#f0f9ff'
+                  e.currentTarget.style.color = '#0284c7'
+                  e.currentTarget.style.borderColor = '#0284c7'
+                  e.currentTarget.style.borderStyle = 'dashed'
+                  e.currentTarget.style.transform = 'translateY(0)'
                 }}
                 title="Add field"
-              >+</button>
+              >
+                + Add Field
+              </button>
             </div>
           </div>
         </div>
 
         {/* Services Table */}
+        <div style={{ 
+          marginBottom: '40px',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          border: '1px solid #e2e8f0'
+        }}>
         <table className="services-table" style={{
           width: '100%',
-          borderCollapse: 'collapse',
-          marginBottom: '20px'
+          borderCollapse: 'collapse'
         }}>
           <thead>
-            <tr>
+            <tr style={{
+              background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)'
+            }}>
               {columns.map((column) => (
                 <th key={column.id} style={{
-                  padding: '12px',
+                  padding: '20px 16px',
                   textAlign: column.align as any,
-                  borderBottom: '1px solid #e9ecef',
-                  backgroundColor: '#f8f9fa',
-                  fontWeight: 'bold',
-                  color: '#2c3e50',
+                  fontWeight: '700',
+                  color: '#1f2937',
                   width: column.width,
-                  position: 'relative'
+                  position: 'relative',
+                  fontSize: '15px'
                 }}>
                   <span 
                     contentEditable 
                     suppressContentEditableWarning
                     onBlur={(e) => updateColumnName(column.id, e.target.textContent || column.name)}
                     style={{
-                      backgroundColor: '#fff3cd',
-                      padding: '2px 4px',
-                      borderRadius: '3px',
-                      border: '1px dashed #ffc107',
-                      minWidth: '60px',
-                      display: 'inline-block'
+                      backgroundColor: '#ffffff',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: '2px solid #e2e8f0',
+                      minWidth: '80px',
+                      display: 'inline-block',
+                      transition: 'all 0.2s ease',
+                      cursor: 'text'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#667eea'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                    }}
+                    onBlur={(e) => {
+                      updateColumnName(column.id, e.target.textContent || column.name)
+                      e.target.style.borderColor = '#e2e8f0'
+                      e.target.style.boxShadow = 'none'
                     }}
                   >
                     {column.name}
@@ -678,31 +883,34 @@ export default function FlexibleInvoice() {
                       onClick={() => removeColumn(column.id)}
                       style={{
                         position: 'absolute',
-                        top: '2px',
-                        right: '2px',
-                        width: '18px',
-                        height: '18px',
-                        backgroundColor: 'transparent',
-                        color: '#6c757d',
-                        border: '1px solid transparent',
-                        borderRadius: '50%',
+                        top: '4px',
+                        right: '4px',
+                        width: '24px',
+                        height: '24px',
+                        backgroundColor: '#fef2f2',
+                        color: '#dc2626',
+                        border: '2px solid #fecaca',
+                        borderRadius: '6px',
                         cursor: 'pointer',
-                        fontSize: '12px',
+                        fontSize: '14px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         lineHeight: 1,
-                        transition: 'all 0.2s ease'
+                        transition: 'all 0.2s ease',
+                        fontWeight: '600'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#dc3545'
+                        e.currentTarget.style.backgroundColor = '#dc2626'
                         e.currentTarget.style.color = 'white'
-                        e.currentTarget.style.border = '1px solid #dc3545'
+                        e.currentTarget.style.borderColor = '#dc2626'
+                        e.currentTarget.style.transform = 'scale(1.05)'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent'
-                        e.currentTarget.style.color = '#6c757d'
-                        e.currentTarget.style.border = '1px solid transparent'
+                        e.currentTarget.style.backgroundColor = '#fef2f2'
+                        e.currentTarget.style.color = '#dc2626'
+                        e.currentTarget.style.borderColor = '#fecaca'
+                        e.currentTarget.style.transform = 'scale(1)'
                       }}
                       title="Remove column"
                     >×</button>
@@ -720,29 +928,32 @@ export default function FlexibleInvoice() {
                   className="add-btn"
                   onClick={addColumn}
                   style={{
-                    width: '24px',
-                    height: '24px',
-                    backgroundColor: 'transparent',
-                    color: '#6c757d',
-                    border: '1px solid transparent',
-                    borderRadius: '50%',
+                    width: '28px',
+                    height: '28px',
+                    backgroundColor: '#f0f9ff',
+                    color: '#0284c7',
+                    border: '2px solid #0284c7',
+                    borderRadius: '6px',
                     cursor: 'pointer',
                     fontSize: '16px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     lineHeight: 1,
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
+                    fontWeight: '600'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#17a2b8'
+                    e.currentTarget.style.backgroundColor = '#0284c7'
                     e.currentTarget.style.color = 'white'
-                    e.currentTarget.style.border = '1px solid #17a2b8'
+                    e.currentTarget.style.borderColor = '#0284c7'
+                    e.currentTarget.style.transform = 'scale(1.05)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent'
-                    e.currentTarget.style.color = '#6c757d'
-                    e.currentTarget.style.border = '1px solid transparent'
+                    e.currentTarget.style.backgroundColor = '#f0f9ff'
+                    e.currentTarget.style.color = '#0284c7'
+                    e.currentTarget.style.borderColor = '#0284c7'
+                    e.currentTarget.style.transform = 'scale(1)'
                   }}
                   title="Add column"
                 >+</button>
@@ -750,15 +961,18 @@ export default function FlexibleInvoice() {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.id} style={{ height: '60px' }}>
+            {rows.map((row, index) => (
+              <tr key={row.id} style={{ 
+                height: '80px',
+                backgroundColor: index % 2 === 0 ? '#ffffff' : '#fafbfc'
+              }}>
                 {columns.map((column) => (
                   <td key={`${row.id}-${column.id}`} style={{
                     width: column.width,
                     textAlign: column.align as any,
                     verticalAlign: 'top',
-                    padding: '12px',
-                    borderBottom: '1px solid #e9ecef'
+                    padding: '16px',
+                    borderBottom: '1px solid #f1f3f5'
                   }}>
                     {column.isDescription && typeof row.cells[column.id] === 'object' ? (
                       // Special handling for description column
@@ -772,13 +986,24 @@ export default function FlexibleInvoice() {
                             name: e.target.value
                           })}
                           style={{
-                            backgroundColor: '#fff3cd',
-                            border: '1px dashed #ffc107',
-                            borderRadius: '3px',
-                            padding: '4px 6px',
-                            fontSize: '11pt',
+                            backgroundColor: '#ffffff',
+                            border: '2px solid #e2e8f0',
+                            borderRadius: '6px',
+                            padding: '8px 12px',
+                            fontSize: '14px',
                             outline: 'none',
-                            fontWeight: 'bold'
+                            fontWeight: '600',
+                            width: '100%',
+                            transition: 'all 0.2s ease',
+                            color: '#1f2937'
+                          }}
+                          onFocus={(e) => {
+                            e.target.style.borderColor = '#667eea'
+                            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                          }}
+                          onBlur={(e) => {
+                            e.target.style.borderColor = '#e2e8f0'
+                            e.target.style.boxShadow = 'none'
                           }}
                         />
                         <input
@@ -790,12 +1015,23 @@ export default function FlexibleInvoice() {
                             description: e.target.value
                           })}
                           style={{
-                            backgroundColor: '#fff3cd',
-                            border: '1px dashed #ffc107',
-                            borderRadius: '3px',
-                            padding: '4px 6px',
-                            fontSize: '11pt',
-                            outline: 'none'
+                            backgroundColor: '#ffffff',
+                            border: '2px solid #e2e8f0',
+                            borderRadius: '6px',
+                            padding: '8px 12px',
+                            fontSize: '14px',
+                            outline: 'none',
+                            width: '100%',
+                            transition: 'all 0.2s ease',
+                            color: '#6b7280'
+                          }}
+                          onFocus={(e) => {
+                            e.target.style.borderColor = '#667eea'
+                            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                          }}
+                          onBlur={(e) => {
+                            e.target.style.borderColor = '#e2e8f0'
+                            e.target.style.boxShadow = 'none'
                           }}
                         />
                       </div>
@@ -813,15 +1049,30 @@ export default function FlexibleInvoice() {
                         onChange={(e) => updateCell(row.id, column.id, e.target.value)}
                         readOnly={column.isAmount}
                         style={{
-                          backgroundColor: column.isAmount ? '#f8f9fa' : '#fff3cd',
-                          border: column.isAmount ? '1px solid #e9ecef' : '1px dashed #ffc107',
-                          borderRadius: '3px',
-                          padding: '4px 6px',
-                          fontSize: '11pt',
+                          backgroundColor: column.isAmount ? '#f8fafc' : '#ffffff',
+                          border: column.isAmount ? '2px solid #e5e7eb' : '2px solid #e2e8f0',
+                          borderRadius: '6px',
+                          padding: '8px 12px',
+                          fontSize: '14px',
                           outline: 'none',
                           width: '100%',
                           textAlign: column.align as any,
-                          cursor: column.isAmount ? 'not-allowed' : 'text'
+                          cursor: column.isAmount ? 'not-allowed' : 'text',
+                          transition: 'all 0.2s ease',
+                          fontWeight: column.isAmount ? '600' : '500',
+                          color: column.isAmount ? '#374151' : '#1f2937'
+                        }}
+                        onFocus={(e) => {
+                          if (!column.isAmount) {
+                            e.target.style.borderColor = '#667eea'
+                            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                          }
+                        }}
+                        onBlur={(e) => {
+                          if (!column.isAmount) {
+                            e.target.style.borderColor = '#e2e8f0'
+                            e.target.style.boxShadow = 'none'
+                          }
                         }}
                       />
                     )}
@@ -838,30 +1089,33 @@ export default function FlexibleInvoice() {
                       className="remove-btn"
                       onClick={() => removeRow(row.id)}
                       style={{
-                        width: '18px',
-                        height: '18px',
-                        backgroundColor: 'transparent',
-                        color: '#6c757d',
-                        border: '1px solid transparent',
-                        borderRadius: '50%',
+                        width: '24px',
+                        height: '24px',
+                        backgroundColor: '#fef2f2',
+                        color: '#dc2626',
+                        border: '2px solid #fecaca',
+                        borderRadius: '6px',
                         cursor: 'pointer',
-                        fontSize: '12px',
+                        fontSize: '14px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         lineHeight: 1,
                         margin: '0 auto',
-                        transition: 'all 0.2s ease'
+                        transition: 'all 0.2s ease',
+                        fontWeight: '600'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#dc3545'
+                        e.currentTarget.style.backgroundColor = '#dc2626'
                         e.currentTarget.style.color = 'white'
-                        e.currentTarget.style.border = '1px solid #dc3545'
+                        e.currentTarget.style.borderColor = '#dc2626'
+                        e.currentTarget.style.transform = 'scale(1.05)'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent'
-                        e.currentTarget.style.color = '#6c757d'
-                        e.currentTarget.style.border = '1px solid transparent'
+                        e.currentTarget.style.backgroundColor = '#fef2f2'
+                        e.currentTarget.style.color = '#dc2626'
+                        e.currentTarget.style.borderColor = '#fecaca'
+                        e.currentTarget.style.transform = 'scale(1)'
                       }}
                       title="Remove row"
                     >×</button>
@@ -872,21 +1126,42 @@ export default function FlexibleInvoice() {
           </tbody>
         </table>
 
+        </div>
+
         {/* Add Row Button */}
-        <div className="no-print" style={{ marginBottom: '10px' }}>
+        <div className="no-print" style={{ marginBottom: '32px' }}>
           <button 
             onClick={addRow}
             style={{
-              padding: '8px 16px',
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
+              width: '120px',
+              height: '40px',
+              backgroundColor: '#f0f9ff',
+              color: '#0284c7',
+              border: '2px dashed #0284c7',
+              borderRadius: '8px',
               cursor: 'pointer',
               fontSize: '14px',
+              fontWeight: '600',
               display: 'flex',
               alignItems: 'center',
-              gap: '5px'
+              justifyContent: 'center',
+              gap: '6px',
+              lineHeight: 1,
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#0284c7'
+              e.currentTarget.style.color = 'white'
+              e.currentTarget.style.borderColor = '#0284c7'
+              e.currentTarget.style.borderStyle = 'solid'
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#f0f9ff'
+              e.currentTarget.style.color = '#0284c7'
+              e.currentTarget.style.borderColor = '#0284c7'
+              e.currentTarget.style.borderStyle = 'dashed'
+              e.currentTarget.style.transform = 'translateY(0)'
             }}
             title="Add new row"
           >
@@ -1054,20 +1329,37 @@ export default function FlexibleInvoice() {
 
         {/* Bank Details */}
         <div className="bank-details" style={{
-          backgroundColor: '#f8f9fa',
-          padding: '15px',
-          borderRadius: '5px',
+          backgroundColor: '#f8fafc',
+          border: '1px solid #e2e8f0',
+          padding: '24px',
+          borderRadius: '12px',
           marginTop: '0px'
         }}>
-          <h4 style={{ color: '#2c3e50', marginBottom: '10px' }}>Payment Details:</h4>
+          <h4 style={{ 
+            color: '#1f2937', 
+            marginBottom: '20px',
+            fontSize: '18px',
+            fontWeight: '700',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+            }}></span>
+            Payment Details:
+          </h4>
           <div style={{ 
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '30px'
           }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {paymentFields.map((field) => (
-                <div key={field.id} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div key={field.id} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <input
                     type="text"
                     value={field.value}
@@ -1076,13 +1368,23 @@ export default function FlexibleInvoice() {
                     autoComplete="off"
                     style={{
                       flex: 1,
-                      backgroundColor: '#fff3cd',
-                      border: '1px dashed #ffc107',
-                      borderRadius: '3px',
-                      padding: '6px 8px',
-                      fontSize: '11pt',
+                      backgroundColor: '#ffffff',
+                      border: '2px solid #e2e8f0',
+                      borderRadius: '8px',
+                      padding: '12px 16px',
+                      fontSize: '14px',
                       outline: 'none',
-                      paddingRight: '8px'
+                      transition: 'all 0.2s ease',
+                      fontWeight: '500',
+                      color: '#1f2937'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#667eea'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#e2e8f0'
+                      e.target.style.boxShadow = 'none'
                     }}
                   />
                   {paymentFields.length > 1 && (
@@ -1090,29 +1392,32 @@ export default function FlexibleInvoice() {
                       className="no-print remove-btn"
                       onClick={() => removePaymentField(field.id)}
                       style={{
-                        width: '20px',
-                        height: '20px',
-                        backgroundColor: 'transparent',
-                        color: '#6c757d',
-                        border: '1px solid transparent',
-                        borderRadius: '50%',
+                        width: '32px',
+                        height: '32px',
+                        backgroundColor: '#fef2f2',
+                        color: '#dc2626',
+                        border: '2px solid #fecaca',
+                        borderRadius: '8px',
                         cursor: 'pointer',
-                        fontSize: '14px',
+                        fontSize: '16px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         lineHeight: 1,
-                        transition: 'all 0.2s ease'
+                        transition: 'all 0.2s ease',
+                        fontWeight: '600'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#dc3545'
+                        e.currentTarget.style.backgroundColor = '#dc2626'
                         e.currentTarget.style.color = 'white'
-                        e.currentTarget.style.border = '1px solid #dc3545'
+                        e.currentTarget.style.borderColor = '#dc2626'
+                        e.currentTarget.style.transform = 'scale(1.05)'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent'
-                        e.currentTarget.style.color = '#6c757d'
-                        e.currentTarget.style.border = '1px solid transparent'
+                        e.currentTarget.style.backgroundColor = '#fef2f2'
+                        e.currentTarget.style.color = '#dc2626'
+                        e.currentTarget.style.borderColor = '#fecaca'
+                        e.currentTarget.style.transform = 'scale(1)'
                       }}
                       title="Remove field"
                     >×</button>
@@ -1123,55 +1428,93 @@ export default function FlexibleInvoice() {
                 className="no-print add-btn"
                 onClick={addPaymentField}
                 style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: 'transparent',
-                  color: '#6c757d',
-                  border: '1px solid transparent',
-                  borderRadius: '50%',
+                  width: '100%',
+                  height: '40px',
+                  backgroundColor: '#f0f9ff',
+                  color: '#0284c7',
+                  border: '2px dashed #0284c7',
+                  borderRadius: '8px',
                   cursor: 'pointer',
-                  fontSize: '16px',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  gap: '6px',
                   lineHeight: 1,
-                  marginTop: '4px',
+                  marginTop: '8px',
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#28a745'
+                  e.currentTarget.style.backgroundColor = '#0284c7'
                   e.currentTarget.style.color = 'white'
-                  e.currentTarget.style.border = '1px solid #28a745'
+                  e.currentTarget.style.borderColor = '#0284c7'
+                  e.currentTarget.style.borderStyle = 'solid'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent'
-                  e.currentTarget.style.color = '#6c757d'
-                  e.currentTarget.style.border = '1px solid transparent'
+                  e.currentTarget.style.backgroundColor = '#f0f9ff'
+                  e.currentTarget.style.color = '#0284c7'
+                  e.currentTarget.style.borderColor = '#0284c7'
+                  e.currentTarget.style.borderStyle = 'dashed'
+                  e.currentTarget.style.transform = 'translateY(0)'
                 }}
                 title="Add field"
-              >+</button>
+              >
+                + Add Field
+              </button>
             </div>
             <div>{/* Empty column for spacing */}</div>
           </div>
         </div>
 
-        {/* Print Button */}
-        <button 
-          className="print-button no-print"
-          onClick={() => window.print()}
-          style={{
-            backgroundColor: '#007bff',
-            color: 'white',
-            padding: '10px 20px',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            marginTop: '20px'
-          }}
-        >
-          Print/Save as PDF
-        </button>
+        {/* Action Buttons */}
+        <div className="no-print" style={{
+          display: 'flex',
+          gap: '16px',
+          justifyContent: 'center',
+          marginTop: '40px',
+          paddingTop: '30px',
+          borderTop: '2px solid #f1f3f5'
+        }}>
+          <button 
+            className="print-button"
+            onClick={() => window.print()}
+            style={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              padding: '16px 32px',
+              border: 'none',
+              borderRadius: '12px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 6px 20px rgba(102, 126, 234, 0.3)',
+              minWidth: '180px',
+              justifyContent: 'center'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-3px)'
+              e.currentTarget.style.boxShadow = '0 8px 30px rgba(102, 126, 234, 0.4)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.3)'
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6,9 6,2 18,2 18,9"></polyline>
+              <path d="M6,18H4a2,2,0,0,1-2-2V11a2,2,0,0,1,2-2H20a2,2,0,0,1,2,2v5a2,2,0,0,1-2,2H18"></path>
+              <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            Print/Save as PDF
+          </button>
+        </div>
+      </div>
       </div>
 
       <style jsx>{`
@@ -1180,39 +1523,79 @@ export default function FlexibleInvoice() {
         }
         
         @media print {
+          * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
           body {
-            background-color: white !important;
+            background: white !important;
             padding: 0 !important;
             margin: 0 !important;
           }
           
-          .invoice-container {
-            box-shadow: none !important;
-            padding: 0 !important;
+          /* Hide everything initially */
+          * {
+            visibility: hidden;
           }
           
+          /* Show only the invoice container and its contents */
+          .invoice-container,
+          .invoice-container * {
+            visibility: visible;
+          }
+          
+          /* Style the invoice container for print */
+          .invoice-container {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            height: auto !important;
+            background: white !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            padding: 20px !important;
+            margin: 0 !important;
+            max-width: none !important;
+          }
+          
+          /* Hide non-printable elements */
           .no-print {
             display: none !important;
+            visibility: hidden !important;
           }
           
+          /* Show print-only elements */
           .print-only {
             display: inline !important;
+            visibility: visible !important;
           }
           
-          .editable {
-            background-color: transparent !important;
+          /* Clean up input styling for print */
+          input[type="text"] {
+            background: transparent !important;
             border: none !important;
-            padding: 0 !important;
-          }
-          
-          input[type="text"], input[type="date"] {
-            background-color: transparent !important;
-            border: none !important;
-            padding: 0 !important;
+            padding: 2px 4px !important;
             outline: none !important;
-            color: transparent !important;
+            box-shadow: none !important;
+            font-family: inherit !important;
+            font-size: inherit !important;
+            font-weight: inherit !important;
+            color: inherit !important;
           }
           
+          /* Hide date inputs completely and show formatted dates instead */
+          input[type="date"] {
+            color: transparent !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 2px 4px !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+          
+          /* Hide date picker elements */
           input[type="date"]::-webkit-calendar-picker-indicator {
             display: none !important;
           }
@@ -1222,16 +1605,33 @@ export default function FlexibleInvoice() {
             display: none !important;
           }
           
+          /* Preserve card backgrounds */
           .bank-details {
-            background-color: #f8f9fa !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
           }
           
+          /* Preserve table styling */
           .services-table th {
-            background-color: #f8f9fa !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+          }
+          
+          /* Clean table styling */
+          table {
+            border-collapse: collapse !important;
+          }
+          
+          /* Ensure proper spacing */
+          .header {
+            margin-bottom: 30px !important;
+          }
+          
+          .details-grid {
+            margin-bottom: 30px !important;
+          }
+          
+          .total-section {
+            margin-top: 30px !important;
           }
         }
       `}</style>
