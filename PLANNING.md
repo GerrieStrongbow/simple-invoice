@@ -3,12 +3,14 @@
 Based on the requirements in PROMPT_REFINED.md and references from invoice_template.html and InvoiceSimple, this document outlines the comprehensive plan to build a flexible, non-restrictive invoice generator web application.
 
 ## Core Philosophy
+
 - **Nothing is mandatory** - every field is optional
 - **Everything is editable** - including column headers, labels, and structure
 - **Smart defaults** - but users can override everything
 - **Zero restrictions** - users can type anything anywhere
 
 ## Tech Stack
+
 - **Framework**: Next.js 14+ with App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
@@ -22,12 +24,14 @@ Based on the requirements in PROMPT_REFINED.md and references from invoice_templ
 ### Phase 1: Project Setup & Core Structure
 
 #### 1.1 Initialize Project
+
 - Create Next.js app with TypeScript and Tailwind CSS
 - Configure App Router structure
 - Set up ESLint and Prettier for code quality
 - Install required dependencies (react-pdf/jsPDF)
 
 #### 1.2 Project Structure
+
 ```
 /app
   /page.tsx (main invoice generator)
@@ -58,6 +62,7 @@ Based on the requirements in PROMPT_REFINED.md and references from invoice_templ
 ```
 
 #### 1.3 Base Layout
+
 - Create main container with professional spacing
 - Implement responsive grid system
 - Set up print-optimized CSS
@@ -66,7 +71,9 @@ Based on the requirements in PROMPT_REFINED.md and references from invoice_templ
 ### Phase 2: Core Components Development
 
 #### 2.1 EditableField Component
+
 **Features:**
+
 - Universal inline-editing component
 - Click-to-edit functionality
 - Auto-resize based on content
@@ -75,6 +82,7 @@ Based on the requirements in PROMPT_REFINED.md and references from invoice_templ
 - Support for different data types (text, number, date)
 
 **Props Interface:**
+
 ```typescript
 interface EditableFieldProps {
   defaultValue?: string
@@ -87,7 +95,9 @@ interface EditableFieldProps {
 ```
 
 #### 2.2 Header Section
+
 **Components:**
+
 - Logo upload area (drag & drop or click)
 - Editable title field (default: "INVOICE")
 - Document number field
@@ -95,12 +105,15 @@ interface EditableFieldProps {
 - Flexible positioning
 
 **Layout:**
+
 - Two-column layout (logo/title left, details right)
 - Professional spacing matching invoice_template.html
 - Responsive for mobile devices
 
 #### 2.3 Business/Client Sections
+
 **Features:**
+
 - Two flexible text areas
 - Editable labels (default: "From:" and "To:")
 - Smart address formatting (auto-detect but don't enforce)
@@ -108,12 +121,15 @@ interface EditableFieldProps {
 - Can be used for any purpose
 
 **Smart Features:**
+
 - Auto-format addresses when pattern detected
 - Preserve user input exactly as typed
 - Support for international address formats
 
 #### 2.4 Dynamic Table Component
+
 **Core Features:**
+
 - **Column Management:**
   - Add/remove columns with +/- buttons
   - Rename any column header (click to edit)
@@ -139,7 +155,9 @@ interface EditableFieldProps {
   - Rename any total label
 
 #### 2.5 Footer Section
+
 **Components:**
+
 - Payment terms (dropdown or free text)
 - Notes/additional information area
 - Bank details section
@@ -149,6 +167,7 @@ interface EditableFieldProps {
 ### Phase 3: Features & Functionality
 
 #### 3.1 Smart Calculation Engine
+
 ```typescript
 interface CalculationEngine {
   detectNumericColumns(data: TableData): string[]
@@ -160,19 +179,23 @@ interface CalculationEngine {
 ```
 
 **Features:**
+
 - Pattern detection for common calculations
 - Support for percentages
 - Custom formula support
 - Override capability for any calculation
 
 #### 3.2 Data Persistence Layer
+
 **LocalStorage Management:**
+
 - Auto-save on every change (debounced)
 - Template system for saving/loading
 - Versioning for backwards compatibility
 - Export/import functionality
 
 **Data Structure:**
+
 ```typescript
 interface InvoiceData {
   version: string
@@ -188,7 +211,9 @@ interface InvoiceData {
 ```
 
 #### 3.3 Actions Bar
+
 **Primary Actions:**
+
 - Preview (modal with print view)
 - Download PDF
 - Print
@@ -196,6 +221,7 @@ interface InvoiceData {
 - Load Template
 
 **Secondary Actions:**
+
 - Reset/Clear
 - Undo/Redo
 - Copy invoice
@@ -204,6 +230,7 @@ interface InvoiceData {
 ### Phase 4: User Experience Enhancements
 
 #### 4.1 Visual Feedback System
+
 - Subtle border on hover for editable areas
 - Focus states for active editing
 - Loading states for async operations
@@ -211,7 +238,9 @@ interface InvoiceData {
 - Smooth transitions and animations
 
 #### 4.2 Customization Panel
+
 **Options:**
+
 - Accent color picker
 - Font size adjustment (small/medium/large)
 - Template selection (modern/classic)
@@ -220,6 +249,7 @@ interface InvoiceData {
 - Number formatting options
 
 #### 4.3 Mobile Optimization
+
 - Touch-friendly tap targets
 - Responsive table design
 - Simplified mobile layout
@@ -229,6 +259,7 @@ interface InvoiceData {
 ### Phase 5: Polish & Optimization
 
 #### 5.1 Performance Optimization
+
 - Code splitting for large components
 - Lazy loading for PDF generation
 - Optimize bundle size (<500KB initial)
@@ -236,7 +267,9 @@ interface InvoiceData {
 - Virtual scrolling for large tables
 
 #### 5.2 PDF Generation
+
 **Quality Requirements:**
+
 - Maintain exact formatting from screen
 - High-resolution output
 - Support for custom page sizes
@@ -244,6 +277,7 @@ interface InvoiceData {
 - Hide all edit UI elements
 
 **Implementation:**
+
 ```typescript
 interface PDFGenerator {
   generatePDF(data: InvoiceData): Promise<Blob>
@@ -254,6 +288,7 @@ interface PDFGenerator {
 ```
 
 #### 5.3 Testing & Quality Assurance
+
 - Unit tests for calculation engine
 - Integration tests for data persistence
 - E2E tests for critical workflows
@@ -264,6 +299,7 @@ interface PDFGenerator {
 ## Key Implementation Priorities
 
 ### Must-Have (MVP)
+
 1. Fully editable text fields everywhere
 2. Dynamic table with flexible columns
 3. Smart calculations (overrideable)
@@ -272,6 +308,7 @@ interface PDFGenerator {
 6. Professional default design
 
 ### Nice-to-Have (Post-MVP)
+
 1. Template library
 2. Multiple color themes
 3. Advanced formulas
@@ -291,6 +328,7 @@ interface PDFGenerator {
 ## Design Principles
 
 ### From invoice_template.html
+
 - Clean, professional layout with good spacing
 - Clear visual hierarchy
 - Print-friendly design
@@ -298,6 +336,7 @@ interface PDFGenerator {
 - Professional typography (Inter font)
 
 ### Improvements over InvoiceSimple
+
 - No locked fields or forced formats
 - Complete column customization
 - Flexible totals section
@@ -317,6 +356,7 @@ interface PDFGenerator {
 ## Future Enhancements (Phase 2+)
 
 ### User Accounts & Cloud Storage
+
 - Supabase authentication
 - Cloud storage for invoices
 - Invoice history and search
@@ -324,6 +364,7 @@ interface PDFGenerator {
 - Recurring invoices
 
 ### Advanced Features
+
 - Multi-currency support
 - Tax calculation rules by region
 - Payment gateway integration
@@ -331,6 +372,7 @@ interface PDFGenerator {
 - Invoice tracking and analytics
 
 ### Mobile & Desktop Apps
+
 - React Native mobile app
 - Electron desktop app
 - Offline-first architecture
@@ -339,6 +381,7 @@ interface PDFGenerator {
 ## Technical Decisions & Rationale
 
 ### Why Next.js 14+?
+
 - Modern React features with App Router
 - Excellent performance out of the box
 - Easy deployment with Vercel
@@ -346,18 +389,21 @@ interface PDFGenerator {
 - Great developer experience
 
 ### Why TypeScript?
+
 - Type safety prevents bugs
 - Better IDE support
 - Self-documenting code
 - Easier refactoring
 
 ### Why Tailwind CSS?
+
 - Rapid UI development
 - Consistent design system
 - Smaller bundle size
 - Easy customization
 
 ### Why LocalStorage for MVP?
+
 - No backend required
 - Instant persistence
 - Works offline
