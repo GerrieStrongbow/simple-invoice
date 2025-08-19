@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main>
       {/* Header Section */}
-      <div style={{
+      <div className="no-print" style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         padding: '60px 20px',
         textAlign: 'center' as const,
@@ -89,7 +89,7 @@ export default function Home() {
       <FlexibleInvoice />
 
       {/* Footer Section */}
-      <footer style={{
+      <footer className="no-print" style={{
         background: '#f8fafc',
         borderTop: '1px solid #e2e8f0',
         padding: '40px 20px',

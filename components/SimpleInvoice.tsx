@@ -2,8 +2,6 @@
 
 import React, { useState, useRef } from 'react'
 
-interface SimpleInvoiceProps {}
-
 interface EditableSpanProps {
   children: React.ReactNode
   className?: string
@@ -32,7 +30,7 @@ const EditableSpan: React.FC<EditableSpanProps> = ({
   </span>
 )
 
-export default function SimpleInvoice({}: SimpleInvoiceProps) {
+export default function SimpleInvoice() {
   const invoiceRef = useRef<HTMLDivElement>(null)
   const [showNotes, setShowNotes] = useState(true)
   const [showLogo, setShowLogo] = useState(false)
@@ -393,7 +391,7 @@ export default function SimpleInvoice({}: SimpleInvoiceProps) {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @media print {
           body {
             background-color: white !important;
