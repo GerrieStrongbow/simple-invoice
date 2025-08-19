@@ -395,17 +395,25 @@ export default function FlexibleInvoice() {
                   outline: 'none',
                   cursor: 'text',
                   display: 'inline-block',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                  transition: 'all 0.2s ease'
+                  padding: '8px 12px',
+                  borderRadius: '8px',
+                  transition: 'all 0.2s ease',
+                  border: '2px solid #e2e8f0',
+                  backgroundColor: '#f8fafc',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
                 }}
                 onFocus={(e) => {
-                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'
-                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.3)'
+                  e.target.style.backgroundColor = '#ffffff'
+                  e.target.style.borderColor = '#667eea'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
                 }}
                 onBlur={(e) => {
                   setInvoiceTitle(e.target.textContent || 'INVOICE')
-                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.backgroundColor = '#f8fafc'
+                  e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
                 }}
               >
@@ -432,20 +440,26 @@ export default function FlexibleInvoice() {
                   color: '#374151',
                   outline: 'none',
                   cursor: 'text',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
+                  padding: '6px 10px',
+                  borderRadius: '8px',
                   transition: 'all 0.2s ease',
-                  backgroundColor: 'transparent',
-                  minWidth: '80px',
-                  display: 'inline-block'
+                  backgroundColor: '#f8fafc',
+                  border: '2px solid #e2e8f0',
+                  minWidth: '110px',
+                  width: '110px',
+                  display: 'inline-block',
+                  textAlign: 'right',
+                  whiteSpace: 'nowrap'
                 }}
                 onFocus={(e) => {
                   e.target.style.backgroundColor = '#ffffff'
-                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                  e.target.style.borderColor = '#667eea'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
                 }}
                 onBlur={(e) => {
                   setInvoiceNumberLabel(e.target.textContent || 'Invoice #:')
-                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.backgroundColor = '#f8fafc'
+                  e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
                 }}
               >
@@ -459,7 +473,8 @@ export default function FlexibleInvoice() {
                   padding: '10px 16px',
                   borderRadius: '8px',
                   border: '2px solid #e2e8f0',
-                  minWidth: '140px',
+                  minWidth: '130px',
+                  width: '130px',
                   fontSize: '14px',
                   fontWeight: '500',
                   outline: 'none',
@@ -495,20 +510,26 @@ export default function FlexibleInvoice() {
                   color: '#374151',
                   outline: 'none',
                   cursor: 'text',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
+                  padding: '6px 10px',
+                  borderRadius: '8px',
                   transition: 'all 0.2s ease',
-                  backgroundColor: 'transparent',
-                  minWidth: '80px',
-                  display: 'inline-block'
+                  backgroundColor: '#f8fafc',
+                  border: '2px solid #e2e8f0',
+                  minWidth: '110px',
+                  width: '110px',
+                  display: 'inline-block',
+                  textAlign: 'right',
+                  whiteSpace: 'nowrap'
                 }}
                 onFocus={(e) => {
                   e.target.style.backgroundColor = '#ffffff'
-                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                  e.target.style.borderColor = '#667eea'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
                 }}
                 onBlur={(e) => {
                   setDateLabel(e.target.textContent || 'Issue Date:')
-                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.backgroundColor = '#f8fafc'
+                  e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
                 }}
               >
@@ -524,7 +545,8 @@ export default function FlexibleInvoice() {
                     padding: '10px 16px',
                     borderRadius: '8px',
                     border: '2px solid #e2e8f0',
-                    minWidth: '140px',
+                    minWidth: '130px',
+                  width: '130px',
                     fontSize: '14px',
                     fontWeight: '500',
                     outline: 'none',
@@ -574,20 +596,26 @@ export default function FlexibleInvoice() {
                   color: '#374151',
                   outline: 'none',
                   cursor: 'text',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
+                  padding: '6px 10px',
+                  borderRadius: '8px',
                   transition: 'all 0.2s ease',
-                  backgroundColor: 'transparent',
-                  minWidth: '80px',
-                  display: 'inline-block'
+                  backgroundColor: '#f8fafc',
+                  border: '2px solid #e2e8f0',
+                  minWidth: '110px',
+                  width: '110px',
+                  display: 'inline-block',
+                  textAlign: 'right',
+                  whiteSpace: 'nowrap'
                 }}
                 onFocus={(e) => {
                   e.target.style.backgroundColor = '#ffffff'
-                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                  e.target.style.borderColor = '#667eea'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
                 }}
                 onBlur={(e) => {
                   setDueDateLabel(e.target.textContent || 'Due Date:')
-                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.backgroundColor = '#f8fafc'
+                  e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
                 }}
               >
@@ -603,7 +631,8 @@ export default function FlexibleInvoice() {
                     padding: '10px 16px',
                     borderRadius: '8px',
                     border: '2px solid #e2e8f0',
-                    minWidth: '140px',
+                    minWidth: '130px',
+                  width: '130px',
                     fontSize: '14px',
                     fontWeight: '500',
                     outline: 'none',
@@ -675,19 +704,22 @@ export default function FlexibleInvoice() {
                 style={{
                   outline: 'none',
                   cursor: 'text',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
+                  padding: '6px 10px',
+                  borderRadius: '8px',
                   transition: 'all 0.2s ease',
-                  backgroundColor: 'transparent',
+                  backgroundColor: '#f8fafc',
+                  border: '2px solid #e2e8f0',
                   minWidth: '60px'
                 }}
                 onFocus={(e) => {
                   e.target.style.backgroundColor = '#ffffff'
-                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                  e.target.style.borderColor = '#667eea'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
                 }}
                 onBlur={(e) => {
                   setFromTitle(e.target.textContent || 'From:')
-                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.backgroundColor = '#f8fafc'
+                  e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
                 }}
               >
@@ -830,19 +862,22 @@ export default function FlexibleInvoice() {
                 style={{
                   outline: 'none',
                   cursor: 'text',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
+                  padding: '6px 10px',
+                  borderRadius: '8px',
                   transition: 'all 0.2s ease',
-                  backgroundColor: 'transparent',
+                  backgroundColor: '#f8fafc',
+                  border: '2px solid #e2e8f0',
                   minWidth: '60px'
                 }}
                 onFocus={(e) => {
                   e.target.style.backgroundColor = '#ffffff'
-                  e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                  e.target.style.borderColor = '#667eea'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
                 }}
                 onBlur={(e) => {
                   setToTitle(e.target.textContent || 'To:')
-                  e.target.style.backgroundColor = 'transparent'
+                  e.target.style.backgroundColor = '#f8fafc'
+                  e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
                 }}
               >
@@ -965,7 +1000,7 @@ export default function FlexibleInvoice() {
           borderRadius: '12px',
           overflow: 'hidden',
           border: '1px solid #e2e8f0',
-          marginRight: '40px',
+          marginRight: '0px',
           position: 'relative'
         }}>
         <table className="services-table" style={{
@@ -1582,20 +1617,23 @@ export default function FlexibleInvoice() {
               style={{
                 outline: 'none',
                 cursor: 'text',
-                padding: '4px 8px',
-                borderRadius: '6px',
+                padding: '6px 10px',
+                borderRadius: '8px',
                 transition: 'all 0.2s ease',
-                backgroundColor: 'transparent',
+                backgroundColor: '#f8fafc',
+                border: '2px solid #e2e8f0',
                 minWidth: '140px',
                 display: 'inline-block'
               }}
               onFocus={(e) => {
                 e.target.style.backgroundColor = '#ffffff'
-                e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                e.target.style.borderColor = '#667eea'
+                e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
               }}
               onBlur={(e) => {
                 setTotalLabel(e.target.textContent || 'Total Amount Due:')
-                e.target.style.backgroundColor = 'transparent'
+                e.target.style.backgroundColor = '#f8fafc'
+                e.target.style.borderColor = '#e2e8f0'
                 e.target.style.boxShadow = 'none'
               }}
             >
@@ -1643,19 +1681,22 @@ export default function FlexibleInvoice() {
               style={{
                 outline: 'none',
                 cursor: 'text',
-                padding: '4px 8px',
-                borderRadius: '6px',
+                padding: '6px 10px',
+                borderRadius: '8px',
                 transition: 'all 0.2s ease',
-                backgroundColor: 'transparent',
+                backgroundColor: '#f8fafc',
+                border: '2px solid #e2e8f0',
                 minWidth: '140px'
               }}
               onFocus={(e) => {
                 e.target.style.backgroundColor = '#ffffff'
-                e.target.style.boxShadow = '0 0 0 2px rgba(102, 126, 234, 0.2)'
+                e.target.style.borderColor = '#667eea'
+                e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
               }}
               onBlur={(e) => {
                 setPaymentTitle(e.target.textContent || 'Payment Details:')
-                e.target.style.backgroundColor = 'transparent'
+                e.target.style.backgroundColor = '#f8fafc'
+                e.target.style.borderColor = '#e2e8f0'
                 e.target.style.boxShadow = 'none'
               }}
             >
@@ -1893,7 +1934,12 @@ export default function FlexibleInvoice() {
           }
           
           /* Hide non-printable elements */
-          .no-print {
+          .no-print,
+          header,
+          footer,
+          nav,
+          button,
+          [role="button"] {
             display: none !important;
             visibility: hidden !important;
           }
@@ -1917,6 +1963,15 @@ export default function FlexibleInvoice() {
             color: inherit !important;
           }
           
+          /* Hide all editable borders in print */
+          span[contenteditable] {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+          
           /* Hide date inputs completely and show formatted dates instead */
           input[type="date"] {
             color: transparent !important;
@@ -1937,18 +1992,255 @@ export default function FlexibleInvoice() {
             display: none !important;
           }
           
-          /* Preserve card backgrounds */
+          /* Preserve card backgrounds with compact padding */
           .bank-details {
             background: #f8fafc !important;
             border: 1px solid #e2e8f0 !important;
+            padding: 12px !important;
+            margin-top: 15px !important;
           }
           
-          /* Preserve table styling */
+          /* Preserve table styling with optimized spacing */
           .services-table th {
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+            padding: 10px !important;
+          }
+          
+          .services-table td {
+            padding: 8px 10px !important;
           }
           
           /* Clean table styling */
+          .services-table {
+            width: 100% !important;
+            margin: 0 !important;
+          }
+          
+          /* Fix table width to match other sections */
+          table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+          }
+          
+          /* Optimize font sizes and line spacing for print */
+          .invoice-container {
+            font-size: 16px !important;
+            line-height: 1.35 !important;
+          }
+          
+          .invoice-container h1 {
+            font-size: 34px !important;
+            margin: 0 !important;
+            line-height: 1 !important;
+          }
+          
+          .invoice-container h3 {
+            font-size: 19px !important;
+            margin: 0 0 10px 0 !important;
+            line-height: 1.2 !important;
+          }
+          
+          .invoice-container h4 {
+            font-size: 17px !important;
+            margin: 0 0 8px 0 !important;
+            line-height: 1.2 !important;
+          }
+          
+          /* Ensure all text elements use optimized spacing */
+          .invoice-container input,
+          .invoice-container span,
+          .invoice-container div,
+          .invoice-container td,
+          .invoice-container th {
+            font-size: inherit !important;
+            line-height: 1.2 !important;
+          }
+          
+          /* Optimize vertical spacing between sections */
+          .invoice-container > div {
+            margin-bottom: 16px !important;
+          }
+          
+          /* Optimize the header section */
+          .invoice-header {
+            padding-bottom: 12px !important;
+            margin-bottom: 16px !important;
+          }
+          
+          /* Optimize From/To sections */
+          .from-to-section {
+            margin-bottom: 16px !important;
+          }
+          
+          .from-to-section h3,
+          .from-to-section h4 {
+            margin-bottom: 6px !important;
+          }
+          
+          .from-to-section div {
+            margin-bottom: 3px !important;
+          }
+          
+          /* Fix header alignment - ensure all labels and inputs align properly */
+          .invoice-details {
+            text-align: right !important;
+          }
+          
+          .invoice-details > div {
+            margin-bottom: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 8px !important;
+            height: 24px !important;
+          }
+          
+          /* Ensure consistent label width for proper alignment */
+          .invoice-details span[contenteditable] {
+            min-width: 110px !important;
+            width: 110px !important;
+            text-align: right !important;
+            white-space: nowrap !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            line-height: 1 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            height: 24px !important;
+          }
+          
+          /* Make all inputs in header have consistent width and proper alignment */
+          .invoice-details input[type="text"],
+          .invoice-details input[type="date"] {
+            width: 130px !important;
+            min-width: 130px !important;
+            max-width: 130px !important;
+            text-align: right !important;
+            padding: 2px 4px !important;
+            margin: 0 !important;
+            line-height: 1 !important;
+            height: 24px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            font-size: 16px !important;
+            box-sizing: border-box !important;
+          }
+          
+          /* Remove grey boxes from totals */
+          .total-section span[style*="background"],
+          .total-row span[style*="backgroundColor"] {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Ensure totals section has optimized spacing */
+          .total-section {
+            margin-top: 20px !important;
+            padding-top: 15px !important;
+            border-top: 2px solid #e9ecef !important;
+          }
+          
+          /* Optimize total rows spacing */
+          .total-row {
+            margin-bottom: 6px !important;
+          }
+          
+          /* Fix page break issues */
+          .invoice-container {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+          
+          /* Prevent orphan elements */
+          .total-section,
+          .bank-details {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+          
+          /* Remove extra spacing that might cause blank pages */
+          .invoice-container {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+          }
+          
+          /* Ensure proper page margins and prevent blank pages */
+          @page {
+            margin: 0.6in !important;
+            size: A4 !important;
+          }
+          
+          /* Prevent blank second page - following reference template approach */
+          body {
+            background-color: white !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+          
+          /* Hide the main wrapper that causes extra height */
+          body > main {
+            display: none !important;
+          }
+          
+          .invoice-container {
+            display: block !important;
+            box-shadow: none !important;
+            padding: 25px !important;
+            margin: 0 !important;
+            page-break-after: avoid !important;
+          }
+          
+          /* Ensure no extra height anywhere */
+          html {
+            height: auto !important;
+          }
+          
+          body {
+            height: auto !important;
+          }
+          
+          /* Prevent any element from forcing a page break */
+          * {
+            page-break-after: auto !important;
+          }
+          
+          /* Specifically prevent page break on last element */
+          .invoice-container > *:last-child,
+          .invoice-container > div:last-child,
+          .notes-section,
+          .bank-details {
+            page-break-after: avoid !important;
+            page-break-inside: avoid !important;
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+          }
+          
+          /* Hide any invisible spacer elements that might cause blank pages */
+          div:empty {
+            display: none !important;
+          }
+          
+          /* Ensure the invoice fits on one page if possible */
+          .invoice-container {
+            max-height: 100vh !important;
+          }
+          
+          /* Ensure the table container spans full width */
+          .services-table-container,
+          div:has(.services-table) {
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            margin-right: 0 !important;
+          }
+          
+          /* Override any inline styles on table container */
+          [style*="marginRight"] {
+            margin-right: 0 !important;
+          }
           table {
             border-collapse: collapse !important;
           }

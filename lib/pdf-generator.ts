@@ -26,10 +26,33 @@ export class PDFGenerator {
         width: element.scrollWidth,
         height: element.scrollHeight,
         ignoreElements: (el) => {
-          return el.classList.contains('no-print') || 
-                 el.tagName === 'BUTTON' ||
-                 el.getAttribute('type') === 'button' ||
-                 el.getAttribute('role') === 'button'
+          // Check for no-print class
+          if (el.classList.contains('no-print')) return true
+          
+          // Check for button elements
+          if (el.tagName === 'BUTTON') return true
+          if (el.getAttribute('type') === 'button') return true
+          if (el.getAttribute('role') === 'button') return true
+          
+          // Check for interactive elements that shouldn't be in PDF
+          if (el.classList.contains('cursor-pointer')) return true
+          if (el.classList.contains('hover:bg-gray-50')) return true
+          if (el.classList.contains('hover:bg-blue-700')) return true
+          if (el.classList.contains('hover:bg-red-50')) return true
+          
+          // Check if any parent element has no-print class
+          let parent = el.parentElement
+          while (parent) {
+            if (parent.classList?.contains('no-print')) return true
+            parent = parent.parentElement
+          }
+          
+          // Check for specific selectors and dropdowns
+          if (el.tagName === 'SELECT') return true
+          if (el.classList.contains('absolute')) return true
+          if (el.classList.contains('opacity-0')) return true
+          
+          return false
         }
       })
 
