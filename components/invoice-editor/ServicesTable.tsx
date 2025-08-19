@@ -1,6 +1,6 @@
 import React from 'react'
 import { Column, Row } from '@/lib/invoice-types'
-import { getPlaceholderText } from '@/lib/invoice-utils'
+import { getPlaceholderText, parseNumericValue } from '@/lib/invoice-utils'
 import { useTableManagement } from '@/hooks/useTableManagement'
 
 interface ServicesTableProps {
@@ -25,6 +25,41 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
     removeColumn,
     updateColumnName
   } = useTableManagement()
+
+  // Helper function to calculate placeholder for amount column
+  const calculatePlaceholderAmount = (row: Row): string => {
+    let result = 0
+    let hasAnyValues = false
+    let allPlaceholders = true
+    
+    columns.forEach(col => {
+      if (!col.isDescription && !col.isAmount) {
+        const cellValue = String(row.cells[col.id] || '')
+        if (!cellValue) {
+          // Using placeholder - since placeholders are now 0, result will be 0
+          const placeholderValue = parseNumericValue(getPlaceholderText(col.name))
+          if (result === 0 && !hasAnyValues) {
+            result = placeholderValue
+          } else {
+            result *= placeholderValue
+          }
+          hasAnyValues = true
+        } else {
+          // Use actual value
+          const numValue = parseNumericValue(cellValue)
+          allPlaceholders = false
+          if (result === 0 && !hasAnyValues) {
+            result = numValue
+          } else {
+            result *= numValue
+          }
+          hasAnyValues = true
+        }
+      }
+    })
+    
+    return result.toString()
+  }
 
   // Helper function to render table cell content
   const renderCellContent = (row: Row, column: Column) => {
@@ -95,11 +130,15 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
     }
 
     // Regular cell - Amount is read-only calculated field, others are editable
+    const placeholder = column.isAmount 
+      ? calculatePlaceholderAmount(row)
+      : getPlaceholderText(column.name)
+    
     return (
       <input
         type="text"
         value={String(row.cells[column.id] || '')}
-        placeholder={getPlaceholderText(column.name)}
+        placeholder={placeholder}
         onChange={(e) => onCellUpdate(row.id, column.id, e.target.value)}
         readOnly={column.isAmount}
         style={{

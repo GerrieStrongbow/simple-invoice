@@ -22,19 +22,35 @@ export const useInvoiceCalculations = ({
   // Calculate amount for a single row based on numeric columns
   const calculateRowAmount = useCallback((row: Row): string => {
     let result = 1
-    let hasValues = false
+    let numericColumns = 0
+    let filledColumns = 0
     
+    // First pass: count numeric columns and filled columns
     columns.forEach(col => {
-      if (!col.isDescription && !col.isAmount && row.cells[col.id]) {
-        const numValue = parseNumericValue(String(row.cells[col.id]))
-        if (numValue !== 0) {
-          result *= numValue
-          hasValues = true
+      if (!col.isDescription && !col.isAmount) {
+        numericColumns++
+        const cellValue = String(row.cells[col.id] || '').trim()
+        if (cellValue !== '') {
+          filledColumns++
         }
       }
     })
     
-    return hasValues ? result.toFixed(2) : ''
+    // Only calculate if ALL numeric columns are filled
+    if (filledColumns === numericColumns && numericColumns > 0) {
+      columns.forEach(col => {
+        if (!col.isDescription && !col.isAmount) {
+          const cellValue = String(row.cells[col.id] || '').trim()
+          if (cellValue !== '') {
+            const numValue = parseNumericValue(cellValue)
+            result *= numValue
+          }
+        }
+      })
+      return result.toFixed(2)
+    }
+    
+    return ''
   }, [columns])
 
   // Calculate subtotal from all amount values

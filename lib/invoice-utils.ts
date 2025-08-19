@@ -46,10 +46,10 @@ export const parseNumericValue = (value: string): number => {
 export const getPlaceholderText = (columnName: string): string => {
   const name = columnName.toLowerCase()
   if (name.includes('rate') || name.includes('price')) {
-    return '50.00'
+    return '0'
   }
   if (name.includes('quantity') || name.includes('qty')) {
-    return '1'
+    return '0'
   }
   return 'Enter value'
 }
