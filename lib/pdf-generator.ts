@@ -79,7 +79,7 @@ export class PDFGenerator {
       console.log('PDF generation completed successfully')
     } catch (error) {
       console.error('Error generating PDF:', error)
-      alert(`PDF generation failed: ${error.message}. Please try the Print button instead.`)
+      alert(`PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}. Please try the Print button instead.`)
       throw error
     }
   }

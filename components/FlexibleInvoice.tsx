@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import CurrencySelector from './invoice-editor/CurrencySelector'
 
 export default function FlexibleInvoice() {
@@ -112,7 +112,7 @@ export default function FlexibleInvoice() {
   }
 
   // Calculate amount for a row based on numeric columns
-  const calculateRowAmount = (row: any): string => {
+  const calculateRowAmount = useCallback((row: any): string => {
     let result = 1
     let hasValues = false
     
@@ -127,15 +127,15 @@ export default function FlexibleInvoice() {
     })
     
     return hasValues ? result.toFixed(2) : ''
-  }
+  }, [columns])
 
   // Calculate subtotal from all amount values
   const calculateSubtotal = (): string => {
     let total = 0
     rows.forEach(row => {
       const amountCol = columns.find(col => col.isAmount)
-      if (amountCol && row.cells[amountCol.id]) {
-        total += parseNumericValue(String(row.cells[amountCol.id]))
+      if (amountCol && (row.cells as any)[amountCol.id]) {
+        total += parseNumericValue(String((row.cells as any)[amountCol.id]))
       }
     })
     return total.toFixed(2)
@@ -171,7 +171,7 @@ export default function FlexibleInvoice() {
       const amountCol = columns.find(col => col.isAmount)
       if (amountCol) {
         const calculatedAmount = calculateRowAmount(row)
-        if (calculatedAmount !== row.cells[amountCol.id]) {
+        if (calculatedAmount !== (row.cells as any)[amountCol.id]) {
           return {
             ...row,
             cells: {
@@ -186,21 +186,13 @@ export default function FlexibleInvoice() {
     
     const hasChanges = updatedRows.some((row, index) => {
       const amountCol = columns.find(col => col.isAmount)
-      return amountCol && row.cells[amountCol.id] !== rows[index].cells[amountCol.id]
+      return amountCol && (row.cells as any)[amountCol.id] !== (rows[index].cells as any)[amountCol.id]
     })
     
     if (hasChanges) {
       setRows(updatedRows)
     }
-  }, [rows.map(r => 
-    Object.entries(r.cells)
-      .filter(([k]) => {
-        const col = columns.find(c => c.id === k)
-        return col && !col.isAmount && !col.isDescription
-      })
-      .map(([, v]) => v)
-      .join('|')
-  ).join(','), columns])
+  }, [rows, columns, calculateRowAmount])
 
   const addRow = () => {
     const newRow = {
@@ -229,8 +221,7 @@ export default function FlexibleInvoice() {
       name: 'New Column',
       width: '10%',
       align: 'center' as const,
-      isDescription: false,
-      isAmount: false
+      isDescription: false
     }
     
     if (afterColumnId) {
@@ -268,7 +259,7 @@ export default function FlexibleInvoice() {
     setColumns(columns.filter(col => col.id !== columnId))
     // Remove cells from all rows
     setRows(rows.map(row => {
-      const newCells = { ...row.cells }
+      const newCells = { ...row.cells } as any
       delete newCells[columnId]
       return { ...row, cells: newCells }
     }))
@@ -1184,15 +1175,15 @@ export default function FlexibleInvoice() {
                     padding: '16px',
                     borderBottom: '1px solid #f1f3f5'
                   }}>
-                    {column.isDescription && typeof row.cells[column.id] === 'object' ? (
+                    {column.isDescription && typeof (row.cells as any)[column.id] === 'object' ? (
                       // Special handling for description column
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                         <input
                           type="text"
-                          value={row.cells[column.id].name}
+                          value={(row.cells as any)[column.id].name}
                           placeholder="Item Name"
                           onChange={(e) => updateCell(row.id, column.id, {
-                            ...row.cells[column.id],
+                            ...(row.cells as any)[column.id],
                             name: e.target.value
                           })}
                           style={{
@@ -1218,10 +1209,10 @@ export default function FlexibleInvoice() {
                         />
                         <input
                           type="text"
-                          value={row.cells[column.id].description}
+                          value={(row.cells as any)[column.id].description}
                           placeholder="Description of services provided"
                           onChange={(e) => updateCell(row.id, column.id, {
-                            ...row.cells[column.id],
+                            ...(row.cells as any)[column.id],
                             description: e.target.value
                           })}
                           style={{
@@ -1249,7 +1240,7 @@ export default function FlexibleInvoice() {
                       // Regular cell - Amount is read-only calculated field, others are editable
                       <input
                         type="text"
-                        value={row.cells[column.id]}
+                        value={(row.cells as any)[column.id]}
                         placeholder={
                           column.name.toLowerCase().includes('rate') || column.name.toLowerCase().includes('price') ? '50.00' :
                           column.name.toLowerCase().includes('quantity') || column.name.toLowerCase().includes('qty') ? '1' :

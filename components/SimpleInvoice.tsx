@@ -254,11 +254,7 @@ export default function SimpleInvoice({}: SimpleInvoiceProps) {
             marginBottom: '10px'
           }}>
             <span>Subtotal:</span>
-            <EditableSpan style={{
-              textAlign: 'right',
-              display: 'inline-block',
-              minWidth: '100px'
-            }}>R[SUBTOTAL]</EditableSpan>
+            <EditableSpan>R[SUBTOTAL]</EditableSpan>
           </div>
           <div style={{
             display: 'flex',
@@ -266,11 +262,7 @@ export default function SimpleInvoice({}: SimpleInvoiceProps) {
             marginBottom: '10px'
           }}>
             <span>Tax (if applicable):</span>
-            <EditableSpan style={{
-              textAlign: 'right',
-              display: 'inline-block',
-              minWidth: '100px'
-            }}>R0.00</EditableSpan>
+            <EditableSpan>R0.00</EditableSpan>
           </div>
           <div style={{
             display: 'flex',
@@ -282,11 +274,7 @@ export default function SimpleInvoice({}: SimpleInvoiceProps) {
             paddingTop: '10px'
           }}>
             <span>Total Amount Due:</span>
-            <EditableSpan style={{
-              textAlign: 'right',
-              display: 'inline-block',
-              minWidth: '100px'
-            }}>R[TOTAL]</EditableSpan>
+            <EditableSpan>R[TOTAL]</EditableSpan>
           </div>
         </div>
 

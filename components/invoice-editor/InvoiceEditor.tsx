@@ -292,12 +292,6 @@ export default function InvoiceEditor() {
             onChange={(value) => updateHeader('title', value)}
             className="text-[28px] font-bold text-[#2c3e50] leading-none"
             placeholder="INVOICE"
-            style={{
-              fontSize: '28px',
-              fontWeight: 'bold',
-              color: '#2c3e50',
-              margin: 0
-            }}
           />
         </div>
         <div style={{ textAlign: 'right', color: '#666' }}>

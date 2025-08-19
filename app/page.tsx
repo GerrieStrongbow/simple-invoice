@@ -138,7 +138,7 @@ export default function Home() {
                 margin: '0 0 12px 0'
               }}>
                 Have questions, feature requests, or found a bug? 
-                We'd love to hear from you!
+                We&apos;d love to hear from you!
               </p>
               <a 
                 href="mailto:support@simpleinvoice.app?subject=Simple%20Invoice%20Generator%20Feedback"
