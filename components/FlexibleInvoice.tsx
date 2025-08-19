@@ -106,7 +106,7 @@ export default function FlexibleInvoice() {
   const parseNumericValue = (value: string): number => {
     if (!value) return 0
     // Remove currency symbols and spaces
-    const cleanValue = value.replace(/[^0-9.,\-]/g, '')
+    const cleanValue = value.replace(/[^0-9.,-]/g, '')
     const numValue = parseFloat(cleanValue.replace(',', ''))
     return isNaN(numValue) ? 0 : numValue
   }
@@ -163,6 +163,126 @@ export default function FlexibleInvoice() {
     const tax = parseFloat(calculateTaxAmount())
     const discount = parseFloat(calculateDiscountAmount())
     return (subtotal + tax - discount).toFixed(2) // Discount is subtracted
+  }
+
+  // Helper function to get placeholder text for table cells
+  const getPlaceholderText = (column: any): string => {
+    const columnName = column.name.toLowerCase()
+    if (columnName.includes('rate') || columnName.includes('price')) {
+      return '50.00'
+    }
+    if (columnName.includes('quantity') || columnName.includes('qty')) {
+      return '1'
+    }
+    if (column.isAmount) {
+      return '50.00'
+    }
+    return 'Enter value'
+  }
+
+  // Helper function to render table cell content
+  const renderCellContent = (row: any, column: any) => {
+    if (column.isDescription && typeof row.cells[column.id] === 'object') {
+      // Special handling for description column
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <input
+            type="text"
+            value={row.cells[column.id].name}
+            placeholder="Item Name"
+            onChange={(e) => updateCell(row.id, column.id, {
+              ...row.cells[column.id],
+              name: e.target.value
+            })}
+            style={{
+              backgroundColor: '#ffffff',
+              border: '2px solid #e2e8f0',
+              borderRadius: '6px',
+              padding: '8px 12px',
+              fontSize: '14px',
+              outline: 'none',
+              fontWeight: '600',
+              width: '100%',
+              transition: 'all 0.2s ease',
+              color: '#1f2937'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#667eea'
+              e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#e2e8f0'
+              e.target.style.boxShadow = 'none'
+            }}
+          />
+          <input
+            type="text"
+            value={row.cells[column.id].description}
+            placeholder="Description of services provided"
+            onChange={(e) => updateCell(row.id, column.id, {
+              ...row.cells[column.id],
+              description: e.target.value
+            })}
+            style={{
+              backgroundColor: '#ffffff',
+              border: '2px solid #e2e8f0',
+              borderRadius: '6px',
+              padding: '8px 12px',
+              fontSize: '14px',
+              outline: 'none',
+              width: '100%',
+              transition: 'all 0.2s ease',
+              color: '#6b7280'
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#667eea'
+              e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = '#e2e8f0'
+              e.target.style.boxShadow = 'none'
+            }}
+          />
+        </div>
+      )
+    }
+
+    // Regular cell - Amount is read-only calculated field, others are editable
+    return (
+      <input
+        type="text"
+        value={row.cells[column.id]}
+        placeholder={getPlaceholderText(column)}
+        onChange={(e) => updateCell(row.id, column.id, e.target.value)}
+        readOnly={column.isAmount}
+        style={{
+          backgroundColor: column.isAmount ? '#f8fafc' : '#ffffff',
+          border: column.isAmount ? '2px solid #e5e7eb' : '2px solid #e2e8f0',
+          borderRadius: '6px',
+          padding: '8px 12px',
+          fontSize: '14px',
+          outline: 'none',
+          width: '100%',
+          textAlign: column.align as 'left' | 'center' | 'right',
+          cursor: column.isAmount ? 'not-allowed' : 'text',
+          transition: 'all 0.2s ease',
+          fontWeight: column.isAmount ? '600' : '500',
+          color: column.isAmount ? '#374151' : '#1f2937'
+        }}
+        onFocus={(e) => {
+          if (!column.isAmount) {
+            e.target.style.borderColor = '#667eea'
+            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+          }
+        }}
+        onBlur={(e) => {
+          if (!column.isAmount) {
+            e.target.style.borderColor = '#e2e8f0'
+            e.target.style.boxShadow = 'none'
+          }
+        }}
+      />
+    )
   }
 
   // Update amounts when numeric values change
@@ -389,6 +509,9 @@ export default function FlexibleInvoice() {
               position: 'relative'
             }}>
               <span
+                role="textbox"
+                aria-label="Invoice title"
+                tabIndex={0}
                 contentEditable
                 suppressContentEditableWarning
                 style={{
@@ -416,6 +539,12 @@ export default function FlexibleInvoice() {
                   e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.currentTarget.blur()
+                  }
+                }}
               >
                 {invoiceTitle}
               </span>
@@ -432,6 +561,9 @@ export default function FlexibleInvoice() {
               gap: '12px'
             }}>
               <span
+                role="textbox"
+                aria-label="Invoice number label"
+                tabIndex={0}
                 contentEditable
                 suppressContentEditableWarning
                 style={{
@@ -461,6 +593,12 @@ export default function FlexibleInvoice() {
                   e.target.style.backgroundColor = '#f8fafc'
                   e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.currentTarget.blur()
+                  }
                 }}
               >
                 {invoiceNumberLabel}
@@ -502,6 +640,9 @@ export default function FlexibleInvoice() {
               gap: '12px'
             }}>
               <span
+                role="textbox"
+                aria-label="Date label"
+                tabIndex={0}
                 contentEditable
                 suppressContentEditableWarning
                 style={{
@@ -531,6 +672,12 @@ export default function FlexibleInvoice() {
                   e.target.style.backgroundColor = '#f8fafc'
                   e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.currentTarget.blur()
+                  }
                 }}
               >
                 {dateLabel}
@@ -588,6 +735,9 @@ export default function FlexibleInvoice() {
               gap: '12px'
             }}>
               <span
+                role="textbox"
+                aria-label="Due date label"
+                tabIndex={0}
                 contentEditable
                 suppressContentEditableWarning
                 style={{
@@ -617,6 +767,12 @@ export default function FlexibleInvoice() {
                   e.target.style.backgroundColor = '#f8fafc'
                   e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.currentTarget.blur()
+                  }
                 }}
               >
                 {dueDateLabel}
@@ -699,6 +855,9 @@ export default function FlexibleInvoice() {
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
               }}></span>
               <span
+                role="textbox"
+                aria-label="From section title"
+                tabIndex={0}
                 contentEditable
                 suppressContentEditableWarning
                 style={{
@@ -721,6 +880,12 @@ export default function FlexibleInvoice() {
                   e.target.style.backgroundColor = '#f8fafc'
                   e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.currentTarget.blur()
+                  }
                 }}
               >
                 {fromTitle}
@@ -857,6 +1022,9 @@ export default function FlexibleInvoice() {
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
               }}></span>
               <span
+                role="textbox"
+                aria-label="To section title"
+                tabIndex={0}
                 contentEditable
                 suppressContentEditableWarning
                 style={{
@@ -879,6 +1047,12 @@ export default function FlexibleInvoice() {
                   e.target.style.backgroundColor = '#f8fafc'
                   e.target.style.borderColor = '#e2e8f0'
                   e.target.style.boxShadow = 'none'
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    e.currentTarget.blur()
+                  }
                 }}
               >
                 {toTitle}
@@ -1072,7 +1246,10 @@ export default function FlexibleInvoice() {
                       </div>
                     )}
                     
-                    <span 
+                    <span
+                      role="textbox"
+                      aria-label={`Column header: ${column.name}`}
+                      tabIndex={0}
                       contentEditable 
                       suppressContentEditableWarning
                       style={{
@@ -1093,6 +1270,12 @@ export default function FlexibleInvoice() {
                         updateColumnName(column.id, e.target.textContent || column.name)
                         e.target.style.borderColor = '#e2e8f0'
                         e.target.style.boxShadow = 'none'
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          e.currentTarget.blur()
+                        }
                       }}
                     >
                       {column.name}
@@ -1205,113 +1388,12 @@ export default function FlexibleInvoice() {
                 {columns.map((column) => (
                   <td key={`${row.id}-${column.id}`} style={{
                     width: column.width,
-                    textAlign: column.align as any,
+                    textAlign: column.align as 'left' | 'center' | 'right',
                     verticalAlign: 'top',
                     padding: '16px',
                     borderBottom: '1px solid #f1f3f5'
                   }}>
-                    {column.isDescription && typeof (row.cells as any)[column.id] === 'object' ? (
-                      // Special handling for description column
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <input
-                          type="text"
-                          value={(row.cells as any)[column.id].name}
-                          placeholder="Item Name"
-                          onChange={(e) => updateCell(row.id, column.id, {
-                            ...(row.cells as any)[column.id],
-                            name: e.target.value
-                          })}
-                          style={{
-                            backgroundColor: '#ffffff',
-                            border: '2px solid #e2e8f0',
-                            borderRadius: '6px',
-                            padding: '8px 12px',
-                            fontSize: '14px',
-                            outline: 'none',
-                            fontWeight: '600',
-                            width: '100%',
-                            transition: 'all 0.2s ease',
-                            color: '#1f2937'
-                          }}
-                          onFocus={(e) => {
-                            e.target.style.borderColor = '#667eea'
-                            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-                          }}
-                          onBlur={(e) => {
-                            e.target.style.borderColor = '#e2e8f0'
-                            e.target.style.boxShadow = 'none'
-                          }}
-                        />
-                        <input
-                          type="text"
-                          value={(row.cells as any)[column.id].description}
-                          placeholder="Description of services provided"
-                          onChange={(e) => updateCell(row.id, column.id, {
-                            ...(row.cells as any)[column.id],
-                            description: e.target.value
-                          })}
-                          style={{
-                            backgroundColor: '#ffffff',
-                            border: '2px solid #e2e8f0',
-                            borderRadius: '6px',
-                            padding: '8px 12px',
-                            fontSize: '14px',
-                            outline: 'none',
-                            width: '100%',
-                            transition: 'all 0.2s ease',
-                            color: '#6b7280'
-                          }}
-                          onFocus={(e) => {
-                            e.target.style.borderColor = '#667eea'
-                            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-                          }}
-                          onBlur={(e) => {
-                            e.target.style.borderColor = '#e2e8f0'
-                            e.target.style.boxShadow = 'none'
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      // Regular cell - Amount is read-only calculated field, others are editable
-                      <input
-                        type="text"
-                        value={(row.cells as any)[column.id]}
-                        placeholder={
-                          column.name.toLowerCase().includes('rate') || column.name.toLowerCase().includes('price') ? '50.00' :
-                          column.name.toLowerCase().includes('quantity') || column.name.toLowerCase().includes('qty') ? '1' :
-                          column.isAmount ? '50.00' :
-                          'Enter value'
-                        }
-                        onChange={(e) => updateCell(row.id, column.id, e.target.value)}
-                        readOnly={column.isAmount}
-                        style={{
-                          backgroundColor: column.isAmount ? '#f8fafc' : '#ffffff',
-                          border: column.isAmount ? '2px solid #e5e7eb' : '2px solid #e2e8f0',
-                          borderRadius: '6px',
-                          padding: '8px 12px',
-                          fontSize: '14px',
-                          outline: 'none',
-                          width: '100%',
-                          textAlign: column.align as any,
-                          cursor: column.isAmount ? 'not-allowed' : 'text',
-                          transition: 'all 0.2s ease',
-                          fontWeight: column.isAmount ? '600' : '500',
-                          color: column.isAmount ? '#374151' : '#1f2937'
-                        }}
-                        onFocus={(e) => {
-                          if (!column.isAmount) {
-                            e.target.style.borderColor = '#667eea'
-                            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-                          }
-                        }}
-                        onBlur={(e) => {
-                          if (!column.isAmount) {
-                            e.target.style.borderColor = '#e2e8f0'
-                            e.target.style.boxShadow = 'none'
-                          }
-                        }}
-                      />
-                    )}
+                    {renderCellContent(row, column)}
                   </td>
                 ))}
                 {/* Remove row button - positioned absolutely to avoid table structure issues */}
@@ -1612,6 +1694,9 @@ export default function FlexibleInvoice() {
             paddingTop: '10px'
           }}>
             <span
+              role="textbox"
+              aria-label="Total amount label"
+              tabIndex={0}
               contentEditable
               suppressContentEditableWarning
               style={{
@@ -1635,6 +1720,12 @@ export default function FlexibleInvoice() {
                 e.target.style.backgroundColor = '#f8fafc'
                 e.target.style.borderColor = '#e2e8f0'
                 e.target.style.boxShadow = 'none'
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  e.currentTarget.blur()
+                }
               }}
             >
               {totalLabel}
@@ -1676,6 +1767,9 @@ export default function FlexibleInvoice() {
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
             }}></span>
             <span
+              role="textbox"
+              aria-label="Payment section title"
+              tabIndex={0}
               contentEditable
               suppressContentEditableWarning
               style={{
@@ -1698,6 +1792,12 @@ export default function FlexibleInvoice() {
                 e.target.style.backgroundColor = '#f8fafc'
                 e.target.style.borderColor = '#e2e8f0'
                 e.target.style.boxShadow = 'none'
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  e.currentTarget.blur()
+                }
               }}
             >
               {paymentTitle}
@@ -1868,7 +1968,7 @@ export default function FlexibleInvoice() {
       </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .print-only {
           display: none;
         }
