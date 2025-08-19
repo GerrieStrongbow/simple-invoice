@@ -38,8 +38,8 @@ export default function Home() {
             maxWidth: '600px',
             margin: '0 auto 32px auto'
           }}>
-            No signup required. Everything is editable. Works offline. 
-            Perfect for freelancers, small businesses, and anyone who needs 
+            No signup required. Everything is editable.
+            Perfect for freelancers, small businesses, and anyone who needs
             flexible, professional invoices without restrictions.
           </p>
           <div style={{
@@ -118,9 +118,8 @@ export default function Home() {
                 lineHeight: 1.6,
                 margin: 0
               }}>
-                Built for small business owners who need professional invoices 
-                without the complexity. Every field is editable, nothing is mandatory, 
-                and it works completely offline.
+                Built for small business owners who need professional invoices
+                without the complexity. Every field is editable, nothing is mandatory.
               </p>
             </div>
             <div>
@@ -137,11 +136,11 @@ export default function Home() {
                 lineHeight: 1.6,
                 margin: '0 0 12px 0'
               }}>
-                Have questions, feature requests, or found a bug? 
+                Have questions, feature requests, or found a bug?
                 We&apos;d love to hear from you!
               </p>
-              <a 
-                href="mailto:support@simpleinvoice.app?subject=Simple%20Invoice%20Generator%20Feedback"
+              <a
+                href="mailto:support@simple-invoice.app?subject=Simple%20Invoice%20Generator%20Feedback"
                 style={{
                   color: '#667eea',
                   textDecoration: 'none',
@@ -156,11 +155,11 @@ export default function Home() {
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                   <polyline points="22,6 12,13 2,6"/>
                 </svg>
-                support@simpleinvoice.app
+                support@simple-invoice.app
               </a>
             </div>
           </div>
-          
+
           <div style={{
             borderTop: '1px solid #e2e8f0',
             paddingTop: '24px',
