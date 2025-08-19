@@ -167,7 +167,7 @@ export default function Home() {
             color: '#9ca3af'
           }}>
             <p style={{ margin: 0 }}>
-              © 2024 Simple Invoice Generator. Made for small businesses everywhere.
+              © {new Date().getFullYear()} Simple Invoice Generator. Made for small businesses everywhere.
             </p>
           </div>
         </div>
