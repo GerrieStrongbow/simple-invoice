@@ -45,3 +45,6 @@ next-env.d.ts
 PROMPT.md
 PROMPT_REFINED.md
 PROGRESS.md
+
+# Claude Code project instructions (local development only)
+CLAUDE.md
