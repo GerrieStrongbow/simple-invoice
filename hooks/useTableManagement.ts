@@ -17,8 +17,6 @@ const recalculateColumnWidths = (columns: Column[]): Column[] => {
     return columns
   }
 
-  const descriptionColumn = columns.find(column => column.isDescription)
-  const amountColumn = columns.find(column => column.isAmount)
   const weights: number[] = columns.map(column => {
     if (column.isDescription) {
       return DESCRIPTION_WEIGHT
