@@ -119,6 +119,13 @@ export default function FlexibleInvoice() {
       >
         <div className="p-8 sm:p-12">
 
+    <div className="min-h-screen bg-linear-to-br from-[#667eea] to-[#764ba2] px-6 py-10 text-[14px] font-inter sm:px-10">
+      <div
+        ref={invoiceRef}
+        className="invoice-container mx-auto w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 print:max-w-[8.27in] print:w-[8.27in]"
+      >
+        <div className="p-8 sm:p-12">
+
           {/* Invoice Header */}
           <InvoiceHeader
             invoiceTitle={invoiceTitle}
