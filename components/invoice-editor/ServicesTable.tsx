@@ -128,12 +128,14 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
         <table className="services-table w-full table-fixed border-collapse">
           <thead>
             <tr className="bg-linear-to-r from-slate-50 to-slate-100">
-              {columns.map((column, index) => (
-                <th
-                  key={column.id}
-                  className={`group relative px-3 py-4 text-sm font-semibold text-slate-800 sm:px-4 ${alignmentClass(column.align)}`}
-                  style={{ width: column.width }}
-                >
+              {columns.map((column, index) => {
+                const isLastColumn = index === columns.length - 1
+                return (
+                  <th
+                    key={column.id}
+                    className={`group relative px-3 py-4 text-sm font-semibold text-slate-800 sm:px-4 ${alignmentClass(column.align)} ${isLastColumn ? 'pr-10 sm:pr-12' : ''}`}
+                    style={{ width: column.width }}
+                  >
                     {index > 0 && (
                       <button
                         type="button"
@@ -175,7 +177,8 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
                       </button>
                     )}
                   </th>
-              ))}
+                )
+              })}
             </tr>
           </thead>
           <tbody>
