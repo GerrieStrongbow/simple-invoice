@@ -112,19 +112,22 @@ export default function FlexibleInvoice() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#667eea] to-[#764ba2] px-6 py-10 text-[14px] font-inter sm:px-10">
-      <div
-        ref={invoiceRef}
-        className="invoice-container mx-auto w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 print:max-w-[8.27in] print:w-[8.27in]"
-      >
-        <div className="p-8 sm:p-12">
-
-    <div className="min-h-screen bg-linear-to-br from-[#667eea] to-[#764ba2] px-6 py-10 text-[14px] font-inter sm:px-10">
-      <div
-        ref={invoiceRef}
-        className="invoice-container mx-auto w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 print:max-w-[8.27in] print:w-[8.27in]"
-      >
-        <div className="p-8 sm:p-12">
+    <div style={{
+      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      fontSize: '14px',
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      padding: '40px 20px'
+    }}>
+      <div ref={invoiceRef} className="invoice-container" style={{
+        maxWidth: '900px',
+        margin: '0 auto',
+        backgroundColor: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1)',
+        overflow: 'hidden'
+      }}>
+        <div style={{ padding: '40px' }}>
 
           {/* Invoice Header */}
           <InvoiceHeader
