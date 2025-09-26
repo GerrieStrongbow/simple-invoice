@@ -1,20 +1,20 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { useInvoiceCalculations } from '../hooks/useInvoiceCalculations'
-import { useInvoiceState } from '../hooks/useInvoiceState'
-import { useTableManagement } from '../hooks/useTableManagement'
-import { ActionButtons } from './invoice-editor/ActionButtons'
-import { ContactDetails } from './invoice-editor/ContactDetails'
+import React, { useRef, useEffect } from 'react'
 import CurrencySelector from './invoice-editor/CurrencySelector'
 import { InvoiceHeader } from './invoice-editor/InvoiceHeader'
-import { PaymentDetails } from './invoice-editor/PaymentDetails'
+import { ContactDetails } from './invoice-editor/ContactDetails'
 import { ServicesTable } from './invoice-editor/ServicesTable'
 import { TotalsSection } from './invoice-editor/TotalsSection'
+import { PaymentDetails } from './invoice-editor/PaymentDetails'
+import { ActionButtons } from './invoice-editor/ActionButtons'
+import { useInvoiceState } from '../hooks/useInvoiceState'
+import { useInvoiceCalculations } from '../hooks/useInvoiceCalculations'
+import { useTableManagement } from '../hooks/useTableManagement'
 
 export default function FlexibleInvoice() {
   const invoiceRef = useRef<HTMLDivElement>(null)
-
+  
   // All state management
   const {
     fromFields,
@@ -92,19 +92,15 @@ export default function FlexibleInvoice() {
       }
       return row
     })
-
+    
     const hasChanges = updatedRows.some((row, index) => {
       const amountCol = columns.find(col => col.isAmount)
       return amountCol && (row.cells as any)[amountCol.id] !== (rows[index].cells as any)[amountCol.id]
     })
-
+    
     if (hasChanges) {
       setRows(updatedRows)
     }
-  }, [rows, columns, calculateRowAmount, setRows])
-
-  const handleCellUpdate = (rowId: string, columnId: string, value: any) => {
-    updateCell(rowId, columnId, value, rows, setRows)
   }, [rows, columns, calculateRowAmount, setRows])
 
   const handleCellUpdate = (rowId: string, columnId: string, value: any) => {
@@ -118,7 +114,7 @@ export default function FlexibleInvoice() {
         className="invoice-container mx-auto w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 print:max-w-[8.27in] print:w-[8.27in]"
       >
         <div className="p-8 sm:p-12">
-
+          
           {/* Invoice Header */}
           <InvoiceHeader
             invoiceTitle={invoiceTitle}
@@ -146,26 +142,7 @@ export default function FlexibleInvoice() {
             toFields={toFields}
             onToFieldsChange={setToFields}
           />
-          {/* From/To Details */}
-          <ContactDetails
-            fromTitle={fromTitle}
-            onFromTitleChange={setFromTitle}
-            fromFields={fromFields}
-            onFromFieldsChange={setFromFields}
-            toTitle={toTitle}
-            onToTitleChange={setToTitle}
-            toFields={toFields}
-            onToFieldsChange={setToFields}
-          />
 
-          {/* Services Table */}
-          <ServicesTable
-            columns={columns}
-            rows={rows}
-            onColumnsChange={setColumns}
-            onRowsChange={setRows}
-            onCellUpdate={handleCellUpdate}
-          />
           {/* Services Table */}
           <ServicesTable
             columns={columns}
@@ -206,24 +183,6 @@ export default function FlexibleInvoice() {
             onDiscountPercentageChange={setDiscountPercentage}
             onTotalLabelChange={setTotalLabel}
           />
-          {/* Totals Section */}
-          <TotalsSection
-            subtotal={totals.subtotal}
-            tax={totals.tax}
-            discount={totals.discount}
-            total={totals.total}
-            taxEnabled={taxEnabled}
-            taxPercentage={taxPercentage}
-            discountEnabled={discountEnabled}
-            discountPercentage={discountPercentage}
-            currencySymbol={currencySymbol}
-            totalLabel={totalLabel}
-            onTaxToggle={setTaxEnabled}
-            onTaxPercentageChange={setTaxPercentage}
-            onDiscountToggle={setDiscountEnabled}
-            onDiscountPercentageChange={setDiscountPercentage}
-            onTotalLabelChange={setTotalLabel}
-          />
 
           {/* Bank Details */}
           <PaymentDetails
@@ -232,17 +191,7 @@ export default function FlexibleInvoice() {
             paymentFields={paymentFields}
             onPaymentFieldsChange={setPaymentFields}
           />
-          {/* Bank Details */}
-          <PaymentDetails
-            paymentTitle={paymentTitle}
-            onPaymentTitleChange={setPaymentTitle}
-            paymentFields={paymentFields}
-            onPaymentFieldsChange={setPaymentFields}
-          />
 
-          {/* Action Buttons */}
-          <ActionButtons />
-        </div>
           {/* Action Buttons */}
           <ActionButtons />
         </div>

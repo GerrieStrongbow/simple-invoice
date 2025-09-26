@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useMemo, useState, useRef } from 'react'
 
 interface EditableSpanProps {
   children: React.ReactNode
@@ -10,10 +10,10 @@ interface EditableSpanProps {
 
 const baseEditableClasses = 'inline-flex min-w-[100px] items-center justify-start rounded-sm border border-dashed border-amber-400 bg-amber-100 px-2 py-1 text-sm font-medium text-slate-800'
 
-const EditableSpan: React.FC<EditableSpanProps> = ({
-  children,
-  className = '',
-  contentEditable = true
+const EditableSpan: React.FC<EditableSpanProps> = ({ 
+  children, 
+  className = '', 
+  contentEditable = true 
 }) => {
   const initialValue = useMemo(() => {
     return React.Children.toArray(children).join('')
@@ -36,7 +36,6 @@ const EditableSpan: React.FC<EditableSpanProps> = ({
   )
 }
 
-export default function SimpleInvoice() {
 export default function SimpleInvoice() {
   const invoiceRef = useRef<HTMLDivElement>(null)
   const [showNotes, setShowNotes] = useState(true)
