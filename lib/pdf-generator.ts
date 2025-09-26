@@ -11,18 +11,17 @@ export class PDFGenerator {
 
   // Generate PDF from HTML element
   async generateFromHTML(element: HTMLElement, filename?: string): Promise<void> {
-    try {
-      console.log('Starting PDF generation...')
-      console.log('Element:', element)
-      console.log('Element dimensions:', element.scrollWidth, 'x', element.scrollHeight)
+    if (!element) {
+      throw new Error('Invoice content is not available for export.')
+    }
 
-      // Create canvas from HTML element with simplified options
+    try {
       const canvas = await html2canvas(element, {
         scale: 1.5, // Reduced scale for better compatibility
         useCORS: true,
         allowTaint: false,
         backgroundColor: '#ffffff',
-        logging: true, // Enable logging for debugging
+        logging: false,
         width: element.scrollWidth,
         height: element.scrollHeight,
         ignoreElements: (el) => {
@@ -32,13 +31,10 @@ export class PDFGenerator {
           // Check for button elements
           if (el.tagName === 'BUTTON') return true
           if (el.getAttribute('type') === 'button') return true
-          if (el.getAttribute('role') === 'button') return true
+          // Some read-only fields use role="button" for accessibility; allow them to render
           
           // Check for interactive elements that shouldn't be in PDF
-          if (el.classList.contains('cursor-pointer')) return true
-          if (el.classList.contains('hover:bg-gray-50')) return true
-          if (el.classList.contains('hover:bg-blue-700')) return true
-          if (el.classList.contains('hover:bg-red-50')) return true
+          // Do not filter cursor-pointer/hover classes; invoice fields rely on them for read mode styling
           
           // Check if any parent element has no-print class
           let parent = el.parentElement
@@ -56,17 +52,14 @@ export class PDFGenerator {
         }
       })
 
-      console.log('Canvas created:', canvas.width, 'x', canvas.height)
-
       if (canvas.width === 0 || canvas.height === 0) {
-        throw new Error('Canvas has zero dimensions - element may be hidden or empty')
+        throw new Error('Invoice preview is empty or hidden. Please make sure the invoice is visible and try again.')
       }
 
       const imgData = canvas.toDataURL('image/png')
-      console.log('Image data length:', imgData.length)
       
       if (imgData.length < 1000) {
-        throw new Error('Generated image data is too small - capture may have failed')
+        throw new Error('Unable to capture invoice content. Try again or use the browser print option.')
       }
       
       // Calculate PDF dimensions
@@ -94,16 +87,12 @@ export class PDFGenerator {
       // Generate filename
       const invoiceNumber = this.invoiceData.header.invoiceNumber || 'Invoice'
       const defaultFilename = `${invoiceNumber.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`
-      
-      console.log('Saving PDF as:', defaultFilename)
-      
-      // Download PDF
       pdf.save(filename || defaultFilename)
-      console.log('PDF generation completed successfully')
     } catch (error) {
-      console.error('Error generating PDF:', error)
-      alert(`PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}. Please try the Print button instead.`)
-      throw error
+      if (error instanceof Error) {
+        throw error
+      }
+      throw new Error('PDF generation failed for an unknown reason.')
     }
   }
 

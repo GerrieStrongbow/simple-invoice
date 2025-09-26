@@ -121,6 +121,7 @@ export default function InvoiceEditor() {
   const [templates, setTemplates] = useState<string[]>([])
   const [taxRate, setTaxRate] = useState<number>(0)
   const [isGeneratingPDF, setIsGeneratingPDF] = useState<boolean>(false)
+  const [pdfError, setPdfError] = useState<string | null>(null)
   const invoiceRef = useRef<HTMLDivElement>(null)
 
   // Auto-save to localStorage
@@ -244,17 +245,15 @@ export default function InvoiceEditor() {
   // PDF Generation
   const handleDownloadPDF = async () => {
     if (!invoiceRef.current) {
-      alert('Invoice content not found. Please try again.')
+      setPdfError('Invoice content not found. Please refresh and try again.')
       return
     }
 
+    setPdfError(null)
     setIsGeneratingPDF(true)
-    
+
     try {
-      // Check if element is visible and has content
       const rect = invoiceRef.current.getBoundingClientRect()
-      console.log('Element bounds:', rect)
-      
       if (rect.width === 0 || rect.height === 0) {
         throw new Error('Invoice element has zero dimensions')
       }
@@ -263,15 +262,10 @@ export default function InvoiceEditor() {
       await pdfGenerator.generateFromHTML(invoiceRef.current)
     } catch (error) {
       console.error('PDF generation failed:', error)
-      
-      // Fallback to print
-      const shouldTryPrint = confirm(
-        'PDF generation failed. Would you like to use the browser print function instead? (You can then save as PDF from the print dialog)'
-      )
-      
-      if (shouldTryPrint) {
-        window.print()
-      }
+      const message = error instanceof Error
+        ? error.message
+        : 'PDF generation failed. Please use the Print option as a fallback.'
+      setPdfError(message)
     } finally {
       setIsGeneratingPDF(false)
     }
@@ -279,13 +273,27 @@ export default function InvoiceEditor() {
 
   return (
     <div className="max-w-4xl mx-auto px-4">
-      <div ref={invoiceRef} className="bg-white rounded-lg shadow-lg print:shadow-none print:rounded-none" style={{
-        fontFamily: "'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-        fontSize: '11pt',
-        padding: '30px'
-      }}>
+      {pdfError && (
+        <div className="no-print mb-6 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <span>{pdfError}</span>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="inline-flex items-center justify-center rounded-md border border-amber-400 bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700 transition hover:bg-amber-200"
+            >
+              Use Print Dialog
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div
+        ref={invoiceRef}
+        className="bg-white rounded-lg p-8 text-[11pt] font-inter shadow-lg print:rounded-none print:shadow-none"
+      >
         {/* Header Section */}
-        <div className="flex justify-between items-start pb-5 border-b-2 border-[#e9ecef]" style={{ marginBottom: '30px' }}>
+        <div className="mb-8 flex items-start justify-between border-b-2 border-[#e9ecef] pb-5">
         <div>
           <EditableField
             value={invoiceData.header.title}
@@ -294,20 +302,20 @@ export default function InvoiceEditor() {
             placeholder="INVOICE"
           />
         </div>
-        <div style={{ textAlign: 'right', color: '#666' }}>
-          <div><strong>Invoice #:</strong> <EditableField
+        <div className="space-y-2 text-right text-slate-500">
+          <div className="flex items-center justify-end gap-2"><strong>Invoice #:</strong> <EditableField
             value={invoiceData.header.invoiceNumber}
             onChange={(value) => updateHeader('invoiceNumber', value)}
             className="inline-block min-w-[100px]"
             placeholder="INV-2025-08"
           /></div>
-          <div><strong>Date:</strong> <DatePicker
+          <div className="flex items-center justify-end gap-2"><strong>Date:</strong> <DatePicker
             value={invoiceData.header.date}
             onChange={(value) => updateHeader('date', value)}
             className="inline-block min-w-[100px]"
             placeholder="[DATE]"
           /></div>
-          <div><strong>Due Date:</strong> <DatePicker
+          <div className="flex items-center justify-end gap-2"><strong>Due Date:</strong> <DatePicker
             value={invoiceData.header.dueDate}
             onChange={(value) => updateHeader('dueDate', value)}
             className="inline-block min-w-[100px]"
@@ -317,12 +325,7 @@ export default function InvoiceEditor() {
       </div>
 
       {/* From/To Section */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '50% 50%',
-        gap: '30px',
-        marginBottom: '30px'
-      }}>
+      <div className="mb-8 grid gap-8 md:grid-cols-2">
         <EditableFieldSection
           section={invoiceData.from}
           onChange={(section) => updateSection('from', section)}
@@ -354,12 +357,7 @@ export default function InvoiceEditor() {
       />
 
       {/* Totals Section */}
-      <div style={{
-        marginTop: '20px',
-        paddingTop: '20px',
-        borderTop: '2px solid #e9ecef',
-        marginBottom: '20px'
-      }}>
+      <div className="mt-5 mb-5 border-t-2 border-[#e9ecef] pt-5">
         {/* Currency Selector */}
         <div className="flex justify-end mb-3 no-print">
           <CurrencySelector
@@ -370,14 +368,14 @@ export default function InvoiceEditor() {
           />
         </div>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div className="mb-2 flex items-center justify-between">
           <span>Subtotal:</span>
-          <span style={{ textAlign: 'right', display: 'inline-block', minWidth: '100px' }}>
+          <span className="inline-block min-w-[100px] text-right">
             {InvoiceCalculator.formatCurrency(calculations.subtotal, invoiceData.settings.currencySymbol)}
           </span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div className="flex items-center gap-2">
+        <div className="mb-2 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-slate-700">
             <span>Tax (if applicable)</span>
             <EditableField
               value={taxRate.toString()}
@@ -389,34 +387,20 @@ export default function InvoiceEditor() {
             <span className="no-print">%</span>
             <span>:</span>
           </div>
-          <span style={{ textAlign: 'right', display: 'inline-block', minWidth: '100px' }}>
+          <span className="inline-block min-w-[100px] text-right">
             {InvoiceCalculator.formatCurrency(calculations.tax, invoiceData.settings.currencySymbol)}
           </span>
         </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          fontWeight: 'bold',
-          fontSize: '18px',
-          color: '#2c3e50',
-          borderTop: '1px solid #ccc',
-          paddingTop: '10px'
-        }}>
+        <div className="flex items-center justify-between border-t border-slate-300 pt-3 text-lg font-semibold text-slate-800">
           <span>Total Amount Due:</span>
-          <span style={{ textAlign: 'right', display: 'inline-block', minWidth: '100px', fontWeight: 'bold' }}>
+          <span className="inline-block min-w-[100px] text-right">
             {InvoiceCalculator.formatCurrency(calculations.total, invoiceData.settings.currencySymbol)}
           </span>
         </div>
       </div>
 
       {/* Payment Details */}
-      <div style={{
-        backgroundColor: '#f8f9fa',
-        padding: '15px',
-        borderRadius: '5px',
-        marginTop: '0px',
-        marginBottom: '20px'
-      }}>
+      <div className="mb-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
         <EditableFieldSection
           section={invoiceData.paymentDetails}
           onChange={(section) => updateSection('paymentDetails', section)}
@@ -427,7 +411,7 @@ export default function InvoiceEditor() {
       {/* Notes Section */}
       <div className="mb-4">
         <div className="mb-2">
-          <span style={{ color: '#2c3e50', fontWeight: 'bold' }}>Notes</span>
+          <span className="font-semibold text-slate-700">Notes</span>
         </div>
         <EditableField
           value={invoiceData.footer.notes}
@@ -442,17 +426,7 @@ export default function InvoiceEditor() {
       <button 
         onClick={handleDownloadPDF}
         disabled={isGeneratingPDF}
-        className="no-print"
-        style={{
-          backgroundColor: '#007bff',
-          color: 'white',
-          padding: '10px 20px',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontSize: '16px',
-          marginTop: '20px'
-        }}
+        className="no-print mt-5 inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isGeneratingPDF ? 'Generating PDF...' : 'Print/Save as PDF'}
       </button>

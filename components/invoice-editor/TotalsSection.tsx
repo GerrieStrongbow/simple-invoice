@@ -18,6 +18,17 @@ interface TotalsSectionProps {
   onTotalLabelChange: (label: string) => void
 }
 
+const totalValueClasses = 'inline-block min-w-[100px] rounded border border-slate-200 bg-slate-100 px-2 py-1 text-right font-medium text-slate-700'
+const totalLabelClasses = 'inline-block min-w-[140px] cursor-text rounded-lg border-2 border-slate-200 bg-slate-100 px-3 py-1.5 text-base font-semibold text-slate-700 transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
+const percentageInput = (enabled: boolean) => [
+  'w-16 rounded-md border-2 px-2 py-1 text-center text-sm font-semibold transition outline-none',
+  enabled
+    ? 'border-slate-200 bg-white text-slate-800 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
+    : 'border-slate-200 bg-slate-100 text-slate-400'
+].join(' ')
+
+const percentageLabel = (enabled: boolean) => enabled ? 'text-slate-800 font-medium' : 'text-slate-400 font-medium'
+
 export const TotalsSection: React.FC<TotalsSectionProps> = ({
   subtotal,
   tax,
@@ -35,221 +46,85 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
   onDiscountPercentageChange,
   onTotalLabelChange
 }) => {
-  const totalValueStyle = {
-    textAlign: 'right' as const,
-    display: 'inline-block',
-    minWidth: '100px',
-    backgroundColor: '#f8f9fa',
-    padding: '2px 4px',
-    borderRadius: '3px',
-    border: '1px solid #e9ecef'
-  }
-
-  const handleTotalLabelFocus = (e: React.FocusEvent<HTMLSpanElement>) => {
-    e.target.style.backgroundColor = '#ffffff'
-    e.target.style.borderColor = '#667eea'
-    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-  }
-
-  const handleTotalLabelBlur = (e: React.FocusEvent<HTMLSpanElement>) => {
-    e.target.style.backgroundColor = '#f8fafc'
-    e.target.style.borderColor = '#e2e8f0'
-    e.target.style.boxShadow = 'none'
-  }
-
-  const handlePercentageFocus = (enabled: boolean) => (e: React.FocusEvent<HTMLInputElement>) => {
-    if (enabled) {
-      e.target.style.borderColor = '#667eea'
-      e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-    }
-  }
-
-  const handlePercentageBlur = (enabled: boolean) => (e: React.FocusEvent<HTMLInputElement>) => {
-    if (enabled) {
-      e.target.style.borderColor = '#e2e8f0'
-      e.target.style.boxShadow = 'none'
-    }
-  }
-
   return (
-    <div className="total-section" style={{
-      marginTop: '20px',
-      paddingTop: '20px',
-      borderTop: '2px solid #e9ecef',
-      marginBottom: '20px'
-    }}>
-      {/* Subtotal */}
-      <div className="total-row" style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '10px'
-      }}>
+    <div className="total-section mt-5 mb-5 border-t-2 border-slate-200 pt-5">
+      <div className="total-row mb-3 flex items-center justify-between text-sm">
         <span>Subtotal:</span>
-        <span style={totalValueStyle}>{currencySymbol}{subtotal}</span>
+        <span className={totalValueClasses}>
+          {currencySymbol}
+          {subtotal}
+        </span>
       </div>
 
-      {/* Discount Row - Only show when enabled */}
       {discountEnabled && (
-        <div className="total-row" style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '10px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>Discount ({discountPercentage}%):</span>
-          </div>
-          <span style={totalValueStyle}>({currencySymbol}{discount})</span>
+        <div className="total-row mb-3 flex items-center justify-between text-sm">
+          <span>Discount ({discountPercentage}%):</span>
+          <span className={totalValueClasses}>
+            ({currencySymbol}
+            {discount})
+          </span>
         </div>
       )}
 
-      {/* Tax Row - Only show when enabled */}
       {taxEnabled && (
-        <div className="total-row" style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '10px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>Tax ({taxPercentage}%):</span>
-          </div>
-          <span style={totalValueStyle}>{currencySymbol}{tax}</span>
+        <div className="total-row mb-3 flex items-center justify-between text-sm">
+          <span>Tax ({taxPercentage}%):</span>
+          <span className={totalValueClasses}>
+            {currencySymbol}
+            {tax}
+          </span>
         </div>
       )}
 
-      {/* Control Panel for Tax/Discount (only visible when editing) */}
-      <div className="no-print" style={{
-        display: 'flex',
-        gap: '20px',
-        marginBottom: '10px',
-        padding: '16px',
-        backgroundColor: '#f8fafc',
-        borderRadius: '8px',
-        fontSize: '14px',
-        border: '1px solid #e2e8f0'
-      }}>
-        {/* Discount Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div className="no-print mb-4 flex flex-wrap items-center gap-6 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm">
+        <label className="flex items-center gap-2">
           <input
             type="checkbox"
             checked={discountEnabled}
             onChange={(e) => onDiscountToggle(e.target.checked)}
-            style={{ cursor: 'pointer', width: '16px', height: '16px' }}
+            className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
           />
-          <span style={{ color: discountEnabled ? '#1f2937' : '#9ca3af', fontWeight: '500' }}>
-            Add Discount:
-          </span>
+          <span className={percentageLabel(discountEnabled)}>Add Discount:</span>
           <input
             type="text"
             value={discountPercentage}
             onChange={(e) => onDiscountPercentageChange(e.target.value)}
             disabled={!discountEnabled}
-            style={{
-              width: '60px',
-              backgroundColor: discountEnabled ? '#ffffff' : '#f3f4f6',
-              border: discountEnabled ? '2px solid #e2e8f0' : '2px solid #e5e7eb',
-              borderRadius: '6px',
-              padding: '6px 8px',
-              fontSize: '14px',
-              textAlign: 'center',
-              color: discountEnabled ? '#1f2937' : '#9ca3af',
-              fontWeight: '500',
-              transition: 'all 0.2s ease',
-              outline: 'none'
-            }}
-            onFocus={handlePercentageFocus(discountEnabled)}
-            onBlur={handlePercentageBlur(discountEnabled)}
+            className={percentageInput(discountEnabled)}
           />
-          <span style={{ color: discountEnabled ? '#1f2937' : '#9ca3af', fontWeight: '500' }}>
-            %
-          </span>
-        </div>
-        
-        {/* Tax Controls */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span className={percentageLabel(discountEnabled)}>%</span>
+        </label>
+
+        <label className="flex items-center gap-2">
           <input
             type="checkbox"
             checked={taxEnabled}
             onChange={(e) => onTaxToggle(e.target.checked)}
-            style={{ cursor: 'pointer', width: '16px', height: '16px' }}
+            className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
           />
-          <span style={{ color: taxEnabled ? '#1f2937' : '#9ca3af', fontWeight: '500' }}>
-            Add Tax:
-          </span>
+          <span className={percentageLabel(taxEnabled)}>Add Tax:</span>
           <input
             type="text"
             value={taxPercentage}
             onChange={(e) => onTaxPercentageChange(e.target.value)}
             disabled={!taxEnabled}
-            style={{
-              width: '60px',
-              backgroundColor: taxEnabled ? '#ffffff' : '#f3f4f6',
-              border: taxEnabled ? '2px solid #e2e8f0' : '2px solid #e5e7eb',
-              borderRadius: '6px',
-              padding: '6px 8px',
-              fontSize: '14px',
-              textAlign: 'center',
-              color: taxEnabled ? '#1f2937' : '#9ca3af',
-              fontWeight: '500',
-              transition: 'all 0.2s ease',
-              outline: 'none'
-            }}
-            onFocus={handlePercentageFocus(taxEnabled)}
-            onBlur={handlePercentageBlur(taxEnabled)}
+            className={percentageInput(taxEnabled)}
           />
-          <span style={{ color: taxEnabled ? '#1f2937' : '#9ca3af', fontWeight: '500' }}>
-            %
-          </span>
-        </div>
+          <span className={percentageLabel(taxEnabled)}>%</span>
+        </label>
       </div>
 
-      {/* Final Total */}
-      <div className="total-row total-final" style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        fontWeight: 'bold',
-        fontSize: '18px',
-        color: '#2c3e50',
-        borderTop: '1px solid #ccc',
-        paddingTop: '10px'
-      }}>
-        <span
-          role="textbox"
+      <div className="total-row total-final flex items-center justify-between border-t border-slate-200 pt-4 text-lg font-semibold text-slate-800">
+        <input
+          type="text"
           aria-label="Total amount label"
-          tabIndex={0}
-          contentEditable
-          suppressContentEditableWarning
-          style={{
-            outline: 'none',
-            cursor: 'text',
-            padding: '6px 10px',
-            borderRadius: '8px',
-            transition: 'all 0.2s ease',
-            backgroundColor: '#f8fafc',
-            border: '2px solid #e2e8f0',
-            minWidth: '140px',
-            display: 'inline-block'
-          }}
-          onFocus={handleTotalLabelFocus}
-          onBlur={(e) => {
-            onTotalLabelChange(e.target.textContent || 'Total Amount Due:')
-            handleTotalLabelBlur(e)
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault()
-              e.currentTarget.blur()
-            }
-          }}
-        >
-          {totalLabel}
-        </span>
-        <span style={{
-          ...totalValueStyle,
-          fontWeight: 'bold'
-        }}>
-          {currencySymbol}{total}
+          value={totalLabel}
+          onChange={(e) => onTotalLabelChange(e.target.value)}
+          className={totalLabelClasses}
+        />
+        <span className={`${totalValueClasses} font-bold`}>
+          {currencySymbol}
+          {total}
         </span>
       </div>
     </div>

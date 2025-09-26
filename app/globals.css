@@ -18,11 +18,10 @@
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-  
+
   /* Hide all interactive elements and buttons */
-  .no-print, 
+  .no-print,
   button,
-  .cursor-pointer,
   [type="button"],
   [role="button"],
   input[type="button"],
@@ -35,11 +34,11 @@
     display: none !important;
     visibility: hidden !important;
   }
-  
+
   .print-only {
     display: block !important;
   }
-  
+
   /* Remove any interactive hover elements */
   .hover\\:bg-gray-50,
   .hover\\:bg-blue-700,
@@ -47,59 +46,63 @@
   .hover\\:bg-red-50,
   .transition-opacity,
   .group-hover\\:opacity-100 {
-    display: none !important;
+    opacity: 1 !important;
   }
-  
+
+  .cursor-pointer {
+    cursor: text !important;
+  }
+
   /* Ensure table borders and colors print correctly */
   table {
     border-collapse: collapse;
   }
-  
+
   th, td {
     border: 1px solid #e9ecef !important;
   }
-  
+
   /* Make sure all colors print */
   * {
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }
-  
+
   /* Compact spacing for print */
   .print\\:p-0 {
     padding: 0 !important;
   }
-  
+
   .print\\:shadow-none {
     box-shadow: none !important;
   }
-  
+
   /* Hide all dropdowns and selectors in print */
   select,
   .relative > div,
   .absolute {
     display: none !important;
   }
-  
+
   /* Ensure clean invoice content shows */
   .bg-white {
     background-color: white !important;
   }
-  
+
   /* Clean up the layout for print */
   .rounded-lg {
     border-radius: 0 !important;
   }
-  
+
   .shadow-lg {
     box-shadow: none !important;
   }
-  
+
   /* Show only essential content */
   .print\\:hidden {
     display: none !important;
   }
-  
+
   /* Hide editable field indicators in print */
   [contenteditable="true"],
   .cursor-text,
@@ -111,7 +114,7 @@
     box-shadow: none !important;
     padding: 0 !important;
   }
-  
+
   /* Ensure background colors still print */
   .bg-\\[\\#f8f9fa\\] {
     background-color: #f8f9fa !important;

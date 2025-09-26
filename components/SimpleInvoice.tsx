@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useMemo, useState, useRef } from 'react'
 
 interface EditableSpanProps {
   children: React.ReactNode
@@ -8,27 +8,33 @@ interface EditableSpanProps {
   contentEditable?: boolean
 }
 
+const baseEditableClasses = 'inline-flex min-w-[100px] items-center justify-start rounded border border-dashed border-amber-400 bg-amber-100 px-2 py-1 text-sm font-medium text-slate-800'
+
 const EditableSpan: React.FC<EditableSpanProps> = ({ 
   children, 
-  className = "editable", 
+  className = '', 
   contentEditable = true 
-}) => (
-  <span
-    contentEditable={contentEditable}
-    suppressContentEditableWarning={true}
-    className={className}
-    style={{
-      backgroundColor: '#fff3cd',
-      padding: '2px 4px',
-      borderRadius: '3px',
-      border: '1px dashed #ffc107',
-      minWidth: '100px',
-      display: 'inline-block'
-    }}
-  >
-    {children}
-  </span>
-)
+}) => {
+  const initialValue = useMemo(() => {
+    return React.Children.toArray(children).join('')
+  }, [children])
+
+  if (!contentEditable) {
+    return (
+      <span className={`${baseEditableClasses} ${className}`}>
+        {initialValue}
+      </span>
+    )
+  }
+
+  return (
+    <input
+      type="text"
+      defaultValue={initialValue}
+      className={`${baseEditableClasses} ${className}`}
+    />
+  )
+}
 
 export default function SimpleInvoice() {
   const invoiceRef = useRef<HTMLDivElement>(null)
@@ -40,392 +46,159 @@ export default function SimpleInvoice() {
   }
 
   return (
-    <div className="min-h-screen" style={{ 
-      fontFamily: "'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      fontSize: '11pt',
-      maxWidth: '800px',
-      margin: '0 auto',
-      padding: '20px',
-      backgroundColor: '#f8f9fa'
-    }}>
-      <div ref={invoiceRef} className="invoice-container" style={{
-        backgroundColor: 'white',
-        padding: '30px',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
-      }}>
-        {/* Header */}
-        <div className="header" style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          marginBottom: '30px',
-          borderBottom: '2px solid #e9ecef',
-          paddingBottom: '20px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: 'bold',
-              color: '#2c3e50',
-              margin: 0
-            }}>INVOICE</h1>
-            
+    <div className="min-h-screen bg-slate-100 px-5 py-10 text-[11pt] font-inter">
+      <div
+        ref={invoiceRef}
+        className="invoice-container mx-auto max-w-3xl rounded-lg bg-white p-8 shadow-lg ring-1 ring-slate-200 print:rounded-none print:shadow-none"
+      >
+        <header className="mb-8 flex flex-col gap-6 border-b-2 border-slate-200 pb-6 md:flex-row md:items-start md:justify-between">
+          <div className="flex items-center gap-5">
+            <h1 className="text-3xl font-bold text-slate-800">INVOICE</h1>
             {showLogo && (
-              <div style={{
-                border: '2px dashed #ccc',
-                padding: '10px',
-                borderRadius: '4px',
-                minWidth: '80px',
-                minHeight: '60px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '10px',
-                color: '#999',
-                cursor: 'pointer'
-              }}>
+              <button
+                type="button"
+                className="no-print inline-flex h-20 w-24 items-center justify-center rounded border border-dashed border-slate-300 bg-slate-50 text-xs font-semibold text-slate-400"
+              >
                 Click to add logo
-              </div>
+              </button>
             )}
           </div>
-          
-          <div style={{ textAlign: 'right', color: '#666' }}>
-            <div><strong>Invoice #:</strong> <EditableSpan>INV-2025-08</EditableSpan></div>
-            <div><strong>Date:</strong> <EditableSpan>[DATE]</EditableSpan></div>
-            <div><strong>Due Date:</strong> <EditableSpan>[DUE DATE]</EditableSpan></div>
-          </div>
-        </div>
 
-        {/* From/To Details */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '50% 50%',
-          gap: '30px',
-          marginBottom: '30px'
-        }}>
-          <div>
-            <h3 style={{ color: '#2c3e50', marginBottom: '10px', fontSize: '16px' }}>From:</h3>
-            <div contentEditable suppressContentEditableWarning style={{
-              backgroundColor: '#fff3cd',
-              padding: '10px',
-              borderRadius: '4px',
-              border: '1px dashed #ffc107',
-              minHeight: '120px'
-            }}>
-              <strong>T/A Gerhard Bekker</strong><br />
-              14 Marina Rd<br />
-              Die Boord<br />
-              Stellenbosch<br />
-              South Africa<br /><br />
-              <strong>Email:</strong> gerhard.bekker@outlook.com<br />
-              <strong>Mobile:</strong> (+27) 063 651 9694
+          <div className="space-y-2 text-right text-slate-600">
+            <div className="flex items-center justify-end gap-2">
+              <strong>Invoice #:</strong>
+              <EditableSpan className="min-w-[120px]" contentEditable>
+                INV-2025-08
+              </EditableSpan>
+            </div>
+            <div className="flex items-center justify-end gap-2">
+              <strong>Date:</strong>
+              <EditableSpan className="min-w-[120px]" contentEditable>
+                [DATE]
+              </EditableSpan>
+            </div>
+            <div className="flex items-center justify-end gap-2">
+              <strong>Due Date:</strong>
+              <EditableSpan className="min-w-[120px]" contentEditable>
+                [DUE DATE]
+              </EditableSpan>
             </div>
           </div>
+        </header>
 
+        <section className="mb-8 grid gap-6 md:grid-cols-2">
           <div>
-            <h3 style={{ color: '#2c3e50', marginBottom: '10px', fontSize: '16px' }}>To:</h3>
-            <div contentEditable suppressContentEditableWarning style={{
-              backgroundColor: '#fff3cd',
-              padding: '10px',
-              borderRadius: '4px',
-              border: '1px dashed #ffc107',
-              minHeight: '120px'
-            }}>
-              <strong>Empire Digital Media Ltd (trading as 1Digit)</strong><br />
-              <strong>Company Registration #:</strong> 08537519<br />
-              Unit 11<br />
-              Hove Business Centre Fonthill Road<br />
-              Hove, East Sussex, BN3 6HA<br />
-              United Kingdom<br /><br />
-              <strong>Email:</strong> accounts@1digit.co.uk
-            </div>
+            <h3 className="mb-3 text-sm font-semibold text-slate-700">From:</h3>
+            <textarea
+              defaultValue={`T/A Gerhard Bekker\n14 Marina Rd\nDie Boord\nStellenbosch\nSouth Africa\n\nEmail: gerhard.bekker@outlook.com\nMobile: (+27) 063 651 9694`}
+              className="min-h-[120px] w-full resize-y rounded border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            />
           </div>
-        </div>
+          <div>
+            <h3 className="mb-3 text-sm font-semibold text-slate-700">To:</h3>
+            <textarea
+              defaultValue={`Empire Digital Media Ltd (trading as 1Digit)\nCompany Registration #: 08537519\nUnit 11\nHove Business Centre Fonthill Road\nHove, East Sussex, BN3 6HA\nUnited Kingdom\n\nEmail: accounts@1digit.co.uk`}
+              className="min-h-[120px] w-full resize-y rounded border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            />
+          </div>
+        </section>
 
-        {/* Services Table */}
-        <table style={{
-          width: '100%',
-          borderCollapse: 'collapse',
-          marginBottom: '20px'
-        }}>
-          <thead>
-            <tr>
-              <th style={{
-                padding: '12px',
-                textAlign: 'left',
-                borderBottom: '1px solid #e9ecef',
-                backgroundColor: '#f8f9fa',
-                fontWeight: 'bold',
-                color: '#2c3e50',
-                width: '60%'
-              }}>
-                <EditableSpan>Description</EditableSpan>
-              </th>
-              <th style={{
-                padding: '12px',
-                textAlign: 'center',
-                borderBottom: '1px solid #e9ecef',
-                backgroundColor: '#f8f9fa',
-                fontWeight: 'bold',
-                color: '#2c3e50',
-                width: '15%'
-              }}>
-                <EditableSpan>Days</EditableSpan>
-              </th>
-              <th style={{
-                padding: '12px',
-                textAlign: 'right',
-                borderBottom: '1px solid #e9ecef',
-                backgroundColor: '#f8f9fa',
-                fontWeight: 'bold',
-                color: '#2c3e50',
-                width: '15%'
-              }}>
-                <EditableSpan>Rate (ZAR)</EditableSpan>
-              </th>
-              <th style={{
-                padding: '12px',
-                textAlign: 'right',
-                borderBottom: '1px solid #e9ecef',
-                backgroundColor: '#f8f9fa',
-                fontWeight: 'bold',
-                color: '#2c3e50',
-                width: '10%'
-              }}>
-                <EditableSpan>Amount (ZAR)</EditableSpan>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style={{ height: '60px' }}>
-              <td style={{
-                width: '60%',
-                verticalAlign: 'top',
-                padding: '12px',
-                borderBottom: '1px solid #e9ecef'
-              }}>
-                <strong><EditableSpan>Item Name</EditableSpan></strong><br />
-                <EditableSpan>Description of services provided</EditableSpan>
-              </td>
-              <td style={{
-                width: '15%',
-                textAlign: 'center',
-                verticalAlign: 'top',
-                padding: '12px',
-                borderBottom: '1px solid #e9ecef'
-              }}>
-                <EditableSpan>[DAYS]</EditableSpan>
-              </td>
-              <td style={{
-                width: '15%',
-                textAlign: 'right',
-                verticalAlign: 'top',
-                padding: '12px',
-                borderBottom: '1px solid #e9ecef'
-              }}>
-                <EditableSpan>R[RATE]</EditableSpan>
-              </td>
-              <td style={{
-                width: '10%',
-                textAlign: 'right',
-                verticalAlign: 'top',
-                padding: '12px',
-                borderBottom: '1px solid #e9ecef'
-              }}>
-                <EditableSpan>R[AMOUNT]</EditableSpan>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <section className="mb-8">
+          <table className="w-full border-collapse text-slate-700">
+            <thead>
+              <tr className="bg-slate-50 text-left text-sm font-semibold text-slate-800">
+                <th className="w-[60%] border-b border-slate-200 px-4 py-3">
+                  <EditableSpan className="w-full" contentEditable>Description</EditableSpan>
+                </th>
+                <th className="w-[15%] border-b border-slate-200 px-4 py-3 text-center">
+                  <EditableSpan className="w-full text-center" contentEditable>Days</EditableSpan>
+                </th>
+                <th className="w-[15%] border-b border-slate-200 px-4 py-3 text-right">
+                  <EditableSpan className="w-full text-right" contentEditable>Rate (ZAR)</EditableSpan>
+                </th>
+                <th className="w-[10%] border-b border-slate-200 px-4 py-3 text-right">
+                  <EditableSpan className="w-full text-right" contentEditable>Amount (ZAR)</EditableSpan>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from({ length: 3 }).map((_, index) => (
+                <tr key={index} className="border-b border-slate-200">
+                  <td className="px-4 py-3">
+                    <textarea
+                      defaultValue="Item Name Description of services provided"
+                      className="w-full resize-y rounded border border-dashed border-amber-300 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                    />
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <EditableSpan contentEditable className="justify-center">1</EditableSpan>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <EditableSpan contentEditable className="justify-end">500.00</EditableSpan>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <EditableSpan contentEditable className="justify-end">500.00</EditableSpan>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
 
-        {/* Totals Section */}
-        <div style={{
-          marginTop: '20px',
-          paddingTop: '20px',
-          borderTop: '2px solid #e9ecef',
-          marginBottom: '20px'
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '10px'
-          }}>
+        <section className="mb-8 space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm">
+          <div className="flex items-center justify-between">
             <span>Subtotal:</span>
-            <EditableSpan>R[SUBTOTAL]</EditableSpan>
+            <EditableSpan contentEditable className="justify-end">R[SUBTOTAL]</EditableSpan>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '10px'
-          }}>
+          <div className="flex items-center justify-between">
             <span>Tax (if applicable):</span>
-            <EditableSpan>R0.00</EditableSpan>
+            <EditableSpan contentEditable className="justify-end">R0.00</EditableSpan>
           </div>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            fontWeight: 'bold',
-            fontSize: '18px',
-            color: '#2c3e50',
-            borderTop: '1px solid #ccc',
-            paddingTop: '10px'
-          }}>
+          <div className="flex items-center justify-between border-t border-slate-200 pt-3 text-lg font-semibold text-slate-800">
             <span>Total Amount Due:</span>
-            <EditableSpan>R[TOTAL]</EditableSpan>
+            <EditableSpan contentEditable className="justify-end">R[TOTAL]</EditableSpan>
           </div>
-        </div>
+        </section>
 
-        {/* Payment Details */}
-        <div style={{
-          backgroundColor: '#f8f9fa',
-          padding: '15px',
-          borderRadius: '5px',
-          marginTop: '0px',
-          marginBottom: showNotes ? '20px' : '0px'
-        }}>
-          <h4 style={{ color: '#2c3e50', marginBottom: '10px' }}>Payment Details:</h4>
-          <div contentEditable suppressContentEditableWarning style={{
-            backgroundColor: 'white',
-            padding: '10px',
-            borderRadius: '4px',
-            border: '1px dashed #ffc107'
-          }}>
-            <strong>Account Name:</strong> GERHARD MULLER BEKKER<br />
-            <strong>Bank:</strong> ABSA<br />
-            <strong>Account Number:</strong> 4120 7672 37<br />
-            <strong>Branch Code:</strong> 632005<br />
-            <strong>SWIFT Code:</strong> ABSAZAJJ
-          </div>
-        </div>
+        <section className="mb-8 rounded-lg border border-slate-200 bg-slate-50 p-4">
+          <h4 className="mb-3 text-sm font-semibold text-slate-700">Payment Details:</h4>
+          <textarea
+            defaultValue={`Account Name: GERHARD MULLER BEKKER\nBank: ABSA\nAccount Number: 4120 7672 37\nBranch Code: 632005\nSWIFT Code: ABSAZAJJ`}
+            className="w-full resize-y rounded border border-dashed border-amber-300 bg-white px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+          />
+        </section>
 
-        {/* Optional Notes Section */}
         {showNotes && (
-          <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ color: '#2c3e50', marginBottom: '10px' }}>Notes:</h4>
-            <div contentEditable suppressContentEditableWarning style={{
-              backgroundColor: '#fff3cd',
-              padding: '10px',
-              borderRadius: '4px',
-              border: '1px dashed #ffc107',
-              minHeight: '60px'
-            }}>
-              Notes - any relevant information not covered, additional terms and conditions
-            </div>
-          </div>
+          <section className="mb-8">
+            <h4 className="mb-3 text-sm font-semibold text-slate-700">Notes:</h4>
+            <textarea
+              defaultValue="Notes - any relevant information not covered, additional terms and conditions"
+              className="min-h-[60px] w-full resize-y rounded border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            />
+          </section>
         )}
 
-        {/* Controls (not printed) */}
-        <div className="no-print" style={{
-          borderTop: '1px solid #ddd',
-          paddingTop: '20px',
-          marginTop: '20px',
-          display: 'flex',
-          gap: '10px',
-          flexWrap: 'wrap'
-        }}>
+        <div className="no-print mt-8 flex flex-wrap items-center gap-3 border-t border-slate-200 pt-6">
           <button
             onClick={handlePrint}
-            style={{
-              backgroundColor: '#007bff',
-              color: 'white',
-              padding: '10px 20px',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '16px'
-            }}
+            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200"
           >
-            Print/Save as PDF
+            Print / Save as PDF
           </button>
-          
           <button
-            onClick={() => setShowNotes(!showNotes)}
-            style={{
-              backgroundColor: showNotes ? '#28a745' : '#6c757d',
-              color: 'white',
-              padding: '10px 15px',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
+            onClick={() => setShowNotes((prev) => !prev)}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
           >
             {showNotes ? 'Hide Notes' : 'Show Notes'}
           </button>
-
           <button
-            onClick={() => setShowLogo(!showLogo)}
-            style={{
-              backgroundColor: showLogo ? '#28a745' : '#6c757d',
-              color: 'white',
-              padding: '10px 15px',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
+            onClick={() => setShowLogo((prev) => !prev)}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
           >
-            {showLogo ? 'Hide Logo' : 'Show Logo'}
-          </button>
-
-          <button
-            onClick={() => {
-              const rows = document.querySelectorAll('tbody tr')
-              const lastRow = rows[rows.length - 1]
-              const newRow = lastRow.cloneNode(true) as HTMLElement
-              lastRow.parentNode?.appendChild(newRow)
-            }}
-            style={{
-              backgroundColor: '#17a2b8',
-              color: 'white',
-              padding: '10px 15px',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '14px'
-            }}
-          >
-            Add Row
+            {showLogo ? 'Remove Logo Placeholder' : 'Show Logo Placeholder'}
           </button>
         </div>
       </div>
-
-      <style>{`
-        @media print {
-          body {
-            background-color: white !important;
-            padding: 0 !important;
-          }
-          
-          .invoice-container {
-            box-shadow: none !important;
-            padding: 0 !important;
-          }
-          
-          .no-print {
-            display: none !important;
-          }
-          
-          .editable {
-            background-color: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-          }
-          
-          div[style*="background-color: #f8f9fa"] {
-            background-color: #f8f9fa !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-          }
-          
-          th {
-            background-color: #f8f9fa !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-          }
-        }
-      `}</style>
     </div>
   )
 }

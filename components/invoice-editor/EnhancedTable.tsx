@@ -142,7 +142,7 @@ export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsCh
         </thead>
         <tbody>
           {rows.map((row, rowIndex) => (
-            <tr key={row.id} className="border-b border-[#e9ecef] hover:bg-[#f8f9fa] transition-colors" style={{ height: '60px' }}>
+            <tr key={row.id} className="h-[60px] border-b border-[#e9ecef] transition-colors hover:bg-[#f8f9fa]">
               {columns.map((col) => (
                 <td key={col.id} className="p-3 align-top">
                   <EditableField

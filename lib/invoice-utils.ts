@@ -58,5 +58,10 @@ export const getPlaceholderText = (columnName: string): string => {
  * Generate a unique ID for new fields/rows/columns
  */
 export const generateId = (): string => {
-  return Date.now().toString()
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+
+  // Fallback for environments without crypto.randomUUID
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
 }

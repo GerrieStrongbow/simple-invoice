@@ -2,42 +2,11 @@ import React from 'react'
 
 export const ActionButtons: React.FC = () => {
   return (
-    <div className="no-print" style={{
-      display: 'flex',
-      gap: '16px',
-      justifyContent: 'center',
-      marginTop: '40px',
-      paddingTop: '30px',
-      borderTop: '2px solid #f1f3f5'
-    }}>
+    <div className="no-print mt-10 flex justify-center gap-4 border-t-2 border-slate-100 pt-8">
       <button 
-        className="print-button"
+        type="button"
+        className="print-button inline-flex min-w-[180px] items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#667eea] to-[#764ba2] px-8 py-4 text-sm font-semibold text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200"
         onClick={() => window.print()}
-        style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          padding: '16px 32px',
-          border: 'none',
-          borderRadius: '12px',
-          cursor: 'pointer',
-          fontSize: '16px',
-          fontWeight: '600',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          transition: 'all 0.2s ease',
-          boxShadow: '0 6px 20px rgba(102, 126, 234, 0.3)',
-          minWidth: '180px',
-          justifyContent: 'center'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-3px)'
-          e.currentTarget.style.boxShadow = '0 8px 30px rgba(102, 126, 234, 0.4)'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)'
-          e.currentTarget.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.3)'
-        }}
       >
         <svg 
           width="20" 
@@ -48,6 +17,7 @@ export const ActionButtons: React.FC = () => {
           strokeWidth="2" 
           strokeLinecap="round" 
           strokeLinejoin="round"
+          className="transition-opacity"
         >
           <polyline points="6,9 6,2 18,2 18,9"></polyline>
           <path d="M6,18H4a2,2,0,0,1-2-2V11a2,2,0,0,1,2-2H20a2,2,0,0,1,2,2v5a2,2,0,0,1-2,2H18"></path>

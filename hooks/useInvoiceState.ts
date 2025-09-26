@@ -59,10 +59,10 @@ export const useInvoiceState = () => {
 
   // Table state - start with default columns and one row
   const [columns, setColumns] = useState<Column[]>([
-    { id: 'description', name: 'Description', width: '50%', align: 'left', isDescription: true },
-    { id: '2', name: 'Rate', width: '20%', align: 'right', isDescription: false },
-    { id: '3', name: 'Quantity', width: '15%', align: 'center', isDescription: false },
-    { id: 'amount', name: 'Amount', width: '15%', align: 'right', isAmount: true }
+    { id: 'description', name: 'Description', width: '36.7%', align: 'left', isDescription: true },
+    { id: '2', name: 'Rate', width: '20.43%', align: 'right', isDescription: false },
+    { id: '3', name: 'Quantity', width: '20.43%', align: 'right', isDescription: false },
+    { id: 'amount', name: 'Amount', width: '22.44%', align: 'right', isAmount: true }
   ])
   
   const [rows, setRows] = useState<Row[]>([
