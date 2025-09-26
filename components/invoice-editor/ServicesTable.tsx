@@ -1,7 +1,7 @@
-import React from 'react'
+import { useTableManagement } from '@/hooks/useTableManagement'
 import { Column, Row } from '@/lib/invoice-types'
 import { getPlaceholderText, parseNumericValue } from '@/lib/invoice-utils'
-import { useTableManagement } from '@/hooks/useTableManagement'
+import React from 'react'
 
 interface ServicesTableProps {
   columns: Column[]

@@ -1,5 +1,5 @@
-import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 import { InvoiceData } from './types'
 
 export class PDFGenerator {
@@ -27,27 +27,27 @@ export class PDFGenerator {
         ignoreElements: (el) => {
           // Check for no-print class
           if (el.classList.contains('no-print')) return true
-          
+
           // Check for button elements
           if (el.tagName === 'BUTTON') return true
           if (el.getAttribute('type') === 'button') return true
           // Some read-only fields use role="button" for accessibility; allow them to render
-          
+
           // Check for interactive elements that shouldn't be in PDF
           // Do not filter cursor-pointer/hover classes; invoice fields rely on them for read mode styling
-          
+
           // Check if any parent element has no-print class
           let parent = el.parentElement
           while (parent) {
             if (parent.classList?.contains('no-print')) return true
             parent = parent.parentElement
           }
-          
+
           // Check for specific selectors and dropdowns
           if (el.tagName === 'SELECT') return true
           if (el.classList.contains('absolute')) return true
           if (el.classList.contains('opacity-0')) return true
-          
+
           return false
         }
       })
@@ -57,11 +57,11 @@ export class PDFGenerator {
       }
 
       const imgData = canvas.toDataURL('image/png')
-      
+
       if (imgData.length < 1000) {
         throw new Error('Unable to capture invoice content. Try again or use the browser print option.')
       }
-      
+
       // Calculate PDF dimensions
       const imgWidth = 210 // A4 width in mm
       const pageHeight = 295 // A4 height in mm

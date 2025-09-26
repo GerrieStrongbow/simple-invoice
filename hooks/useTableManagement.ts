@@ -1,6 +1,6 @@
-import { useCallback } from 'react'
 import { Column, Row } from '@/lib/invoice-types'
 import { generateId } from '@/lib/invoice-utils'
+import { useCallback } from 'react'
 
 const MIN_DESCRIPTION_WIDTH = 20
 const MIN_AMOUNT_WIDTH = 12
@@ -116,7 +116,7 @@ export const useTableManagement = () => {
       align: 'center',
       isDescription: false
     }
-    
+
     let newColumns: Column[]
     if (afterColumnId) {
       // Insert after specific column
@@ -133,7 +133,7 @@ export const useTableManagement = () => {
         newColumns = [...columns, newColumn]
       }
     }
-    
+
     const adjustedColumns = recalculateColumnWidths(newColumns)
     setColumns(adjustedColumns)
 
@@ -157,7 +157,7 @@ export const useTableManagement = () => {
     if (column?.isDescription || column?.isAmount || columns.length <= 2) {
       return
     }
-    
+
     const filteredColumns = columns.filter(col => col.id !== columnId)
     const adjustedColumns = recalculateColumnWidths(filteredColumns)
     setColumns(adjustedColumns)
@@ -176,7 +176,7 @@ export const useTableManagement = () => {
     columns: Column[],
     setColumns: (columns: Column[]) => void
   ) => {
-    setColumns(columns.map(col => 
+    setColumns(columns.map(col =>
       col.id === columnId ? { ...col, name: newName } : col
     ))
   }, [])
@@ -189,8 +189,8 @@ export const useTableManagement = () => {
     rows: Row[],
     setRows: (rows: Row[]) => void
   ) => {
-    setRows(rows.map(row => 
-      row.id === rowId 
+    setRows(rows.map(row =>
+      row.id === rowId
         ? { ...row, cells: { ...row.cells, [columnId]: value } }
         : row
     ))

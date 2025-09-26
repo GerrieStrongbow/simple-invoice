@@ -1,6 +1,6 @@
-import React from 'react'
-import { Field } from '@/lib/invoice-types'
 import { useFieldManagement } from '@/hooks/useFieldManagement'
+import { Field } from '@/lib/invoice-types'
+import React from 'react'
 
 interface ContactDetailsProps {
   fromTitle: string
@@ -54,7 +54,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({
               className="flex-1 rounded-lg border-2 border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 outline-hidden transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
             />
             {fields.length > 1 && (
-              <button 
+              <button
                 className="no-print inline-flex h-8 w-8 items-center justify-center rounded-lg border-2 border-rose-200 bg-rose-50 text-lg font-semibold text-rose-600 transition hover:scale-105 hover:border-rose-500 hover:bg-rose-500 hover:text-white focus:outline-hidden focus:ring-4 focus:ring-rose-100"
                 onClick={() => removeField(field.id, fields, onFieldsChange)}
                 title="Remove field"
@@ -62,7 +62,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({
             )}
           </div>
         ))}
-        <button 
+        <button
           className="no-print mt-2 inline-flex h-10 w-full items-center justify-center gap-1 rounded-lg border-2 border-dashed border-sky-500 bg-sky-50 text-sm font-semibold text-sky-600 transition hover:-translate-y-0.5 hover:border-solid hover:bg-sky-500 hover:text-white focus:outline-hidden focus:ring-4 focus:ring-sky-100"
           onClick={() => addField(fields, onFieldsChange)}
           title="Add field"

@@ -1,6 +1,6 @@
-import React from 'react'
-import { Field } from '@/lib/invoice-types'
 import { useFieldManagement } from '@/hooks/useFieldManagement'
+import { Field } from '@/lib/invoice-types'
+import React from 'react'
 
 interface PaymentDetailsProps {
   paymentTitle: string
