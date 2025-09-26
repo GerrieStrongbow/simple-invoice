@@ -1,7 +1,7 @@
-import React from 'react'
+import { useTableManagement } from '@/hooks/useTableManagement'
 import { Column, Row } from '@/lib/invoice-types'
 import { getPlaceholderText, parseNumericValue } from '@/lib/invoice-utils'
-import { useTableManagement } from '@/hooks/useTableManagement'
+import React from 'react'
 
 interface ServicesTableProps {
   columns: Column[]
@@ -9,6 +9,23 @@ interface ServicesTableProps {
   onColumnsChange: (columns: Column[]) => void
   onRowsChange: (rows: Row[]) => void
   onCellUpdate: (rowId: string, columnId: string, value: any) => void
+}
+
+const baseInputClasses = 'w-full rounded-lg border-2 border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 outline-hidden transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
+const descriptionTitleClasses = `${baseInputClasses} font-semibold`
+const descriptionBodyClasses = `${baseInputClasses} text-slate-500`
+const amountInputClasses = 'w-full cursor-not-allowed rounded-lg border-2 border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 outline-hidden focus:border-slate-200 focus:ring-0'
+const columnTitleClasses = 'w-full min-w-0 cursor-text rounded-lg border-2 border-slate-200 bg-white px-2 py-2 text-[13px] font-semibold text-slate-700 outline-hidden transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
+
+const alignmentClass = (align: Column['align']) => {
+  switch (align) {
+    case 'center':
+      return 'text-center'
+    case 'right':
+      return 'text-right'
+    default:
+      return 'text-left'
+  }
 }
 
 export const ServicesTable: React.FC<ServicesTableProps> = ({
@@ -26,29 +43,24 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
     updateColumnName
   } = useTableManagement()
 
-  // Helper function to calculate placeholder for amount column
   const calculatePlaceholderAmount = (row: Row): string => {
     let result = 0
     let hasAnyValues = false
-    let allPlaceholders = true
-    
+
     columns.forEach(col => {
       if (!col.isDescription && !col.isAmount) {
         const cellValue = String(row.cells[col.id] || '')
         if (!cellValue) {
-          // Using placeholder - since placeholders are now 0, result will be 0
           const placeholderValue = parseNumericValue(getPlaceholderText(col.name))
-          if (result === 0 && !hasAnyValues) {
+          if (!hasAnyValues) {
             result = placeholderValue
           } else {
             result *= placeholderValue
           }
           hasAnyValues = true
         } else {
-          // Use actual value
           const numValue = parseNumericValue(cellValue)
-          allPlaceholders = false
-          if (result === 0 && !hasAnyValues) {
+          if (!hasAnyValues) {
             result = numValue
           } else {
             result *= numValue
@@ -57,17 +69,15 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
         }
       }
     })
-    
+
     return result.toString()
   }
 
-  // Helper function to render table cell content
   const renderCellContent = (row: Row, column: Column) => {
     if (column.isDescription && typeof row.cells[column.id] === 'object') {
-      // Special handling for description column
       const cellData = row.cells[column.id] as { name: string; description: string }
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <div className="flex flex-col gap-2">
           <input
             type="text"
             value={cellData.name || ''}
@@ -76,26 +86,7 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
               ...cellData,
               name: e.target.value
             })}
-            style={{
-              backgroundColor: '#ffffff',
-              border: '2px solid #e2e8f0',
-              borderRadius: '6px',
-              padding: '8px 12px',
-              fontSize: '14px',
-              outline: 'none',
-              fontWeight: '600',
-              width: '100%',
-              transition: 'all 0.2s ease',
-              color: '#1f2937'
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = '#667eea'
-              e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = '#e2e8f0'
-              e.target.style.boxShadow = 'none'
-            }}
+            className={descriptionTitleClasses}
           />
           <input
             type="text"
@@ -105,391 +96,128 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
               ...cellData,
               description: e.target.value
             })}
-            style={{
-              backgroundColor: '#ffffff',
-              border: '2px solid #e2e8f0',
-              borderRadius: '6px',
-              padding: '8px 12px',
-              fontSize: '14px',
-              outline: 'none',
-              width: '100%',
-              transition: 'all 0.2s ease',
-              color: '#6b7280'
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = '#667eea'
-              e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = '#e2e8f0'
-              e.target.style.boxShadow = 'none'
-            }}
+            className={descriptionBodyClasses}
           />
         </div>
       )
     }
 
-    // Regular cell - Amount is read-only calculated field, others are editable
-    const placeholder = column.isAmount 
+    const placeholder = column.isAmount
       ? calculatePlaceholderAmount(row)
       : getPlaceholderText(column.name)
-    
+
+    const value = String(row.cells[column.id] || '')
+    const alignClass = alignmentClass(column.align)
+
     return (
       <input
         type="text"
-        value={String(row.cells[column.id] || '')}
+        value={value}
         placeholder={placeholder}
         onChange={(e) => onCellUpdate(row.id, column.id, e.target.value)}
         readOnly={column.isAmount}
-        style={{
-          backgroundColor: column.isAmount ? '#f8fafc' : '#ffffff',
-          border: column.isAmount ? '2px solid #e5e7eb' : '2px solid #e2e8f0',
-          borderRadius: '6px',
-          padding: '8px 12px',
-          fontSize: '14px',
-          outline: 'none',
-          width: '100%',
-          textAlign: column.align,
-          cursor: column.isAmount ? 'not-allowed' : 'text',
-          transition: 'all 0.2s ease',
-          fontWeight: column.isAmount ? '600' : '500',
-          color: column.isAmount ? '#374151' : '#1f2937'
-        }}
-        onFocus={(e) => {
-          if (!column.isAmount) {
-            e.target.style.borderColor = '#667eea'
-            e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-          }
-        }}
-        onBlur={(e) => {
-          if (!column.isAmount) {
-            e.target.style.borderColor = '#e2e8f0'
-            e.target.style.boxShadow = 'none'
-          }
-        }}
+        aria-readonly={column.isAmount}
+        className={`${column.isAmount ? amountInputClasses : baseInputClasses} ${alignClass}`}
       />
     )
   }
 
   return (
     <>
-      {/* Services Table */}
-      <div style={{ 
-        marginBottom: '40px',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        border: '1px solid #e2e8f0',
-        marginRight: '0px',
-        position: 'relative'
-      }}>
-        <table className="services-table" style={{
-          width: '100%',
-          borderCollapse: 'collapse'
-        }}>
+      <div className="relative mb-10 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
+        <table className="services-table w-full table-fixed border-collapse">
           <thead>
-            <tr style={{
-              background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-              position: 'relative'
-            }}>
+            <tr className="bg-linear-to-r from-slate-50 to-slate-100">
               {columns.map((column, index) => (
-                <React.Fragment key={column.id}>
-                  <th style={{
-                    padding: '20px 16px',
-                    textAlign: 'center',
-                    fontWeight: '700',
-                    color: '#1f2937',
-                    width: column.width,
-                    position: 'relative',
-                    fontSize: '15px'
-                  }}>
-                    {/* Add button between columns (appears on hover) - allows adding before Amount */}
+                <th
+                  key={column.id}
+                  className={`group relative px-3 py-4 text-sm font-semibold text-slate-800 sm:px-4 ${alignmentClass(column.align)}`}
+                  style={{ width: column.width }}
+                >
                     {index > 0 && (
-                      <div 
-                        className="no-print"
-                        style={{
-                          position: 'absolute',
-                          left: '-20px',
-                          top: '0',
-                          bottom: '0',
-                          width: '40px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          zIndex: 10
-                        }}
-                        onMouseEnter={(e) => {
-                          const btn = e.currentTarget.querySelector('button')
-                          if (btn) (btn as HTMLElement).style.opacity = '1'
-                        }}
-                        onMouseLeave={(e) => {
-                          const btn = e.currentTarget.querySelector('button')
-                          if (btn) (btn as HTMLElement).style.opacity = '0'
-                        }}
+                      <button
+                        type="button"
+                        className="no-print absolute inset-y-0 left-[-16px] flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 text-sm font-semibold text-white opacity-0 shadow-sm transition hover:bg-sky-600 focus:outline-hidden focus:ring-2 focus:ring-sky-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
+                        onClick={() => addColumn(columns[index - 1].id, columns, rows, onColumnsChange, onRowsChange)}
+                        aria-label="Add column here"
                       >
-                        <button 
-                          onClick={() => addColumn(columns[index - 1].id, columns, rows, onColumnsChange, onRowsChange)}
-                          style={{
-                            width: '24px',
-                            height: '24px',
-                            backgroundColor: '#0284c7',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '50%',
-                            cursor: 'pointer',
-                            fontSize: '16px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            lineHeight: 1,
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                            fontWeight: '600',
-                            opacity: 0,
-                            transition: 'opacity 0.2s ease'
-                          }}
-                          title="Add column here"
-                        >+</button>
-                      </div>
+                        +
+                      </button>
                     )}
-                    
-                    <span
-                      role="textbox"
+
+                    <input
+                      type="text"
                       aria-label={`Column header: ${column.name}`}
-                      tabIndex={0}
-                      contentEditable 
-                      suppressContentEditableWarning
-                      style={{
-                        backgroundColor: '#ffffff',
-                        padding: '8px 12px',
-                        borderRadius: '6px',
-                        border: '2px solid #e2e8f0',
-                        minWidth: '80px',
-                        display: 'inline-block',
-                        transition: 'all 0.2s ease',
-                        cursor: 'text'
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.borderColor = '#667eea'
-                        e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
-                      }}
-                      onBlur={(e) => {
-                        updateColumnName(column.id, e.target.textContent || column.name, columns, onColumnsChange)
-                        e.target.style.borderColor = '#e2e8f0'
-                        e.target.style.boxShadow = 'none'
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault()
-                          e.currentTarget.blur()
-                        }
-                      }}
-                    >
-                      {column.name}
-                    </span>
-                    
-                    {/* Delete button - now centered horizontally */}
+                      value={column.name}
+                      onChange={(e) => updateColumnName(column.id, e.target.value, columns, onColumnsChange)}
+                      className={`${columnTitleClasses} ${alignmentClass(column.align)}`}
+                    />
+
                     {!column.isDescription && columns.length > 2 && (
-                      <button 
-                        className="no-print remove-btn"
+                      <button
+                        type="button"
+                        className="no-print absolute left-1/2 top-2 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-md border-2 border-rose-200 bg-rose-50 text-sm font-semibold text-rose-600 opacity-0 transition hover:scale-105 hover:border-rose-500 hover:bg-rose-500 hover:text-white focus:outline-hidden focus:ring-2 focus:ring-rose-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
                         onClick={() => removeColumn(column.id, columns, rows, onColumnsChange, onRowsChange)}
-                        style={{
-                          position: 'absolute',
-                          top: '4px',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          width: '24px',
-                          height: '24px',
-                          backgroundColor: '#fef2f2',
-                          color: '#dc2626',
-                          border: '2px solid #fecaca',
-                          borderRadius: '6px',
-                          cursor: 'pointer',
-                          fontSize: '14px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          lineHeight: 1,
-                          transition: 'all 0.2s ease',
-                          fontWeight: '600',
-                          marginLeft: '0',
-                          marginRight: '0',
-                          boxSizing: 'border-box'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = '#dc2626'
-                          e.currentTarget.style.color = 'white'
-                          e.currentTarget.style.borderColor = '#dc2626'
-                          e.currentTarget.style.transform = 'translateX(-50%) scale(1.05)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = '#fef2f2'
-                          e.currentTarget.style.color = '#dc2626'
-                          e.currentTarget.style.borderColor = '#fecaca'
-                          e.currentTarget.style.transform = 'translateX(-50%) scale(1)'
-                        }}
-                        title="Remove column"
-                      >×</button>
+                        aria-label="Remove column"
+                      >
+                        ×
+                      </button>
+                    )}
+
+                    {index === columns.length - 1 && !column.isAmount && (
+                      <button
+                        type="button"
+                        className="no-print absolute inset-y-0 right-[-16px] flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 text-sm font-semibold text-white opacity-0 shadow-sm transition hover:bg-sky-600 focus:outline-hidden focus:ring-2 focus:ring-sky-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
+                        onClick={() => addColumn(column.id, columns, rows, onColumnsChange, onRowsChange)}
+                        aria-label="Add column"
+                      >
+                        +
+                      </button>
                     )}
                   </th>
-                  
-                  {/* Add button after the last column - only if Amount is not the last column */}
-                  {index === columns.length - 1 && !column.isAmount && (
-                    <div 
-                      className="no-print"
-                      style={{
-                        position: 'absolute',
-                        right: '-20px',
-                        top: '0',
-                        bottom: '0',
-                        width: '40px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 10
-                      }}
-                      onMouseEnter={(e) => {
-                        const btn = e.currentTarget.querySelector('button')
-                        if (btn) (btn as HTMLElement).style.opacity = '1'
-                      }}
-                      onMouseLeave={(e) => {
-                        const btn = e.currentTarget.querySelector('button')
-                        if (btn) (btn as HTMLElement).style.opacity = '0'
-                      }}
-                    >
-                      <button 
-                        onClick={() => addColumn(column.id, columns, rows, onColumnsChange, onRowsChange)}
-                        style={{
-                          width: '24px',
-                          height: '24px',
-                          backgroundColor: '#0284c7',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '50%',
-                          cursor: 'pointer',
-                          fontSize: '16px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          lineHeight: 1,
-                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                          fontWeight: '600',
-                          opacity: 0,
-                          transition: 'opacity 0.2s ease'
-                        }}
-                        title="Add column here"
-                      >+</button>
-                    </div>
-                  )}
-                </React.Fragment>
               ))}
             </tr>
           </thead>
           <tbody>
             {rows.map((row, index) => (
-              <tr key={row.id} style={{ 
-                height: '80px',
-                backgroundColor: index % 2 === 0 ? '#ffffff' : '#fafbfc',
-                position: 'relative'
-              }}>
-                {columns.map((column) => (
-                  <td key={`${row.id}-${column.id}`} style={{
-                    width: column.width,
-                    textAlign: column.align,
-                    verticalAlign: 'top',
-                    padding: '16px',
-                    borderBottom: '1px solid #f1f3f5'
-                  }}>
-                    {renderCellContent(row, column)}
-                  </td>
-                ))}
-                {/* Remove row button - positioned absolutely to avoid table structure issues */}
-                {rows.length > 1 && (
-                  <div 
-                    className="no-print"
-                    style={{
-                      position: 'absolute',
-                      right: '-20px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      zIndex: 10
-                    }}
-                  >
-                    <button 
-                      className="remove-btn"
-                      onClick={() => removeRow(row.id, rows, onRowsChange)}
-                      style={{
-                        width: '24px',
-                        height: '24px',
-                        backgroundColor: '#fef2f2',
-                        color: '#dc2626',
-                        border: '2px solid #fecaca',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        lineHeight: 1,
-                        transition: 'all 0.2s ease',
-                        fontWeight: '600'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#dc2626'
-                        e.currentTarget.style.color = 'white'
-                        e.currentTarget.style.borderColor = '#dc2626'
-                        e.currentTarget.style.transform = 'scale(1.05)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '#fef2f2'
-                        e.currentTarget.style.color = '#dc2626'
-                        e.currentTarget.style.borderColor = '#fecaca'
-                        e.currentTarget.style.transform = 'scale(1)'
-                      }}
-                      title="Remove row"
-                    >×</button>
-                  </div>
-                )}
+              <tr
+                key={row.id}
+                className={`${index % 2 === 0 ? 'bg-white' : 'bg-slate-50'} group relative`}
+              >
+                {columns.map((column, columnIndex) => {
+                  const isLastColumn = columnIndex === columns.length - 1
+                  return (
+                    <td
+                      key={`${row.id}-${column.id}`}
+                      className={`border-b border-slate-200 px-3 py-4 align-top ${alignmentClass(column.align)} ${isLastColumn ? 'relative pr-10 sm:pr-12' : ''}`}
+                      style={{ width: column.width }}
+                    >
+                      {renderCellContent(row, column)}
+
+                      {isLastColumn && rows.length > 1 && (
+                        <button
+                          type="button"
+                          className="no-print absolute right-0 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md border-2 border-rose-200 bg-rose-50 text-xs font-semibold text-rose-600 opacity-0 transition hover:scale-105 hover:border-rose-500 hover:bg-rose-500 hover:text-white focus:outline-hidden focus:ring-2 focus:ring-rose-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
+                          onClick={() => removeRow(row.id, rows, onRowsChange)}
+                          aria-label="Remove row"
+                        >
+                          ×
+                        </button>
+                      )}
+                    </td>
+                  )
+                })}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Add Row Button */}
-      <div className="no-print" style={{ marginBottom: '16px', marginTop: '-8px' }}>
-        <button 
+      <div className="no-print -mt-2 mb-4">
+        <button
+          type="button"
           onClick={() => addRow(columns, rows, onRowsChange)}
-          style={{
-            width: '120px',
-            height: '40px',
-            backgroundColor: '#f0f9ff',
-            color: '#0284c7',
-            border: '2px dashed #0284c7',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '600',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            lineHeight: 1,
-            transition: 'all 0.2s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#0284c7'
-            e.currentTarget.style.color = 'white'
-            e.currentTarget.style.borderColor = '#0284c7'
-            e.currentTarget.style.borderStyle = 'solid'
-            e.currentTarget.style.transform = 'translateY(-1px)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#f0f9ff'
-            e.currentTarget.style.color = '#0284c7'
-            e.currentTarget.style.borderColor = '#0284c7'
-            e.currentTarget.style.borderStyle = 'dashed'
-            e.currentTarget.style.transform = 'translateY(0)'
-          }}
-          title="Add new row"
+          className="flex h-10 w-32 items-center justify-center gap-2 rounded-lg border-2 border-dashed border-sky-500 bg-sky-50 text-sm font-semibold text-sky-600 transition hover:-translate-y-0.5 hover:border-solid hover:bg-sky-500 hover:text-white focus:outline-hidden focus:ring-4 focus:ring-sky-100"
         >
           + Add Row
         </button>

@@ -1,7 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --font-inter: Inter, Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+
+  --color-invoice-blue: #2c3e50;
+  --color-invoice-gray: #f8f9fa;
+  --color-invoice-border: #e9ecef;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 @layer base {
   body {
@@ -18,11 +42,10 @@
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
-  
+
   /* Hide all interactive elements and buttons */
-  .no-print, 
+  .no-print,
   button,
-  .cursor-pointer,
   [type="button"],
   [role="button"],
   input[type="button"],
@@ -35,11 +58,11 @@
     display: none !important;
     visibility: hidden !important;
   }
-  
+
   .print-only {
     display: block !important;
   }
-  
+
   /* Remove any interactive hover elements */
   .hover\\:bg-gray-50,
   .hover\\:bg-blue-700,
@@ -47,59 +70,63 @@
   .hover\\:bg-red-50,
   .transition-opacity,
   .group-hover\\:opacity-100 {
-    display: none !important;
+    opacity: 1 !important;
   }
-  
+
+  .cursor-pointer {
+    cursor: text !important;
+  }
+
   /* Ensure table borders and colors print correctly */
   table {
     border-collapse: collapse;
   }
-  
+
   th, td {
     border: 1px solid #e9ecef !important;
   }
-  
+
   /* Make sure all colors print */
   * {
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }
-  
+
   /* Compact spacing for print */
   .print\\:p-0 {
     padding: 0 !important;
   }
-  
+
   .print\\:shadow-none {
     box-shadow: none !important;
   }
-  
+
   /* Hide all dropdowns and selectors in print */
   select,
   .relative > div,
   .absolute {
     display: none !important;
   }
-  
+
   /* Ensure clean invoice content shows */
   .bg-white {
     background-color: white !important;
   }
-  
+
   /* Clean up the layout for print */
   .rounded-lg {
     border-radius: 0 !important;
   }
-  
+
   .shadow-lg {
     box-shadow: none !important;
   }
-  
+
   /* Show only essential content */
   .print\\:hidden {
     display: none !important;
   }
-  
+
   /* Hide editable field indicators in print */
   [contenteditable="true"],
   .cursor-text,
@@ -111,7 +138,7 @@
     box-shadow: none !important;
     padding: 0 !important;
   }
-  
+
   /* Ensure background colors still print */
   .bg-\\[\\#f8f9fa\\] {
     background-color: #f8f9fa !important;

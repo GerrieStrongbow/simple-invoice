@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { Field, Column, Row } from '@/lib/invoice-types'
+import { Column, Field, Row } from '@/lib/invoice-types'
 import { getCurrentDate, getEndOfMonth } from '@/lib/invoice-utils'
+import { useState } from 'react'
 
 export const useInvoiceState = () => {
   // State for individual fields
@@ -13,7 +13,7 @@ export const useInvoiceState = () => {
     { id: '6', label: 'Email', value: '', placeholder: 'your.email@business.com' },
     { id: '7', label: 'Phone', value: '', placeholder: '+1 (555) 123-4567' }
   ])
-  
+
   const [toFields, setToFields] = useState<Field[]>([
     { id: '1', label: 'Client Name', value: '', placeholder: 'Client Name' },
     { id: '2', label: 'Client Address', value: '', placeholder: 'Client Address' },
@@ -22,7 +22,7 @@ export const useInvoiceState = () => {
     { id: '5', label: 'Country', value: '', placeholder: 'Country' },
     { id: '6', label: 'Email', value: '', placeholder: 'client@email.com' }
   ])
-  
+
   const [paymentFields, setPaymentFields] = useState<Field[]>([
     { id: '1', label: 'Account Name', value: '', placeholder: 'Your Full Name' },
     { id: '2', label: 'Bank', value: '', placeholder: 'Your Bank Name' },
@@ -30,13 +30,13 @@ export const useInvoiceState = () => {
     { id: '4', label: 'Branch Code', value: '', placeholder: '000000' },
     { id: '5', label: 'SWIFT Code', value: '', placeholder: 'BANKCODE' }
   ])
-  
+
   // Tax and discount state
   const [taxEnabled, setTaxEnabled] = useState(false)
   const [taxPercentage, setTaxPercentage] = useState('15')
-  const [discountEnabled, setDiscountEnabled] = useState(false)  
+  const [discountEnabled, setDiscountEnabled] = useState(false)
   const [discountPercentage, setDiscountPercentage] = useState('10')
-  
+
   // Currency state - default to ZAR to maintain current behavior
   const [currencyCode, setCurrencyCode] = useState('ZAR')
   const [currencySymbol, setCurrencySymbol] = useState('R')
@@ -44,13 +44,13 @@ export const useInvoiceState = () => {
   // Date state
   const [invoiceDate, setInvoiceDate] = useState(getCurrentDate())
   const [dueDate, setDueDate] = useState(getEndOfMonth())
-  
+
   // Section headers state
   const [invoiceTitle, setInvoiceTitle] = useState('INVOICE')
   const [fromTitle, setFromTitle] = useState('From:')
   const [toTitle, setToTitle] = useState('To:')
   const [paymentTitle, setPaymentTitle] = useState('Payment Details:')
-  
+
   // Field labels state
   const [invoiceNumberLabel, setInvoiceNumberLabel] = useState('Invoice #:')
   const [dateLabel, setDateLabel] = useState('Issue Date:')
@@ -59,19 +59,19 @@ export const useInvoiceState = () => {
 
   // Table state - start with default columns and one row
   const [columns, setColumns] = useState<Column[]>([
-    { id: 'description', name: 'Description', width: '50%', align: 'left', isDescription: true },
-    { id: '2', name: 'Rate', width: '20%', align: 'right', isDescription: false },
-    { id: '3', name: 'Quantity', width: '15%', align: 'center', isDescription: false },
-    { id: 'amount', name: 'Amount', width: '15%', align: 'right', isAmount: true }
+    { id: 'description', name: 'Description', width: '36.7%', align: 'left', isDescription: true },
+    { id: '2', name: 'Rate', width: '20.43%', align: 'right', isDescription: false },
+    { id: '3', name: 'Quantity', width: '20.43%', align: 'right', isDescription: false },
+    { id: 'amount', name: 'Amount', width: '22.44%', align: 'right', isAmount: true }
   ])
-  
+
   const [rows, setRows] = useState<Row[]>([
-    { 
-      id: '1', 
+    {
+      id: '1',
       cells: {
         'description': { name: '', description: '' },
         '2': '',
-        '3': '', 
+        '3': '',
         'amount': ''
       }
     }
@@ -85,7 +85,7 @@ export const useInvoiceState = () => {
     setToFields,
     paymentFields,
     setPaymentFields,
-    
+
     // Tax and discount
     taxEnabled,
     setTaxEnabled,
@@ -95,19 +95,19 @@ export const useInvoiceState = () => {
     setDiscountEnabled,
     discountPercentage,
     setDiscountPercentage,
-    
+
     // Currency
     currencyCode,
     setCurrencyCode,
     currencySymbol,
     setCurrencySymbol,
-    
+
     // Dates
     invoiceDate,
     setInvoiceDate,
     dueDate,
     setDueDate,
-    
+
     // Section headers
     invoiceTitle,
     setInvoiceTitle,
@@ -117,7 +117,7 @@ export const useInvoiceState = () => {
     setToTitle,
     paymentTitle,
     setPaymentTitle,
-    
+
     // Field labels
     invoiceNumberLabel,
     setInvoiceNumberLabel,
@@ -127,7 +127,7 @@ export const useInvoiceState = () => {
     setDueDateLabel,
     totalLabel,
     setTotalLabel,
-    
+
     // Table
     columns,
     setColumns,

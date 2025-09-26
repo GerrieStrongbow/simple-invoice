@@ -101,9 +101,9 @@ export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsCh
     <div className="mb-6">
       <table className="w-full border-collapse">
         <thead>
-          <tr className="bg-[#f8f9fa]">
+          <tr className="bg-invoice-gray">
             {columns.map((col) => (
-              <th key={col.id} className="p-3 text-left font-bold text-[#2c3e50] border-b border-[#e9ecef] relative group">
+              <th key={col.id} className="p-3 text-left font-bold text-invoice-blue border-b border-invoice-border relative group">
                 <EditableField
                   value={col.name}
                   onChange={(value) => updateColumnName(col.id, value)}
@@ -118,7 +118,7 @@ export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsCh
                   ⋮
                 </button>
                 {showColumnMenu === col.id && (
-                  <div className="absolute top-8 right-0 bg-white border rounded shadow-lg z-10 no-print">
+                  <div className="absolute top-8 right-0 bg-white border rounded-sm shadow-lg z-10 no-print">
                     <button
                       onClick={() => removeColumn(col.id)}
                       className="block w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 text-sm"
@@ -132,7 +132,7 @@ export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsCh
             <th className="w-12 no-print">
               <button
                 onClick={addColumn}
-                className="w-8 h-8 flex items-center justify-center text-[#2c3e50] hover:bg-gray-200 rounded text-sm"
+                className="w-8 h-8 flex items-center justify-center text-invoice-blue hover:bg-gray-200 rounded-sm text-sm"
                 title="Add column"
               >
                 +
@@ -142,7 +142,7 @@ export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsCh
         </thead>
         <tbody>
           {rows.map((row, rowIndex) => (
-            <tr key={row.id} className="border-b border-[#e9ecef] hover:bg-[#f8f9fa] transition-colors" style={{ height: '60px' }}>
+            <tr key={row.id} className="h-[60px] border-b border-invoice-border transition-colors hover:bg-invoice-gray">
               {columns.map((col) => (
                 <td key={col.id} className="p-3 align-top">
                   <EditableField
@@ -172,7 +172,7 @@ export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsCh
       {/* Add Row Button */}
       <button
         onClick={addRow}
-        className="mt-2 px-4 py-2 text-sm text-[#2c3e50] hover:bg-[#f8f9fa] rounded border border-gray-300 no-print"
+        className="mt-2 px-4 py-2 text-sm text-invoice-blue hover:bg-invoice-gray rounded-sm border border-gray-300 no-print"
       >
         + Add Row
       </button>

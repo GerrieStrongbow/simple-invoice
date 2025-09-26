@@ -1,6 +1,73 @@
-import { useCallback } from 'react'
 import { Column, Row } from '@/lib/invoice-types'
 import { generateId } from '@/lib/invoice-utils'
+import { useCallback } from 'react'
+
+const MIN_DESCRIPTION_WIDTH = 20
+const MIN_AMOUNT_WIDTH = 12
+const MIN_GENERIC_WIDTH = 10
+
+const DESCRIPTION_WEIGHT = 1.6
+const AMOUNT_WEIGHT = 1
+const GENERIC_WEIGHT = 1
+
+const toPercent = (value: number) => `${parseFloat(value.toFixed(2))}%`
+
+const recalculateColumnWidths = (columns: Column[]): Column[] => {
+  if (!columns.length) {
+    return columns
+  }
+
+  const weights: number[] = columns.map(column => {
+    if (column.isDescription) {
+      return DESCRIPTION_WEIGHT
+    }
+    if (column.isAmount) {
+      return AMOUNT_WEIGHT
+    }
+    return GENERIC_WEIGHT
+  })
+
+  let minWidths: number[] = columns.map(column => {
+    if (column.isDescription) {
+      return MIN_DESCRIPTION_WIDTH
+    }
+    if (column.isAmount) {
+      return MIN_AMOUNT_WIDTH
+    }
+    return MIN_GENERIC_WIDTH
+  })
+
+  const totalMin = minWidths.reduce((total, value) => total + value, 0)
+  let leftover = 0
+
+  if (totalMin > 100) {
+    const scale = 100 / totalMin
+    minWidths = minWidths.map(value => value * scale)
+  } else {
+    leftover = 100 - totalMin
+  }
+
+  const totalWeight = weights.reduce((total, value) => total + value, 0)
+
+  const widths = columns.map((column, index) => {
+    const weight = weights[index]
+    const minWidth = minWidths[index]
+    const extra = leftover > 0 && totalWeight > 0
+      ? (leftover * (weight / totalWeight))
+      : 0
+    return parseFloat((minWidth + extra).toFixed(2))
+  })
+
+  const totalAssigned = widths.reduce((total, value) => total + value, 0)
+  const roundingDelta = parseFloat((100 - totalAssigned).toFixed(2))
+
+  return columns.map((column, index) => {
+    const finalWidth = index === columns.length - 1
+      ? widths[index] + roundingDelta
+      : widths[index]
+    return { ...column, width: toPercent(finalWidth) }
+  })
+}
 
 export const useTableManagement = () => {
   // Add a new row to the table
@@ -49,7 +116,7 @@ export const useTableManagement = () => {
       align: 'center',
       isDescription: false
     }
-    
+
     let newColumns: Column[]
     if (afterColumnId) {
       // Insert after specific column
@@ -66,9 +133,10 @@ export const useTableManagement = () => {
         newColumns = [...columns, newColumn]
       }
     }
-    
-    setColumns(newColumns)
-    
+
+    const adjustedColumns = recalculateColumnWidths(newColumns)
+    setColumns(adjustedColumns)
+
     // Add empty cell to all existing rows
     setRows(rows.map(row => ({
       ...row,
@@ -89,8 +157,10 @@ export const useTableManagement = () => {
     if (column?.isDescription || column?.isAmount || columns.length <= 2) {
       return
     }
-    
-    setColumns(columns.filter(col => col.id !== columnId))
+
+    const filteredColumns = columns.filter(col => col.id !== columnId)
+    const adjustedColumns = recalculateColumnWidths(filteredColumns)
+    setColumns(adjustedColumns)
     // Remove cells from all rows
     setRows(rows.map(row => {
       const newCells = { ...row.cells }
@@ -106,7 +176,7 @@ export const useTableManagement = () => {
     columns: Column[],
     setColumns: (columns: Column[]) => void
   ) => {
-    setColumns(columns.map(col => 
+    setColumns(columns.map(col =>
       col.id === columnId ? { ...col, name: newName } : col
     ))
   }, [])
@@ -119,8 +189,8 @@ export const useTableManagement = () => {
     rows: Row[],
     setRows: (rows: Row[]) => void
   ) => {
-    setRows(rows.map(row => 
-      row.id === rowId 
+    setRows(rows.map(row =>
+      row.id === rowId
         ? { ...row, cells: { ...row.cells, [columnId]: value } }
         : row
     ))

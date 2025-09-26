@@ -29,24 +29,24 @@ thead tr th:not(:first-child):hover::before {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  
+
   body {
     background: white !important;
     padding: 0 !important;
     margin: 0 !important;
   }
-  
+
   /* Hide everything initially */
   * {
     visibility: hidden;
   }
-  
+
   /* Show only the invoice container and its contents */
   .invoice-container,
   .invoice-container * {
     visibility: visible;
   }
-  
+
   /* Style the invoice container for print */
   .invoice-container {
     position: absolute !important;
@@ -61,7 +61,7 @@ thead tr th:not(:first-child):hover::before {
     margin: 0 !important;
     max-width: none !important;
   }
-  
+
   /* Hide non-printable elements */
   .no-print,
   header,
@@ -72,13 +72,13 @@ thead tr th:not(:first-child):hover::before {
     display: none !important;
     visibility: hidden !important;
   }
-  
+
   /* Show print-only elements */
   .print-only {
     display: inline !important;
     visibility: visible !important;
   }
-  
+
   /* Clean up input styling for print */
   input[type="text"] {
     background: transparent !important;
@@ -91,7 +91,7 @@ thead tr th:not(:first-child):hover::before {
     font-weight: inherit !important;
     color: inherit !important;
   }
-  
+
   /* Hide all editable borders in print */
   span[contenteditable] {
     background: transparent !important;
@@ -100,7 +100,7 @@ thead tr th:not(:first-child):hover::before {
     outline: none !important;
     box-shadow: none !important;
   }
-  
+
   /* Hide date inputs completely and show formatted dates instead */
   input[type="date"] {
     color: transparent !important;
@@ -110,71 +110,126 @@ thead tr th:not(:first-child):hover::before {
     outline: none !important;
     box-shadow: none !important;
   }
-  
+
   /* Hide date picker elements */
   input[type="date"]::-webkit-calendar-picker-indicator {
     display: none !important;
   }
-  
+
   input[type="date"]::-webkit-inner-spin-button,
   input[type="date"]::-webkit-outer-spin-button {
     display: none !important;
   }
-  
+
   /* Preserve card backgrounds with compact padding */
   .bank-details {
     background: #f8fafc !important;
     border: 1px solid #e2e8f0 !important;
-    padding: 12px !important;
-    margin-top: 15px !important;
+    padding: 8px !important;
+    margin-top: 10px !important;
   }
-  
+
   /* Preserve table styling with optimized spacing */
   .services-table th {
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-    padding: 10px !important;
+    padding: 4px !important;
   }
-  
+
   .services-table td {
-    padding: 8px 10px !important;
+    padding: 3px 5px !important;
   }
-  
+
+  .services-table input {
+    padding: 3px 6px !important;
+    font-size: 12px !important;
+  }
+
   /* Clean table styling */
   .services-table {
     width: 100% !important;
     margin: 0 !important;
+    table-layout: fixed !important;
   }
-  
+
+  .services-table th:first-child,
+  .services-table td:first-child {
+    width: 58% !important;
+  }
+
+  .services-table th:nth-child(2),
+  .services-table td:nth-child(2) {
+    width: 14% !important;
+  }
+
+  .services-table th:nth-child(3),
+  .services-table td:nth-child(3) {
+    width: 14% !important;
+  }
+
+  .services-table th:nth-child(4),
+  .services-table td:nth-child(4) {
+    width: 14% !important;
+  }
+
+  .services-table td:first-child input {
+    white-space: normal !important;
+    word-break: break-word !important;
+    height: auto !important;
+  }
+
+  .services-table th input {
+    text-align: inherit !important;
+  }
+
+  .services-table th,
+  .services-table td {
+    text-align: right !important;
+  }
+
+  .services-table td input {
+    text-align: right !important;
+  }
+
+  .services-table th:first-child,
+  .services-table td:first-child {
+    text-align: left !important;
+  }
+
+  .services-table td:first-child input,
+  .services-table td:first-child textarea {
+    text-align: left !important;
+  }
+
   /* Fix table width to match other sections */
   table {
     width: 100% !important;
     border-collapse: collapse !important;
   }
-  
+
   /* Optimize font sizes and line spacing for print */
   .invoice-container {
-    font-size: 16px !important;
-    line-height: 1.35 !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
   }
-  
+
   .invoice-container h1 {
-    font-size: 34px !important;
+    font-size: 28px !important;
     margin: 0 !important;
     line-height: 1 !important;
   }
-  
+
   .invoice-container h3 {
-    font-size: 19px !important;
-    margin: 0 0 10px 0 !important;
+    font-size: 15px !important;
+    margin: 0 0 6px 0 !important;
     line-height: 1.2 !important;
   }
-  
+
   .invoice-container h4 {
-    font-size: 17px !important;
-    margin: 0 0 8px 0 !important;
+    font-size: 14px !important;
+    margin: 0 0 4px 0 !important;
     line-height: 1.2 !important;
   }
-  
+
   /* Ensure all text elements use optimized spacing */
   .invoice-container input,
   .invoice-container span,
@@ -184,50 +239,117 @@ thead tr th:not(:first-child):hover::before {
     font-size: inherit !important;
     line-height: 1.2 !important;
   }
-  
+
   /* Optimize vertical spacing between sections */
   .invoice-container > div {
-    margin-bottom: 16px !important;
+    margin-bottom: 10px !important;
   }
-  
+
+  .invoice-container > div:first-child {
+    padding: 16px !important;
+  }
+
   /* Optimize the header section */
   .invoice-header {
-    padding-bottom: 12px !important;
-    margin-bottom: 16px !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 12px !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
   }
-  
+
+  .invoice-header h1 input {
+    padding: 4px 10px !important;
+    font-size: 26px !important;
+  }
+
+  .invoice-details > div {
+    height: 22px !important;
+    gap: 6px !important;
+  }
+
   /* Optimize From/To sections */
   .from-to-section {
-    margin-bottom: 16px !important;
+    margin-bottom: 10px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
   }
-  
+
+  .from-to-section > div {
+    padding: 8px !important;
+  }
+
+  .from-to-section input[type="text"] {
+    padding: 2px 6px !important;
+    font-size: 14px !important;
+    height: 20px !important;
+    line-height: 1.2 !important;
+  }
+
+  .from-to-section .flex-col {
+    gap: 4px !important;
+  }
+
+  .from-to-section .flex.items-center {
+    gap: 4px !important;
+  }
+
   .from-to-section h3,
   .from-to-section h4 {
-    margin-bottom: 6px !important;
+    margin-bottom: 4px !important;
   }
-  
+
   .from-to-section div {
-    margin-bottom: 3px !important;
+    margin-bottom: 2px !important;
   }
-  
+
+  .bank-details {
+    padding: 8px !important;
+  }
+
+  .bank-details h4 {
+    margin-bottom: 4px !important;
+  }
+
+  .bank-details .grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  .bank-details .flex.flex-col {
+    gap: 4px !important;
+  }
+
+  .bank-details .flex.items-center {
+    gap: 4px !important;
+  }
+
+  .bank-details input[type="text"] {
+    padding: 2px 6px !important;
+    font-size: 14px !important;
+    height: 20px !important;
+    line-height: 1.2 !important;
+  }
+
   /* Fix header alignment - ensure all labels and inputs align properly */
   .invoice-details {
     text-align: right !important;
   }
-  
+
   .invoice-details > div {
-    margin-bottom: 8px !important;
+    margin-bottom: 4px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    gap: 8px !important;
-    height: 24px !important;
+    gap: 4px !important;
+    height: 20px !important;
   }
-  
+
   /* Ensure consistent label width for proper alignment */
   .invoice-details span[contenteditable] {
-    min-width: 110px !important;
-    width: 110px !important;
+    min-width: 95px !important;
+    width: 95px !important;
     text-align: right !important;
     white-space: nowrap !important;
     display: inline-flex !important;
@@ -236,26 +358,26 @@ thead tr th:not(:first-child):hover::before {
     line-height: 1 !important;
     padding: 0 !important;
     margin: 0 !important;
-    height: 24px !important;
+    height: 20px !important;
   }
-  
+
   /* Make all inputs in header have consistent width and proper alignment */
   .invoice-details input[type="text"],
   .invoice-details input[type="date"] {
-    width: 130px !important;
-    min-width: 130px !important;
-    max-width: 130px !important;
+    width: 110px !important;
+    min-width: 110px !important;
+    max-width: 110px !important;
     text-align: right !important;
-    padding: 2px 4px !important;
+    padding: 2px 6px !important;
     margin: 0 !important;
     line-height: 1 !important;
-    height: 24px !important;
+    height: 20px !important;
     display: inline-flex !important;
     align-items: center !important;
-    font-size: 16px !important;
+    font-size: 13px !important;
     box-sizing: border-box !important;
   }
-  
+
   /* Remove grey boxes from totals */
   .total-section span[style*="background"],
   .total-row span[style*="backgroundColor"] {
@@ -264,78 +386,78 @@ thead tr th:not(:first-child):hover::before {
     border: none !important;
     padding: 0 !important;
   }
-  
+
+  .total-section input[type="text"] {
+    padding: 4px 8px !important;
+    font-size: 13px !important;
+  }
+
   /* Ensure totals section has optimized spacing */
   .total-section {
-    margin-top: 20px !important;
-    padding-top: 15px !important;
-    border-top: 2px solid #e9ecef !important;
+    margin-top: 12px !important;
+    padding-top: 10px !important;
+    border-top: 1px solid #e9ecef !important;
   }
-  
+
   /* Optimize total rows spacing */
   .total-row {
-    margin-bottom: 6px !important;
+    margin-bottom: 3px !important;
   }
-  
+
   /* Fix page break issues */
   .invoice-container {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
-  
+
   /* Prevent orphan elements */
   .total-section,
   .bank-details {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
-  
+
   /* Remove extra spacing that might cause blank pages */
   .invoice-container {
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
   }
-  
+
   /* Ensure proper page margins and prevent blank pages */
   @page {
     margin: 0.6in !important;
     size: A4 !important;
   }
-  
+
   /* Prevent blank second page - following reference template approach */
   body {
     background-color: white !important;
     padding: 0 !important;
     margin: 0 !important;
   }
-  
-  /* Hide the main wrapper that causes extra height */
-  body > main {
-    display: none !important;
-  }
-  
+
   .invoice-container {
     display: block !important;
     box-shadow: none !important;
-    padding: 25px !important;
+    padding: 18px !important;
     margin: 0 !important;
     page-break-after: avoid !important;
   }
-  
+
   /* Ensure no extra height anywhere */
   html {
     height: auto !important;
   }
-  
+
   body {
     height: auto !important;
   }
-  
+
   /* Prevent any element from forcing a page break */
   * {
     page-break-after: auto !important;
   }
-  
+
   /* Specifically prevent page break on last element */
   .invoice-container > *:last-child,
   .invoice-container > div:last-child,
@@ -346,17 +468,17 @@ thead tr th:not(:first-child):hover::before {
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
   }
-  
+
   /* Hide any invisible spacer elements that might cause blank pages */
   div:empty {
     display: none !important;
   }
-  
-  /* Ensure the invoice fits on one page if possible */
+
+  /* Allow invoice to span multiple pages */
   .invoice-container {
-    max-height: 100vh !important;
+    max-height: none !important;
   }
-  
+
   /* Ensure the table container spans full width */
   .services-table-container,
   div:has(.services-table) {
@@ -365,26 +487,26 @@ thead tr th:not(:first-child):hover::before {
     margin: 0 !important;
     margin-right: 0 !important;
   }
-  
+
   /* Override any inline styles on table container */
   [style*="marginRight"] {
     margin-right: 0 !important;
   }
-  
+
   table {
     border-collapse: collapse !important;
   }
-  
+
   /* Ensure proper spacing */
   .header {
-    margin-bottom: 30px !important;
+    margin-bottom: 18px !important;
   }
-  
+
   .details-grid {
-    margin-bottom: 30px !important;
+    margin-bottom: 16px !important;
   }
-  
+
   .total-section {
-    margin-top: 30px !important;
+    margin-top: 16px !important;
   }
 }
