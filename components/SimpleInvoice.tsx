@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useMemo, useState, useRef } from 'react'
 
 interface EditableSpanProps {
   children: React.ReactNode
@@ -10,27 +10,31 @@ interface EditableSpanProps {
 
 const baseEditableClasses = 'inline-flex min-w-[100px] items-center justify-start rounded-sm border border-dashed border-amber-400 bg-amber-100 px-2 py-1 text-sm font-medium text-slate-800'
 
-const EditableSpan: React.FC<EditableSpanProps> = ({
-  children,
-  className = "editable",
-  contentEditable = true
-}) => (
-  <span
-    contentEditable={contentEditable}
-    suppressContentEditableWarning={true}
-    className={className}
-    style={{
-      backgroundColor: '#fff3cd',
-      padding: '2px 4px',
-      borderRadius: '3px',
-      border: '1px dashed #ffc107',
-      minWidth: '100px',
-      display: 'inline-block'
-    }}
-  >
-    {children}
-  </span>
-)
+const EditableSpan: React.FC<EditableSpanProps> = ({ 
+  children, 
+  className = '', 
+  contentEditable = true 
+}) => {
+  const initialValue = useMemo(() => {
+    return React.Children.toArray(children).join('')
+  }, [children])
+
+  if (!contentEditable) {
+    return (
+      <span className={`${baseEditableClasses} ${className}`}>
+        {initialValue}
+      </span>
+    )
+  }
+
+  return (
+    <input
+      type="text"
+      defaultValue={initialValue}
+      className={`${baseEditableClasses} ${className}`}
+    />
+  )
+}
 
 export default function SimpleInvoice() {
   const invoiceRef = useRef<HTMLDivElement>(null)
