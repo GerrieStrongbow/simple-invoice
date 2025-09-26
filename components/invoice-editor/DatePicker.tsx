@@ -82,7 +82,7 @@ export default function DatePicker({ value, onChange, placeholder, className }: 
         onFocus={handleFocus}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
-        className={`${className} w-full px-2 py-1 rounded transition-all duration-200 bg-white border border-blue-400 outline-none`}
+        className={`${className} w-full px-2 py-1 rounded-sm transition-all duration-200 bg-white border border-blue-400 outline-hidden`}
         placeholder={placeholder}
         autoFocus
       />
@@ -92,7 +92,7 @@ export default function DatePicker({ value, onChange, placeholder, className }: 
   return (
     <div
       onClick={handleClick}
-      className={`${className} w-full px-2 py-1 rounded transition-all duration-200 hover:bg-gray-50 cursor-pointer`}
+      className={`${className} w-full px-2 py-1 rounded-sm transition-all duration-200 hover:bg-gray-50 cursor-pointer`}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {

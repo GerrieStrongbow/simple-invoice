@@ -18,10 +18,10 @@ interface TotalsSectionProps {
   onTotalLabelChange: (label: string) => void
 }
 
-const totalValueClasses = 'inline-block min-w-[100px] rounded border border-slate-200 bg-slate-100 px-2 py-1 text-right font-medium text-slate-700'
+const totalValueClasses = 'inline-block min-w-[100px] rounded-sm border border-slate-200 bg-slate-100 px-2 py-1 text-right font-medium text-slate-700'
 const totalLabelClasses = 'inline-block min-w-[140px] cursor-text rounded-lg border-2 border-slate-200 bg-slate-100 px-3 py-1.5 text-base font-semibold text-slate-700 transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
 const percentageInput = (enabled: boolean) => [
-  'w-16 rounded-md border-2 px-2 py-1 text-center text-sm font-semibold transition outline-none',
+  'w-16 rounded-md border-2 px-2 py-1 text-center text-sm font-semibold transition outline-hidden',
   enabled
     ? 'border-slate-200 bg-white text-slate-800 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
     : 'border-slate-200 bg-slate-100 text-slate-400'
@@ -82,7 +82,7 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
             type="checkbox"
             checked={discountEnabled}
             onChange={(e) => onDiscountToggle(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+            className="h-4 w-4 rounded-sm border-slate-300 text-sky-600 focus:ring-sky-500"
           />
           <span className={percentageLabel(discountEnabled)}>Add Discount:</span>
           <input
@@ -100,7 +100,7 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
             type="checkbox"
             checked={taxEnabled}
             onChange={(e) => onTaxToggle(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+            className="h-4 w-4 rounded-sm border-slate-300 text-sky-600 focus:ring-sky-500"
           />
           <span className={percentageLabel(taxEnabled)}>Add Tax:</span>
           <input

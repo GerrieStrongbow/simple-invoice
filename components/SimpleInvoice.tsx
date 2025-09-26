@@ -8,7 +8,7 @@ interface EditableSpanProps {
   contentEditable?: boolean
 }
 
-const baseEditableClasses = 'inline-flex min-w-[100px] items-center justify-start rounded border border-dashed border-amber-400 bg-amber-100 px-2 py-1 text-sm font-medium text-slate-800'
+const baseEditableClasses = 'inline-flex min-w-[100px] items-center justify-start rounded-sm border border-dashed border-amber-400 bg-amber-100 px-2 py-1 text-sm font-medium text-slate-800'
 
 const EditableSpan: React.FC<EditableSpanProps> = ({ 
   children, 
@@ -57,7 +57,7 @@ export default function SimpleInvoice() {
             {showLogo && (
               <button
                 type="button"
-                className="no-print inline-flex h-20 w-24 items-center justify-center rounded border border-dashed border-slate-300 bg-slate-50 text-xs font-semibold text-slate-400"
+                className="no-print inline-flex h-20 w-24 items-center justify-center rounded-sm border border-dashed border-slate-300 bg-slate-50 text-xs font-semibold text-slate-400"
               >
                 Click to add logo
               </button>
@@ -91,14 +91,14 @@ export default function SimpleInvoice() {
             <h3 className="mb-3 text-sm font-semibold text-slate-700">From:</h3>
             <textarea
               defaultValue={`T/A Gerhard Bekker\n14 Marina Rd\nDie Boord\nStellenbosch\nSouth Africa\n\nEmail: gerhard.bekker@outlook.com\nMobile: (+27) 063 651 9694`}
-              className="min-h-[120px] w-full resize-y rounded border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="min-h-[120px] w-full resize-y rounded-sm border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-hidden focus:ring-2 focus:ring-amber-200"
             />
           </div>
           <div>
             <h3 className="mb-3 text-sm font-semibold text-slate-700">To:</h3>
             <textarea
               defaultValue={`Empire Digital Media Ltd (trading as 1Digit)\nCompany Registration #: 08537519\nUnit 11\nHove Business Centre Fonthill Road\nHove, East Sussex, BN3 6HA\nUnited Kingdom\n\nEmail: accounts@1digit.co.uk`}
-              className="min-h-[120px] w-full resize-y rounded border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="min-h-[120px] w-full resize-y rounded-sm border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-hidden focus:ring-2 focus:ring-amber-200"
             />
           </div>
         </section>
@@ -127,7 +127,7 @@ export default function SimpleInvoice() {
                   <td className="px-4 py-3">
                     <textarea
                       defaultValue="Item Name Description of services provided"
-                      className="w-full resize-y rounded border border-dashed border-amber-300 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                      className="w-full resize-y rounded-sm border border-dashed border-amber-300 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-hidden focus:ring-2 focus:ring-amber-200"
                     />
                   </td>
                   <td className="px-4 py-3 text-center">
@@ -164,7 +164,7 @@ export default function SimpleInvoice() {
           <h4 className="mb-3 text-sm font-semibold text-slate-700">Payment Details:</h4>
           <textarea
             defaultValue={`Account Name: GERHARD MULLER BEKKER\nBank: ABSA\nAccount Number: 4120 7672 37\nBranch Code: 632005\nSWIFT Code: ABSAZAJJ`}
-            className="w-full resize-y rounded border border-dashed border-amber-300 bg-white px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            className="w-full resize-y rounded-sm border border-dashed border-amber-300 bg-white px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-hidden focus:ring-2 focus:ring-amber-200"
           />
         </section>
 
@@ -173,7 +173,7 @@ export default function SimpleInvoice() {
             <h4 className="mb-3 text-sm font-semibold text-slate-700">Notes:</h4>
             <textarea
               defaultValue="Notes - any relevant information not covered, additional terms and conditions"
-              className="min-h-[60px] w-full resize-y rounded border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="min-h-[60px] w-full resize-y rounded-sm border border-dashed border-amber-400 bg-amber-50 px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:outline-hidden focus:ring-2 focus:ring-amber-200"
             />
           </section>
         )}
@@ -181,7 +181,7 @@ export default function SimpleInvoice() {
         <div className="no-print mt-8 flex flex-wrap items-center gap-3 border-t border-slate-200 pt-6">
           <button
             onClick={handlePrint}
-            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200"
+            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:outline-hidden focus:ring-4 focus:ring-indigo-200"
           >
             Print / Save as PDF
           </button>

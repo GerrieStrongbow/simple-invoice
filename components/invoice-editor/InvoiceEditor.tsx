@@ -293,12 +293,12 @@ export default function InvoiceEditor() {
         className="bg-white rounded-lg p-8 text-[11pt] font-inter shadow-lg print:rounded-none print:shadow-none"
       >
         {/* Header Section */}
-        <div className="mb-8 flex items-start justify-between border-b-2 border-[#e9ecef] pb-5">
+        <div className="mb-8 flex items-start justify-between border-b-2 border-invoice-border pb-5">
         <div>
           <EditableField
             value={invoiceData.header.title}
             onChange={(value) => updateHeader('title', value)}
-            className="text-[28px] font-bold text-[#2c3e50] leading-none"
+            className="text-[28px] font-bold text-invoice-blue leading-none"
             placeholder="INVOICE"
           />
         </div>
@@ -357,7 +357,7 @@ export default function InvoiceEditor() {
       />
 
       {/* Totals Section */}
-      <div className="mt-5 mb-5 border-t-2 border-[#e9ecef] pt-5">
+      <div className="mt-5 mb-5 border-t-2 border-invoice-border pt-5">
         {/* Currency Selector */}
         <div className="flex justify-end mb-3 no-print">
           <CurrencySelector
@@ -426,7 +426,7 @@ export default function InvoiceEditor() {
       <button 
         onClick={handleDownloadPDF}
         disabled={isGeneratingPDF}
-        className="no-print mt-5 inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-60"
+        className="no-print mt-5 inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-hidden focus:ring-4 focus:ring-blue-200 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isGeneratingPDF ? 'Generating PDF...' : 'Print/Save as PDF'}
       </button>
@@ -435,19 +435,19 @@ export default function InvoiceEditor() {
       <div className="flex flex-wrap gap-2 mt-3 no-print">
         <button 
           onClick={() => window.print()}
-          className="px-3 py-1 text-xs border border-gray-300 text-gray-600 rounded hover:bg-gray-50"
+          className="px-3 py-1 text-xs border border-gray-300 text-gray-600 rounded-sm hover:bg-gray-50"
         >
           Quick Print
         </button>
         <button 
           onClick={saveTemplate}
-          className="px-3 py-1 text-xs border border-gray-300 text-gray-600 rounded hover:bg-gray-50"
+          className="px-3 py-1 text-xs border border-gray-300 text-gray-600 rounded-sm hover:bg-gray-50"
         >
           Save Template
         </button>
         <button 
           onClick={loadTemplate}
-          className="px-3 py-1 text-xs border border-gray-300 text-gray-600 rounded hover:bg-gray-50"
+          className="px-3 py-1 text-xs border border-gray-300 text-gray-600 rounded-sm hover:bg-gray-50"
         >
           Load Template
         </button>
@@ -465,7 +465,7 @@ export default function InvoiceEditor() {
               localStorage.removeItem('invoiceData')
             }
           }}
-          className="px-3 py-1 text-xs border border-red-300 text-red-600 rounded hover:bg-red-50"
+          className="px-3 py-1 text-xs border border-red-300 text-red-600 rounded-sm hover:bg-red-50"
         >
           Clear
         </button>

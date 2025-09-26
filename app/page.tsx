@@ -5,9 +5,9 @@ import FlexibleInvoice from '../components/FlexibleInvoice'
 export default function Home() {
   return (
     <main>
-      <div className="no-print bg-gradient-to-br from-[#667eea] to-[#764ba2] px-5 py-16 text-center text-white">
+      <div className="no-print bg-linear-to-br from-[#667eea] to-[#764ba2] px-5 py-16 text-center text-white">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-6">
-          <h1 className="text-4xl font-extrabold tracking-tight drop-shadow md:text-5xl">
+          <h1 className="text-4xl font-extrabold tracking-tight drop-shadow-sm md:text-5xl">
             Simple Invoice Generator
           </h1>
           <p className="text-xl font-medium opacity-90 md:text-2xl">

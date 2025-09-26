@@ -67,7 +67,7 @@ export default function EditableFieldSection({
       <EditableField
         value={section.label}
         onChange={updateSectionLabel}
-        className="font-semibold text-[#2c3e50] text-base mb-2 block"
+        className="font-semibold text-invoice-blue text-base mb-2 block"
         placeholder="Section Label"
       />
 
@@ -131,7 +131,7 @@ export default function EditableFieldSection({
               value={newFieldLabel}
               onChange={(e) => setNewFieldLabel(e.target.value)}
               placeholder="Field name..."
-              className="px-2 py-1 border border-gray-300 rounded text-xs flex-1"
+              className="px-2 py-1 border border-gray-300 rounded-sm text-xs flex-1"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault()
@@ -146,7 +146,7 @@ export default function EditableFieldSection({
             <button
               onClick={addField}
               disabled={!newFieldLabel.trim()}
-              className="px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-2 py-1 bg-blue-600 text-white rounded-sm text-xs hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Add
             </button>
@@ -155,7 +155,7 @@ export default function EditableFieldSection({
                 setShowAddField(false)
                 setNewFieldLabel('')
               }}
-              className="px-2 py-1 border border-gray-300 text-gray-600 rounded text-xs hover:bg-gray-50"
+              className="px-2 py-1 border border-gray-300 text-gray-600 rounded-sm text-xs hover:bg-gray-50"
             >
               Cancel
             </button>

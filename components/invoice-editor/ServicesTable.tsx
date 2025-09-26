@@ -11,11 +11,11 @@ interface ServicesTableProps {
   onCellUpdate: (rowId: string, columnId: string, value: any) => void
 }
 
-const baseInputClasses = 'w-full rounded-lg border-2 border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
+const baseInputClasses = 'w-full rounded-lg border-2 border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 outline-hidden transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
 const descriptionTitleClasses = `${baseInputClasses} font-semibold`
 const descriptionBodyClasses = `${baseInputClasses} text-slate-500`
-const amountInputClasses = 'w-full cursor-not-allowed rounded-lg border-2 border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 outline-none focus:border-slate-200 focus:ring-0'
-const columnTitleClasses = 'w-full min-w-0 cursor-text rounded-lg border-2 border-slate-200 bg-white px-2 py-2 text-[13px] font-semibold text-slate-700 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
+const amountInputClasses = 'w-full cursor-not-allowed rounded-lg border-2 border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 outline-hidden focus:border-slate-200 focus:ring-0'
+const columnTitleClasses = 'w-full min-w-0 cursor-text rounded-lg border-2 border-slate-200 bg-white px-2 py-2 text-[13px] font-semibold text-slate-700 outline-hidden transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
 
 const alignmentClass = (align: Column['align']) => {
   switch (align) {
@@ -124,10 +124,10 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
 
   return (
     <>
-      <div className="relative mb-10 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="relative mb-10 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
         <table className="services-table w-full table-fixed border-collapse">
           <thead>
-            <tr className="bg-gradient-to-r from-slate-50 to-slate-100">
+            <tr className="bg-linear-to-r from-slate-50 to-slate-100">
               {columns.map((column, index) => (
                 <th
                   key={column.id}
@@ -137,7 +137,7 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
                     {index > 0 && (
                       <button
                         type="button"
-                        className="no-print absolute inset-y-0 left-[-16px] flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 text-sm font-semibold text-white opacity-0 shadow transition hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
+                        className="no-print absolute inset-y-0 left-[-16px] flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 text-sm font-semibold text-white opacity-0 shadow-sm transition hover:bg-sky-600 focus:outline-hidden focus:ring-2 focus:ring-sky-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
                         onClick={() => addColumn(columns[index - 1].id, columns, rows, onColumnsChange, onRowsChange)}
                         aria-label="Add column here"
                       >
@@ -156,7 +156,7 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
                     {!column.isDescription && columns.length > 2 && (
                       <button
                         type="button"
-                        className="no-print absolute left-1/2 top-2 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-md border-2 border-rose-200 bg-rose-50 text-sm font-semibold text-rose-600 opacity-0 transition hover:scale-105 hover:border-rose-500 hover:bg-rose-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-rose-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
+                        className="no-print absolute left-1/2 top-2 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-md border-2 border-rose-200 bg-rose-50 text-sm font-semibold text-rose-600 opacity-0 transition hover:scale-105 hover:border-rose-500 hover:bg-rose-500 hover:text-white focus:outline-hidden focus:ring-2 focus:ring-rose-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
                         onClick={() => removeColumn(column.id, columns, rows, onColumnsChange, onRowsChange)}
                         aria-label="Remove column"
                       >
@@ -167,7 +167,7 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
                     {index === columns.length - 1 && !column.isAmount && (
                       <button
                         type="button"
-                        className="no-print absolute inset-y-0 right-[-16px] flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 text-sm font-semibold text-white opacity-0 shadow transition hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
+                        className="no-print absolute inset-y-0 right-[-16px] flex h-8 w-8 items-center justify-center rounded-full bg-sky-500 text-sm font-semibold text-white opacity-0 shadow-sm transition hover:bg-sky-600 focus:outline-hidden focus:ring-2 focus:ring-sky-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
                         onClick={() => addColumn(column.id, columns, rows, onColumnsChange, onRowsChange)}
                         aria-label="Add column"
                       >
@@ -197,7 +197,7 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
                       {isLastColumn && rows.length > 1 && (
                         <button
                           type="button"
-                          className="no-print absolute right-0 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md border-2 border-rose-200 bg-rose-50 text-xs font-semibold text-rose-600 opacity-0 transition hover:scale-105 hover:border-rose-500 hover:bg-rose-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-rose-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
+                          className="no-print absolute right-0 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-md border-2 border-rose-200 bg-rose-50 text-xs font-semibold text-rose-600 opacity-0 transition hover:scale-105 hover:border-rose-500 hover:bg-rose-500 hover:text-white focus:outline-hidden focus:ring-2 focus:ring-rose-200 pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
                           onClick={() => removeRow(row.id, rows, onRowsChange)}
                           aria-label="Remove row"
                         >
@@ -217,7 +217,7 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
         <button
           type="button"
           onClick={() => addRow(columns, rows, onRowsChange)}
-          className="flex h-10 w-32 items-center justify-center gap-2 rounded-lg border-2 border-dashed border-sky-500 bg-sky-50 text-sm font-semibold text-sky-600 transition hover:-translate-y-0.5 hover:border-solid hover:bg-sky-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-sky-100"
+          className="flex h-10 w-32 items-center justify-center gap-2 rounded-lg border-2 border-dashed border-sky-500 bg-sky-50 text-sm font-semibold text-sky-600 transition hover:-translate-y-0.5 hover:border-solid hover:bg-sky-500 hover:text-white focus:outline-hidden focus:ring-4 focus:ring-sky-100"
         >
           + Add Row
         </button>

@@ -81,7 +81,7 @@ export default function EditableField({
           onChange={handleChange}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
-          className={`${baseClassName} resize-none outline-none`}
+          className={`${baseClassName} resize-none outline-hidden`}
           rows={3}
         />
       )
@@ -95,7 +95,7 @@ export default function EditableField({
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         onFocus={onFocus}
-        className={`${baseClassName} outline-none`}
+        className={`${baseClassName} outline-hidden`}
       />
     )
   }

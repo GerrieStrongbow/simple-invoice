@@ -16,9 +16,9 @@ interface InvoiceHeaderProps {
   onDueDateChange: (date: string) => void
 }
 
-const labelClasses = 'w-[120px] min-w-[110px] rounded-lg border-2 border-slate-200 bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700 text-right outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
-const inputClasses = 'w-[130px] min-w-[130px] rounded-lg border-2 border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-800 text-right outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
-const titleClasses = 'w-full max-w-[260px] rounded-lg border-2 border-slate-200 bg-slate-100 px-4 py-2 text-4xl font-extrabold leading-tight text-slate-800 outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
+const labelClasses = 'w-[120px] min-w-[110px] rounded-lg border-2 border-slate-200 bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700 text-right outline-hidden transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
+const inputClasses = 'w-[130px] min-w-[130px] rounded-lg border-2 border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-800 text-right outline-hidden transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
+const titleClasses = 'w-full max-w-[260px] rounded-lg border-2 border-slate-200 bg-slate-100 px-4 py-2 text-4xl font-extrabold leading-tight text-slate-800 outline-hidden transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
 
 export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   invoiceTitle,

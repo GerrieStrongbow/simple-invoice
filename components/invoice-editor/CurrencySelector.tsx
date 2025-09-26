@@ -57,7 +57,7 @@ export default function CurrencySelector({
       {/* Show button for editing, hide in print */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 no-print"
+        className="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-sm text-sm hover:bg-gray-50 no-print"
         type="button"
       >
         <span className="font-mono font-bold">{symbol}</span>
@@ -73,7 +73,7 @@ export default function CurrencySelector({
       </button>
       
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-white border border-gray-300 rounded shadow-lg z-50">
+        <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-white border border-gray-300 rounded-sm shadow-lg z-50">
           {currencies.map((currency) => (
             <button
               key={currency.code}
