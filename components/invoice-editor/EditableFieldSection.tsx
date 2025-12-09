@@ -14,7 +14,7 @@ export default function EditableFieldSection({
   section,
   onChange,
   className = '',
-}: EditableFieldSectionProps) {
+}: Readonly<EditableFieldSectionProps>) {
   const [showAddField, setShowAddField] = useState(false)
   const [newFieldLabel, setNewFieldLabel] = useState('')
 
@@ -75,7 +75,7 @@ export default function EditableFieldSection({
       <div className="space-y-1">
         {(section.fields || []).map((field, index) => (
           <div key={field.id} className="group">
-            {field.label && field.label.trim() && (
+            {field.label?.trim() && (
               <div className="flex items-center gap-2 mb-1 no-print">
                 <EditableField
                   value={field.label}
@@ -101,7 +101,7 @@ export default function EditableFieldSection({
                 className="flex-1 text-gray-700 leading-tight"
                 placeholder={field.placeholder || `Enter ${field.label ? field.label.toLowerCase() : 'text'}...`}
               />
-              {(!field.label || !field.label.trim()) && section.fields && section.fields.length > 1 && (
+              {!field.label?.trim() && section.fields && section.fields.length > 1 && (
                 <button
                   onClick={() => removeField(field.id)}
                   className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 text-xs transition-opacity no-print"
@@ -117,14 +117,7 @@ export default function EditableFieldSection({
 
       {/* Add Field Button */}
       <div className="mt-2 no-print">
-        {!showAddField ? (
-          <button
-            onClick={() => setShowAddField(true)}
-            className="text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center gap-1"
-          >
-            + Add Field
-          </button>
-        ) : (
+        {showAddField ? (
           <div className="flex items-center gap-1">
             <input
               type="text"
@@ -160,6 +153,13 @@ export default function EditableFieldSection({
               Cancel
             </button>
           </div>
+        ) : (
+          <button
+            onClick={() => setShowAddField(true)}
+            className="text-blue-600 hover:text-blue-800 text-xs font-medium flex items-center gap-1"
+          >
+            + Add Field
+          </button>
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@ import jsPDF from 'jspdf'
 import { InvoiceData } from './types'
 
 export class PDFGenerator {
-  private invoiceData: InvoiceData
+  private readonly invoiceData: InvoiceData
 
   constructor(invoiceData: InvoiceData) {
     this.invoiceData = invoiceData
@@ -86,7 +86,7 @@ export class PDFGenerator {
 
       // Generate filename
       const invoiceNumber = this.invoiceData.header.invoiceNumber || 'Invoice'
-      const defaultFilename = `${invoiceNumber.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`
+      const defaultFilename = `${invoiceNumber.replaceAll(/[^a-zA-Z0-9]/g, '_')}.pdf`
       pdf.save(filename || defaultFilename)
     } catch (error) {
       if (error instanceof Error) {
@@ -98,6 +98,6 @@ export class PDFGenerator {
 
   // Simple fallback - just use browser print
   async generateFallback(): Promise<void> {
-    window.print()
+    globalThis.print()
   }
 }

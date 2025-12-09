@@ -11,7 +11,7 @@ interface EnhancedTableProps {
   onRowsChange: (rows: TableRow[]) => void
 }
 
-export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsChange }: EnhancedTableProps) {
+export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsChange }: Readonly<EnhancedTableProps>) {
   const [showColumnMenu, setShowColumnMenu] = useState<string | null>(null)
 
   const addColumn = () => {
@@ -179,8 +179,10 @@ export default function EnhancedTable({ columns, rows, onColumnsChange, onRowsCh
 
       {/* Click outside to close column menu */}
       {showColumnMenu && (
-        <div
-          className="fixed inset-0 z-5"
+        <button
+          type="button"
+          aria-label="Close menu"
+          className="fixed inset-0 z-5 cursor-default"
           onClick={() => setShowColumnMenu(null)}
         />
       )}

@@ -43,27 +43,37 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
     updateColumnName
   } = useTableManagement()
 
+  const getCellStringValue = (cellValue: unknown): string => {
+    if (typeof cellValue === 'string') {
+      return cellValue
+    }
+    if (typeof cellValue === 'number') {
+      return cellValue.toString()
+    }
+    return ''
+  }
+
   const calculatePlaceholderAmount = (row: Row): string => {
     let result = 0
     let hasAnyValues = false
 
     columns.forEach(col => {
       if (!col.isDescription && !col.isAmount) {
-        const cellValue = String(row.cells[col.id] || '')
-        if (!cellValue) {
-          const placeholderValue = parseNumericValue(getPlaceholderText(col.name))
-          if (!hasAnyValues) {
-            result = placeholderValue
+        const cellValue = getCellStringValue(row.cells[col.id])
+        if (cellValue) {
+          const numValue = parseNumericValue(cellValue)
+          if (hasAnyValues) {
+            result *= numValue
           } else {
-            result *= placeholderValue
+            result = numValue
           }
           hasAnyValues = true
         } else {
-          const numValue = parseNumericValue(cellValue)
-          if (!hasAnyValues) {
-            result = numValue
+          const placeholderValue = parseNumericValue(getPlaceholderText(col.name))
+          if (hasAnyValues) {
+            result *= placeholderValue
           } else {
-            result *= numValue
+            result = placeholderValue
           }
           hasAnyValues = true
         }
@@ -106,7 +116,7 @@ export const ServicesTable: React.FC<ServicesTableProps> = ({
       ? calculatePlaceholderAmount(row)
       : getPlaceholderText(column.name)
 
-    const value = String(row.cells[column.id] || '')
+    const value = getCellStringValue(row.cells[column.id])
     const alignClass = alignmentClass(column.align)
 
     return (
