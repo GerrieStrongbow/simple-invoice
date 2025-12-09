@@ -143,8 +143,8 @@ export default function InvoiceEditor() {
           // Invalid format - use default
           setInvoiceData(initialInvoiceData)
         }
-      } catch (e) {
-        console.error('Failed to load saved invoice data')
+      } catch (error) {
+        console.error('Failed to load saved invoice data:', error)
         setInvoiceData(initialInvoiceData)
       }
     }
@@ -154,8 +154,9 @@ export default function InvoiceEditor() {
     if (savedTemplates) {
       try {
         setTemplates(JSON.parse(savedTemplates))
-      } catch (e) {
-        console.error('Failed to load saved templates')
+      } catch (error) {
+        console.error('Failed to load saved templates:', error)
+        setTemplates([])
       }
     }
   }, [])
@@ -229,7 +230,8 @@ export default function InvoiceEditor() {
             setInvoiceData(templateData)
           }
           alert(`Template "${templateName}" loaded successfully!`)
-        } catch (e) {
+        } catch (error) {
+          console.error('Failed to load template:', error)
           alert('Failed to load template - template may be corrupted')
         }
       }
@@ -279,7 +281,7 @@ export default function InvoiceEditor() {
             <span>{pdfError}</span>
             <button
               type="button"
-              onClick={() => window.print()}
+              onClick={() => globalThis.print()}
               className="inline-flex items-center justify-center rounded-md border border-amber-400 bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700 transition hover:bg-amber-200"
             >
               Use Print Dialog
@@ -379,7 +381,7 @@ export default function InvoiceEditor() {
             <span>Tax (if applicable)</span>
             <EditableField
               value={taxRate.toString()}
-              onChange={(value) => setTaxRate(parseFloat(value) || 0)}
+              onChange={(value) => setTaxRate(Number.parseFloat(value) || 0)}
               className="w-12 text-center no-print"
               placeholder="0"
               format="number"
@@ -433,8 +435,8 @@ export default function InvoiceEditor() {
 
       {/* Secondary Actions (collapsed/minimal) */}
       <div className="flex flex-wrap gap-2 mt-3 no-print">
-        <button 
-          onClick={() => window.print()}
+        <button
+          onClick={() => globalThis.print()}
           className="px-3 py-1 text-xs border border-gray-300 text-gray-600 rounded-sm hover:bg-gray-50"
         >
           Quick Print

@@ -17,13 +17,29 @@ interface EditableSpanProps {
 
 const baseEditableClasses = 'inline-flex min-w-[100px] items-center justify-start rounded-sm border border-dashed border-amber-400 bg-amber-100 px-2 py-1 text-sm font-medium text-slate-800'
 
-const EditableSpan: React.FC<EditableSpanProps> = ({ 
-  children, 
-  className = '', 
-  contentEditable = true 
+const extractTextFromChildren = (children: React.ReactNode): string => {
+  if (typeof children === 'string' || typeof children === 'number') {
+    return String(children)
+  }
+  if (Array.isArray(children)) {
+    return children.map(extractTextFromChildren).join('')
+  }
+  if (React.isValidElement(children)) {
+    const props = children.props as { children?: React.ReactNode }
+    if (props.children) {
+      return extractTextFromChildren(props.children)
+    }
+  }
+  return ''
+}
+
+const EditableSpan: React.FC<EditableSpanProps> = ({
+  children,
+  className = '',
+  contentEditable = true
 }) => {
   const initialValue = useMemo(() => {
-    return React.Children.toArray(children).join('')
+    return extractTextFromChildren(children)
   }, [children])
 
   if (!contentEditable) {
@@ -43,13 +59,15 @@ const EditableSpan: React.FC<EditableSpanProps> = ({
   )
 }
 
+const INITIAL_ROW_IDS = ['row-1', 'row-2', 'row-3'] as const
+
 export default function SimpleInvoice() {
   const invoiceRef = useRef<HTMLDivElement>(null)
   const [showNotes, setShowNotes] = useState(true)
   const [showLogo, setShowLogo] = useState(false)
 
   const handlePrint = () => {
-    window.print()
+    globalThis.print()
   }
 
   return (
@@ -129,8 +147,8 @@ export default function SimpleInvoice() {
               </tr>
             </thead>
             <tbody>
-              {Array.from({ length: 3 }).map((_, index) => (
-                <tr key={index} className="border-b border-slate-200">
+              {INITIAL_ROW_IDS.map((rowId) => (
+                <tr key={rowId} className="border-b border-slate-200">
                   <td className="px-4 py-3">
                     <textarea
                       defaultValue="Item Name Description of services provided"
