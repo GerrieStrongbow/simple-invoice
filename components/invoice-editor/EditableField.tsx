@@ -22,7 +22,7 @@ export default function EditableField({
   format = 'text',
   onBlur,
   onFocus,
-}: EditableFieldProps) {
+}: Readonly<EditableFieldProps>) {
   const [isEditing, setIsEditing] = useState(false)
   const [localValue, setLocalValue] = useState(value)
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
@@ -68,7 +68,7 @@ export default function EditableField({
 
   const baseClassName = `
     w-full px-2 py-1 rounded transition-all duration-200
-    ${!isEditing ? 'hover:bg-gray-50 cursor-pointer' : 'bg-white border border-blue-400'}
+    ${isEditing ? 'bg-white border border-blue-400' : 'hover:bg-gray-50 cursor-pointer'}
     ${className}
   `
 
@@ -101,11 +101,10 @@ export default function EditableField({
   }
 
   return (
-    <div
+    <button
+      type="button"
       onClick={handleClick}
-      className={baseClassName}
-      role="button"
-      tabIndex={0}
+      className={`${baseClassName} text-left`}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
@@ -114,6 +113,6 @@ export default function EditableField({
       }}
     >
       {localValue || <span className="text-gray-400">{placeholder}</span>}
-    </div>
+    </button>
   )
 }

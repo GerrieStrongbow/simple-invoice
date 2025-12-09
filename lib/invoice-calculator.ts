@@ -8,8 +8,8 @@ export interface CalculationResult {
 }
 
 export class InvoiceCalculator {
-  private columns: TableColumn[]
-  private rows: TableRow[]
+  private readonly columns: TableColumn[]
+  private readonly rows: TableRow[]
 
   constructor(columns: TableColumn[], rows: TableRow[]) {
     this.columns = columns
@@ -33,9 +33,9 @@ export class InvoiceCalculator {
     if (!value) return 0
     
     // Remove currency symbols and spaces, keep numbers and decimal points
-    const cleaned = String(value).replace(/[^\d.-]/g, '')
-    const num = parseFloat(cleaned)
-    return isNaN(num) ? 0 : num
+    const cleaned = String(value).replaceAll(/[^\d.-]/g, '')
+    const num = Number.parseFloat(cleaned)
+    return Number.isNaN(num) ? 0 : num
   }
 
   // Calculate amount for a single row (quantity * rate)
@@ -152,7 +152,7 @@ export class InvoiceCalculator {
     const values = rows.map(row => String(row.cells[column.id] || '')).filter(v => v.trim())
     if (values.length === 0) return 'text'
     
-    const numericValues = values.filter(v => !isNaN(parseFloat(v.replace(/[^\d.-]/g, ''))))
+    const numericValues = values.filter(v => !Number.isNaN(Number.parseFloat(v.replaceAll(/[^\d.-]/g, ''))))
     const numericRatio = numericValues.length / values.length
     
     if (numericRatio > 0.7) {

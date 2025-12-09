@@ -2,6 +2,16 @@ import { useMemo, useCallback } from 'react'
 import { Column, Row } from '@/lib/invoice-types'
 import { parseNumericValue } from '@/lib/invoice-utils'
 
+const getCellStringValue = (cellValue: unknown): string => {
+  if (typeof cellValue === 'string') {
+    return cellValue
+  }
+  if (typeof cellValue === 'number') {
+    return cellValue.toString()
+  }
+  return ''
+}
+
 interface UseInvoiceCalculationsProps {
   columns: Column[]
   rows: Row[]
@@ -29,7 +39,7 @@ export const useInvoiceCalculations = ({
     columns.forEach(col => {
       if (!col.isDescription && !col.isAmount) {
         numericColumns++
-        const cellValue = String(row.cells[col.id] || '').trim()
+        const cellValue = getCellStringValue(row.cells[col.id]).trim()
         if (cellValue !== '') {
           filledColumns++
         }
@@ -40,7 +50,7 @@ export const useInvoiceCalculations = ({
     if (filledColumns === numericColumns && numericColumns > 0) {
       columns.forEach(col => {
         if (!col.isDescription && !col.isAmount) {
-          const cellValue = String(row.cells[col.id] || '').trim()
+          const cellValue = getCellStringValue(row.cells[col.id]).trim()
           if (cellValue !== '') {
             const numValue = parseNumericValue(cellValue)
             result *= numValue
@@ -59,7 +69,7 @@ export const useInvoiceCalculations = ({
     rows.forEach(row => {
       const amountCol = columns.find(col => col.isAmount)
       if (amountCol && row.cells[amountCol.id]) {
-        total += parseNumericValue(String(row.cells[amountCol.id]))
+        total += parseNumericValue(getCellStringValue(row.cells[amountCol.id]))
       }
     })
     return total.toFixed(2)
@@ -68,7 +78,7 @@ export const useInvoiceCalculations = ({
   // Calculate tax amount
   const calculateTaxAmount = useCallback((): string => {
     if (!taxEnabled) return '0.00'
-    const subtotal = parseFloat(calculateSubtotal())
+    const subtotal = Number.parseFloat(calculateSubtotal())
     const taxRate = parseNumericValue(taxPercentage) / 100
     return (subtotal * taxRate).toFixed(2)
   }, [taxEnabled, taxPercentage, calculateSubtotal])
@@ -76,16 +86,16 @@ export const useInvoiceCalculations = ({
   // Calculate discount amount
   const calculateDiscountAmount = useCallback((): string => {
     if (!discountEnabled) return '0.00'
-    const subtotal = parseFloat(calculateSubtotal())
+    const subtotal = Number.parseFloat(calculateSubtotal())
     const discountRate = parseNumericValue(discountPercentage) / 100
     return (subtotal * discountRate).toFixed(2)
   }, [discountEnabled, discountPercentage, calculateSubtotal])
 
   // Calculate final total
   const calculateTotal = useCallback((): string => {
-    const subtotal = parseFloat(calculateSubtotal())
-    const tax = parseFloat(calculateTaxAmount())
-    const discount = parseFloat(calculateDiscountAmount())
+    const subtotal = Number.parseFloat(calculateSubtotal())
+    const tax = Number.parseFloat(calculateTaxAmount())
+    const discount = Number.parseFloat(calculateDiscountAmount())
     return (subtotal + tax - discount).toFixed(2) // Discount is subtracted
   }, [calculateSubtotal, calculateTaxAmount, calculateDiscountAmount])
 

@@ -25,20 +25,21 @@ thead tr th:not(:first-child):hover::before {
 }
 
 @media print {
+  /* Universal print settings - consolidated */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    visibility: hidden;
+    page-break-after: auto !important;
   }
 
+  /* Body settings - consolidated */
   body {
     background: white !important;
+    background-color: white !important;
     padding: 0 !important;
     margin: 0 !important;
-  }
-
-  /* Hide everything initially */
-  * {
-    visibility: hidden;
+    height: auto !important;
   }
 
   /* Show only the invoice container and its contents */
@@ -47,19 +48,28 @@ thead tr th:not(:first-child):hover::before {
     visibility: visible;
   }
 
-  /* Style the invoice container for print */
+  /* Style the invoice container for print - consolidated */
   .invoice-container {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
     width: 100% !important;
     height: auto !important;
+    max-height: none !important;
     background: white !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    padding: 20px !important;
+    padding: 18px !important;
+    padding-bottom: 0 !important;
     margin: 0 !important;
+    margin-bottom: 0 !important;
     max-width: none !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    display: block !important;
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-inside: avoid !important;
   }
 
   /* Hide non-printable elements */
@@ -121,12 +131,39 @@ thead tr th:not(:first-child):hover::before {
     display: none !important;
   }
 
-  /* Preserve card backgrounds with compact padding */
+  /* Bank details section - consolidated */
   .bank-details {
     background: #f8fafc !important;
     border: 1px solid #e2e8f0 !important;
     padding: 8px !important;
     margin-top: 10px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .bank-details h4 {
+    margin-bottom: 4px !important;
+  }
+
+  .bank-details .grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  .bank-details .flex.flex-col {
+    gap: 4px !important;
+  }
+
+  .bank-details .flex.items-center {
+    gap: 4px !important;
+  }
+
+  .bank-details input[type="text"] {
+    padding: 2px 6px !important;
+    font-size: 14px !important;
+    height: 20px !important;
+    line-height: 1.2 !important;
   }
 
   /* Preserve table styling with optimized spacing */
@@ -151,9 +188,11 @@ thead tr th:not(:first-child):hover::before {
     table-layout: fixed !important;
   }
 
+  /* Services table column widths and alignment - consolidated */
   .services-table th:first-child,
   .services-table td:first-child {
     width: 58% !important;
+    text-align: left !important;
   }
 
   .services-table th:nth-child(2),
@@ -190,26 +229,15 @@ thead tr th:not(:first-child):hover::before {
     text-align: right !important;
   }
 
-  .services-table th:first-child,
-  .services-table td:first-child {
-    text-align: left !important;
-  }
-
   .services-table td:first-child input,
   .services-table td:first-child textarea {
     text-align: left !important;
   }
 
-  /* Fix table width to match other sections */
+  /* Table settings - consolidated */
   table {
     width: 100% !important;
     border-collapse: collapse !important;
-  }
-
-  /* Optimize font sizes and line spacing for print */
-  .invoice-container {
-    font-size: 14px !important;
-    line-height: 1.2 !important;
   }
 
   .invoice-container h1 {
@@ -262,9 +290,18 @@ thead tr th:not(:first-child):hover::before {
     font-size: 26px !important;
   }
 
+  /* Invoice details section - consolidated */
+  .invoice-details {
+    text-align: right !important;
+  }
+
   .invoice-details > div {
-    height: 22px !important;
-    gap: 6px !important;
+    height: 20px !important;
+    gap: 4px !important;
+    margin-bottom: 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
   }
 
   /* Optimize From/To sections */
@@ -301,49 +338,6 @@ thead tr th:not(:first-child):hover::before {
 
   .from-to-section div {
     margin-bottom: 2px !important;
-  }
-
-  .bank-details {
-    padding: 8px !important;
-  }
-
-  .bank-details h4 {
-    margin-bottom: 4px !important;
-  }
-
-  .bank-details .grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important;
-  }
-
-  .bank-details .flex.flex-col {
-    gap: 4px !important;
-  }
-
-  .bank-details .flex.items-center {
-    gap: 4px !important;
-  }
-
-  .bank-details input[type="text"] {
-    padding: 2px 6px !important;
-    font-size: 14px !important;
-    height: 20px !important;
-    line-height: 1.2 !important;
-  }
-
-  /* Fix header alignment - ensure all labels and inputs align properly */
-  .invoice-details {
-    text-align: right !important;
-  }
-
-  .invoice-details > div {
-    margin-bottom: 4px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    gap: 4px !important;
-    height: 20px !important;
   }
 
   /* Ensure consistent label width for proper alignment */
@@ -392,35 +386,18 @@ thead tr th:not(:first-child):hover::before {
     font-size: 13px !important;
   }
 
-  /* Ensure totals section has optimized spacing */
+  /* Total section - consolidated */
   .total-section {
-    margin-top: 12px !important;
+    margin-top: 16px !important;
     padding-top: 10px !important;
     border-top: 1px solid #e9ecef !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   /* Optimize total rows spacing */
   .total-row {
     margin-bottom: 3px !important;
-  }
-
-  /* Fix page break issues */
-  .invoice-container {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-
-  /* Prevent orphan elements */
-  .total-section,
-  .bank-details {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-
-  /* Remove extra spacing that might cause blank pages */
-  .invoice-container {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
   }
 
   /* Ensure proper page margins and prevent blank pages */
@@ -429,40 +406,15 @@ thead tr th:not(:first-child):hover::before {
     size: A4 !important;
   }
 
-  /* Prevent blank second page - following reference template approach */
-  body {
-    background-color: white !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .invoice-container {
-    display: block !important;
-    box-shadow: none !important;
-    padding: 18px !important;
-    margin: 0 !important;
-    page-break-after: avoid !important;
-  }
-
   /* Ensure no extra height anywhere */
   html {
     height: auto !important;
   }
 
-  body {
-    height: auto !important;
-  }
-
-  /* Prevent any element from forcing a page break */
-  * {
-    page-break-after: auto !important;
-  }
-
   /* Specifically prevent page break on last element */
   .invoice-container > *:last-child,
   .invoice-container > div:last-child,
-  .notes-section,
-  .bank-details {
+  .notes-section {
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
     margin-bottom: 0 !important;
@@ -472,11 +424,6 @@ thead tr th:not(:first-child):hover::before {
   /* Hide any invisible spacer elements that might cause blank pages */
   div:empty {
     display: none !important;
-  }
-
-  /* Allow invoice to span multiple pages */
-  .invoice-container {
-    max-height: none !important;
   }
 
   /* Ensure the table container spans full width */
@@ -493,10 +440,6 @@ thead tr th:not(:first-child):hover::before {
     margin-right: 0 !important;
   }
 
-  table {
-    border-collapse: collapse !important;
-  }
-
   /* Ensure proper spacing */
   .header {
     margin-bottom: 18px !important;
@@ -504,9 +447,5 @@ thead tr th:not(:first-child):hover::before {
 
   .details-grid {
     margin-bottom: 16px !important;
-  }
-
-  .total-section {
-    margin-top: 16px !important;
   }
 }
