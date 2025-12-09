@@ -1,8 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --font-inter: Inter, Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+  --font-inter: var(--font-inter), Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
 
   --color-invoice-blue: #2c3e50;
   --color-invoice-gray: #f8f9fa;
@@ -63,13 +62,10 @@
     display: block !important;
   }
 
-  /* Remove any interactive hover elements */
-  .hover\\:bg-gray-50,
-  .hover\\:bg-blue-700,
-  .hover\\:text-blue-800,
-  .hover\\:bg-red-50,
-  .transition-opacity,
-  .group-hover\\:opacity-100 {
+  /* Remove any interactive hover elements - use attribute selectors */
+  [class*="hover:"],
+  [class*="group-hover:"],
+  .transition-opacity {
     opacity: 1 !important;
   }
 
@@ -92,12 +88,12 @@
     -webkit-print-color-adjust: exact !important;
   }
 
-  /* Compact spacing for print */
-  .print\\:p-0 {
+  /* Compact spacing for print - use attribute selectors */
+  [class*="print:p-0"] {
     padding: 0 !important;
   }
 
-  .print\\:shadow-none {
+  [class*="print:shadow-none"] {
     box-shadow: none !important;
   }
 
@@ -122,8 +118,8 @@
     box-shadow: none !important;
   }
 
-  /* Show only essential content */
-  .print\\:hidden {
+  /* Show only essential content - use attribute selector */
+  [class*="print:hidden"] {
     display: none !important;
   }
 
@@ -139,8 +135,8 @@
     padding: 0 !important;
   }
 
-  /* Ensure background colors still print */
-  .bg-\\[\\#f8f9fa\\] {
+  /* Ensure background colors still print - use attribute selector */
+  [class*="bg-[#f8f9fa]"] {
     background-color: #f8f9fa !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;

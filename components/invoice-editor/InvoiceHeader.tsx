@@ -1,5 +1,12 @@
 import { formatDateForDisplay } from '@/lib/invoice-utils'
-import React from 'react'
+import React, { useMemo } from 'react'
+
+const getInvoiceNumberPlaceholder = () => {
+  const today = new Date()
+  const year = today.getFullYear()
+  const month = String(today.getMonth() + 1).padStart(2, '0')
+  return `INV-${year}-${month}`
+}
 
 interface InvoiceHeaderProps {
   invoiceTitle: string
@@ -34,6 +41,8 @@ export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   dueDate,
   onDueDateChange
 }) => {
+  const invoiceNumberPlaceholder = useMemo(() => getInvoiceNumberPlaceholder(), [])
+
   return (
     <div className="invoice-header mb-10 flex flex-col justify-between gap-6 border-b-4 border-slate-100 pb-8 md:flex-row md:items-start">
       <div>
@@ -59,7 +68,7 @@ export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
           />
           <input
             type="text"
-            placeholder="INV-2025-08"
+            placeholder={invoiceNumberPlaceholder}
             className={inputClasses}
           />
         </div>
