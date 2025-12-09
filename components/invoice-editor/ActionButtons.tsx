@@ -6,7 +6,7 @@ export const ActionButtons: React.FC = () => {
       <button
         type="button"
         className="print-button inline-flex min-w-[180px] items-center justify-center gap-2 rounded-xl bg-linear-to-br from-[#667eea] to-[#764ba2] px-8 py-4 text-sm font-semibold text-white shadow-xl transition hover:-translate-y-1 hover:shadow-2xl focus:outline-hidden focus-visible:ring-4 focus-visible:ring-indigo-200"
-        onClick={() => window.print()}
+        onClick={() => globalThis.print()}
       >
         <svg
           width="20"
