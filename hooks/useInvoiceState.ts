@@ -34,8 +34,10 @@ export const useInvoiceState = () => {
   // Tax and discount state
   const [taxEnabled, setTaxEnabled] = useState(false)
   const [taxPercentage, setTaxPercentage] = useState('15')
+  const [taxLabel, setTaxLabel] = useState('Tax')
   const [discountEnabled, setDiscountEnabled] = useState(false)
   const [discountPercentage, setDiscountPercentage] = useState('10')
+  const [discountLabel, setDiscountLabel] = useState('Discount')
 
   // Currency state - default to ZAR to maintain current behavior
   const [currencyCode, setCurrencyCode] = useState('ZAR')
@@ -91,10 +93,14 @@ export const useInvoiceState = () => {
     setTaxEnabled,
     taxPercentage,
     setTaxPercentage,
+    taxLabel,
+    setTaxLabel,
     discountEnabled,
     setDiscountEnabled,
     discountPercentage,
     setDiscountPercentage,
+    discountLabel,
+    setDiscountLabel,
 
     // Currency
     currencyCode,
