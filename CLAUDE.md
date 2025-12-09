@@ -14,17 +14,19 @@ Building a flexible, non-restrictive invoice generator web application for non-t
 - TypeScript 5
 - Tailwind CSS 4
 - React 19
-- Local Storage (no backend initially)
+- Local Storage (fallback for non-authenticated users)
 - PDF generation (jspdf + html2canvas)
 
-**Phase 2 (Future):**
+**Phase 2 (Current - Implemented):**
 
-- Add: Supabase (Auth + Database)
-- Add: Prisma (ORM)
-- Add: Zustand (state management)
+- Supabase (Auth + Database) - Email/Password authentication
+- Contact storage (Business Profiles + Clients)
+- Cross-device sync for authenticated users
 
 **Phase 3 (Future):**
 
+- Add: Google OAuth
+- Add: Zustand (state management)
 - Add: React Native + Expo
 - Add: Tamagui (shared components)
 - Add: Turborepo (monorepo)
@@ -33,14 +35,34 @@ Building a flexible, non-restrictive invoice generator web application for non-t
 
 ```
 /app                    # Next.js App Router
-  layout.tsx            # Root layout
+  layout.tsx            # Root layout with AuthProvider
   page.tsx              # Main invoice page
   globals.css           # Global styles
+  /login                # Authentication page
+    page.tsx
+  /auth/callback        # OAuth callback handler
+    route.ts
+  /contacts             # Contact management
+    page.tsx            # Contacts overview
+    /business           # Business profiles
+      page.tsx
+    /clients            # Client management
+      page.tsx
 
 /components             # React components
+  /auth                 # Authentication components
+    AuthProvider.tsx    # Auth context provider
+    LoginForm.tsx       # Login/signup form
+    UserMenu.tsx        # User dropdown menu
+  /contacts             # Contact management components
+    BusinessProfileList.tsx
+    ClientList.tsx
+    ContactForm.tsx
+    ContactSelectorModal.tsx
+    SaveContactModal.tsx
   /invoice-editor       # Editor components
     ActionButtons.tsx   # Print/download actions
-    ContactDetails.tsx  # From/To contact sections
+    ContactDetails.tsx  # From/To contact sections (with Load/Save)
     CurrencySelector.tsx # Currency selection
     DatePicker.tsx      # Date input component
     EditableField.tsx   # Reusable editable text field
@@ -66,9 +88,55 @@ Building a flexible, non-restrictive invoice generator web application for non-t
   invoice-utils.ts      # Invoice helper functions
   pdf-generator.ts      # PDF export functionality
   types.ts              # Shared type definitions
+  /supabase             # Supabase integration
+    client.ts           # Browser Supabase client
+    server.ts           # Server Supabase client (SSR)
+    middleware.ts       # Session refresh helper
+    types.ts            # Database types
+    business-profiles.ts # Business profile CRUD
+    clients.ts          # Client CRUD
+
+/supabase               # Supabase configuration
+  /migrations           # Database migrations
+    *_create_contacts_tables.sql
 
 /public                 # Static assets
+
+proxy.ts                # Next.js 16 proxy (session handling)
 ```
+
+## Supabase Integration
+
+### Local Development
+
+The project uses local Supabase via Docker for development:
+
+```bash
+supabase start      # Start local Supabase
+supabase stop       # Stop local Supabase
+supabase db reset   # Reset database (re-run migrations)
+supabase status     # Show local URLs and keys
+```
+
+**Local URLs:**
+- API: `http://127.0.0.1:54321`
+- Studio: `http://127.0.0.1:54323` (database UI)
+- Mailpit: `http://127.0.0.1:54324` (local email testing)
+
+### Database Schema
+
+Two tables for contact storage:
+- `business_profiles` - "From" section (your business info)
+- `clients` - "To" section (client information)
+
+Both use JSONB `fields` column for flexible field storage with Row Level Security (RLS).
+
+### Authentication Flow
+
+1. Users can use the app without authentication (localStorage)
+2. Sign up/Sign in enables cross-device sync
+3. Load/Save buttons appear in From/To sections when logged in
+4. Confirmation emails sent via Mailpit (local) or configured provider (production)
 
 ## Code Organization Guidelines
 
@@ -103,7 +171,8 @@ Building a flexible, non-restrictive invoice generator web application for non-t
 4. **Testing Approach**:
    - Test the UI manually after each feature
    - Ensure PDF generation works correctly
-   - Verify localStorage persistence
+   - Verify localStorage persistence (non-auth users)
+   - Verify Supabase persistence (authenticated users)
    - Check mobile responsiveness
 
 5. **User Experience Priority**:
@@ -118,6 +187,7 @@ Building a flexible, non-restrictive invoice generator web application for non-t
 - **Smart but Not Restrictive**: Detect patterns (like calculations) but never force them
 - **Zero Configuration**: Should work immediately without any setup
 - **Professional Output**: Clean PDFs regardless of user customizations
+- **Progressive Enhancement**: Works without auth, better with auth
 
 ## Common Tasks
 
@@ -126,12 +196,17 @@ Building a flexible, non-restrictive invoice generator web application for non-t
 - **Changing calculations**: Modify `invoice-calculator.ts` or `useInvoiceCalculations` hook
 - **Adjusting PDF output**: Update `pdf-generator.ts`
 - **Managing invoice state**: Use or extend hooks in `/hooks`
+- **Adding Supabase features**: Use existing patterns in `/lib/supabase/`
+- **Auth-gated UI**: Check `user` from `useAuth()` hook
 
 ## Environment Setup
 
 ```bash
 # Install dependencies
 npm install
+
+# Start local Supabase (requires Docker)
+supabase start
 
 # Run development server
 npm run dev
@@ -144,6 +219,17 @@ npm run start
 
 # Run linting
 npm run lint
+
+# Reset database (re-run migrations)
+supabase db reset
+```
+
+## Environment Variables
+
+Required in `.env.local`:
+```
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<from supabase start output>
 ```
 
 ## Before You Code
@@ -153,6 +239,7 @@ npm run lint
 3. Plan the implementation approach
 4. Consider edge cases
 5. Think about mobile experience
+6. Consider auth vs non-auth user experience
 
 ## Testing Checklist
 
@@ -160,9 +247,11 @@ npm run lint
 - [ ] No console errors
 - [ ] Mobile responsive
 - [ ] PDF generates correctly
-- [ ] Data persists in localStorage
+- [ ] Data persists in localStorage (non-auth)
+- [ ] Data persists in Supabase (authenticated)
 - [ ] Editable fields work smoothly
 - [ ] Calculations update correctly
+- [ ] Auth state handled correctly
 
 ## If Unsure
 

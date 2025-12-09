@@ -9,6 +9,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.87.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.4",
     "next": "^16.0.8",
