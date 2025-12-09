@@ -307,7 +307,7 @@ export default function InvoiceEditor() {
             value={invoiceData.header.invoiceNumber}
             onChange={(value) => updateHeader('invoiceNumber', value)}
             className="inline-block min-w-[100px]"
-            placeholder="INV-2025-08"
+            placeholder={getCurrentInvoiceNumber()}
           /></div>
           <div className="flex items-center justify-end gap-2"><strong>Date:</strong> <DatePicker
             value={invoiceData.header.date}

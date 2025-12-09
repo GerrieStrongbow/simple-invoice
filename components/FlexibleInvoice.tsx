@@ -27,10 +27,14 @@ export default function FlexibleInvoice() {
     setTaxEnabled,
     taxPercentage,
     setTaxPercentage,
+    taxLabel,
+    setTaxLabel,
     discountEnabled,
     setDiscountEnabled,
     discountPercentage,
     setDiscountPercentage,
+    discountLabel,
+    setDiscountLabel,
     currencyCode,
     setCurrencyCode,
     currencySymbol,
@@ -173,14 +177,18 @@ export default function FlexibleInvoice() {
             total={totals.total}
             taxEnabled={taxEnabled}
             taxPercentage={taxPercentage}
+            taxLabel={taxLabel}
             discountEnabled={discountEnabled}
             discountPercentage={discountPercentage}
+            discountLabel={discountLabel}
             currencySymbol={currencySymbol}
             totalLabel={totalLabel}
             onTaxToggle={setTaxEnabled}
             onTaxPercentageChange={setTaxPercentage}
+            onTaxLabelChange={setTaxLabel}
             onDiscountToggle={setDiscountEnabled}
             onDiscountPercentageChange={setDiscountPercentage}
+            onDiscountLabelChange={setDiscountLabel}
             onTotalLabelChange={setTotalLabel}
           />
 

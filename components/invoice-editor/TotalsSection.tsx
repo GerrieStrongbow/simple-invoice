@@ -7,14 +7,18 @@ interface TotalsSectionProps {
   total: string
   taxEnabled: boolean
   taxPercentage: string
+  taxLabel: string
   discountEnabled: boolean
   discountPercentage: string
+  discountLabel: string
   currencySymbol: string
   totalLabel: string
   onTaxToggle: (enabled: boolean) => void
   onTaxPercentageChange: (percentage: string) => void
+  onTaxLabelChange: (label: string) => void
   onDiscountToggle: (enabled: boolean) => void
   onDiscountPercentageChange: (percentage: string) => void
+  onDiscountLabelChange: (label: string) => void
   onTotalLabelChange: (label: string) => void
 }
 
@@ -29,6 +33,13 @@ const percentageInput = (enabled: boolean) => [
 
 const percentageLabel = (enabled: boolean) => enabled ? 'text-slate-800 font-medium' : 'text-slate-400 font-medium'
 
+const labelInputClasses = (enabled: boolean) => [
+  'cursor-text rounded border-transparent bg-transparent px-1 py-0.5 text-sm transition outline-hidden',
+  enabled
+    ? 'hover:bg-slate-100 focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100'
+    : 'text-slate-400'
+].join(' ')
+
 export const TotalsSection: React.FC<TotalsSectionProps> = ({
   subtotal,
   tax,
@@ -36,14 +47,18 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
   total,
   taxEnabled,
   taxPercentage,
+  taxLabel,
   discountEnabled,
   discountPercentage,
+  discountLabel,
   currencySymbol,
   totalLabel,
   onTaxToggle,
   onTaxPercentageChange,
+  onTaxLabelChange,
   onDiscountToggle,
   onDiscountPercentageChange,
+  onDiscountLabelChange,
   onTotalLabelChange
 }) => {
   return (
@@ -58,7 +73,16 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
 
       {discountEnabled && (
         <div className="total-row mb-3 flex items-center justify-between text-sm">
-          <span>Discount ({discountPercentage}%):</span>
+          <span>
+            <input
+              type="text"
+              value={discountLabel}
+              onChange={(e) => onDiscountLabelChange(e.target.value)}
+              className={labelInputClasses(true)}
+              style={{ width: `${Math.max(discountLabel.length + 2, 6)}ch` }}
+            />
+            ({discountPercentage}%):
+          </span>
           <span className={totalValueClasses}>
             ({currencySymbol}
             {discount})
@@ -68,7 +92,16 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
 
       {taxEnabled && (
         <div className="total-row mb-3 flex items-center justify-between text-sm">
-          <span>Tax ({taxPercentage}%):</span>
+          <span>
+            <input
+              type="text"
+              value={taxLabel}
+              onChange={(e) => onTaxLabelChange(e.target.value)}
+              className={labelInputClasses(true)}
+              style={{ width: `${Math.max(taxLabel.length + 2, 5)}ch` }}
+            />
+            ({taxPercentage}%):
+          </span>
           <span className={totalValueClasses}>
             {currencySymbol}
             {tax}
@@ -84,7 +117,15 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
             onChange={(e) => onDiscountToggle(e.target.checked)}
             className="h-4 w-4 rounded-sm border-slate-300 text-sky-600 focus:ring-sky-500"
           />
-          <span className={percentageLabel(discountEnabled)}>Add Discount:</span>
+          <span className={percentageLabel(discountEnabled)}>Add</span>
+          <input
+            type="text"
+            value={discountLabel}
+            onChange={(e) => onDiscountLabelChange(e.target.value)}
+            disabled={!discountEnabled}
+            className={`${percentageInput(discountEnabled)} w-24`}
+            placeholder="Discount"
+          />
           <input
             type="text"
             value={discountPercentage}
@@ -102,7 +143,15 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
             onChange={(e) => onTaxToggle(e.target.checked)}
             className="h-4 w-4 rounded-sm border-slate-300 text-sky-600 focus:ring-sky-500"
           />
-          <span className={percentageLabel(taxEnabled)}>Add Tax:</span>
+          <span className={percentageLabel(taxEnabled)}>Add</span>
+          <input
+            type="text"
+            value={taxLabel}
+            onChange={(e) => onTaxLabelChange(e.target.value)}
+            disabled={!taxEnabled}
+            className={`${percentageInput(taxEnabled)} w-20`}
+            placeholder="Tax"
+          />
           <input
             type="text"
             value={taxPercentage}
