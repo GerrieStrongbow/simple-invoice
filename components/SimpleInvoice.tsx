@@ -2,6 +2,13 @@
 
 import React, { useMemo, useState, useRef } from 'react'
 
+const getInvoiceNumberPlaceholder = () => {
+  const today = new Date()
+  const year = today.getFullYear()
+  const month = String(today.getMonth() + 1).padStart(2, '0')
+  return `INV-${year}-${month}`
+}
+
 interface EditableSpanProps {
   children: React.ReactNode
   className?: string
@@ -68,7 +75,7 @@ export default function SimpleInvoice() {
             <div className="flex items-center justify-end gap-2">
               <strong>Invoice #:</strong>
               <EditableSpan className="min-w-[120px]" contentEditable>
-                INV-2025-08
+                {getInvoiceNumberPlaceholder()}
               </EditableSpan>
             </div>
             <div className="flex items-center justify-end gap-2">
