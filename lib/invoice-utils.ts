@@ -35,9 +35,9 @@ export const formatDateForDisplay = (dateString: string): string => {
 export const parseNumericValue = (value: string): number => {
   if (!value) return 0
   // Remove currency symbols and spaces
-  const cleanValue = value.replace(/[^0-9.,-]/g, '')
-  const numValue = parseFloat(cleanValue.replace(',', ''))
-  return isNaN(numValue) ? 0 : numValue
+  const cleanValue = value.replaceAll(/[^0-9.,-]/g, '')
+  const numValue = Number.parseFloat(cleanValue.replaceAll(',', ''))
+  return Number.isNaN(numValue) ? 0 : numValue
 }
 
 /**

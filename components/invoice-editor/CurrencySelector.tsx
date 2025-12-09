@@ -42,7 +42,7 @@ export default function CurrencySelector({
   symbol,
   onChange,
   className = '',
-}: CurrencySelectorProps) {
+}: Readonly<CurrencySelectorProps>) {
   const [isOpen, setIsOpen] = useState(false)
   
   const currentCurrency = currencies.find(c => c.code === value) || currencies.find(c => c.symbol === symbol)
@@ -90,9 +90,12 @@ export default function CurrencySelector({
       )}
       
       {isOpen && (
-        <div 
-          className="fixed inset-0 z-40" 
+        <button
+          type="button"
+          className="fixed inset-0 z-40 cursor-default"
           onClick={() => setIsOpen(false)}
+          onKeyDown={(e) => e.key === 'Escape' && setIsOpen(false)}
+          aria-label="Close currency selector"
         />
       )}
     </div>

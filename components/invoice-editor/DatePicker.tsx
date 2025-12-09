@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 
 interface DatePickerProps {
   value: string
@@ -9,7 +9,7 @@ interface DatePickerProps {
   className?: string
 }
 
-export default function DatePicker({ value, onChange, placeholder, className }: DatePickerProps) {
+export default function DatePicker({ value, onChange, placeholder, className }: Readonly<DatePickerProps>) {
   const [isEditing, setIsEditing] = useState(false)
   const [inputType, setInputType] = useState<'text' | 'date'>('text')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -29,7 +29,7 @@ export default function DatePicker({ value, onChange, placeholder, className }: 
   const toDisplayFormat = (dateStr: string) => {
     if (!dateStr) return ''
     const date = new Date(dateStr)
-    if (isNaN(date.getTime())) return dateStr
+    if (Number.isNaN(date.getTime())) return dateStr
     return date.toLocaleDateString('en-GB')
   }
 
@@ -90,19 +90,12 @@ export default function DatePicker({ value, onChange, placeholder, className }: 
   }
 
   return (
-    <div
+    <button
+      type="button"
       onClick={handleClick}
-      className={`${className} w-full px-2 py-1 rounded-sm transition-all duration-200 hover:bg-gray-50 cursor-pointer`}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          handleClick()
-        }
-      }}
+      className={`${className} w-full px-2 py-1 rounded-sm transition-all duration-200 hover:bg-gray-50 cursor-pointer text-left`}
     >
       {value || <span className="text-gray-400">{placeholder}</span>}
-    </div>
+    </button>
   )
 }

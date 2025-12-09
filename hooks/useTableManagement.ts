@@ -10,7 +10,7 @@ const DESCRIPTION_WEIGHT = 1.6
 const AMOUNT_WEIGHT = 1
 const GENERIC_WEIGHT = 1
 
-const toPercent = (value: number) => `${parseFloat(value.toFixed(2))}%`
+const toPercent = (value: number) => `${Number.parseFloat(value.toFixed(2))}%`
 
 const recalculateColumnWidths = (columns: Column[]): Column[] => {
   if (!columns.length) {
@@ -55,11 +55,11 @@ const recalculateColumnWidths = (columns: Column[]): Column[] => {
     const extra = leftover > 0 && totalWeight > 0
       ? (leftover * (weight / totalWeight))
       : 0
-    return parseFloat((minWidth + extra).toFixed(2))
+    return Number.parseFloat((minWidth + extra).toFixed(2))
   })
 
   const totalAssigned = widths.reduce((total, value) => total + value, 0)
-  const roundingDelta = parseFloat((100 - totalAssigned).toFixed(2))
+  const roundingDelta = Number.parseFloat((100 - totalAssigned).toFixed(2))
 
   return columns.map((column, index) => {
     const finalWidth = index === columns.length - 1
@@ -126,7 +126,7 @@ export const useTableManagement = () => {
     } else {
       // Default: Insert before the Amount column if it exists, otherwise at the end
       const amountColIndex = columns.findIndex(col => col.isAmount)
-      if (amountColIndex !== -1) {
+      if (amountColIndex >= 0) {
         newColumns = [...columns]
         newColumns.splice(amountColIndex, 0, newColumn)
       } else {
