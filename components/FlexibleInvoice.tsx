@@ -61,6 +61,8 @@ export default function FlexibleInvoice() {
     setPaymentTitle,
     invoiceNumberLabel,
     setInvoiceNumberLabel,
+    invoiceNumber,
+    setInvoiceNumber,
     dateLabel,
     setDateLabel,
     dueDateLabel,
@@ -135,6 +137,8 @@ export default function FlexibleInvoice() {
               onInvoiceTitleChange={setInvoiceTitle}
               invoiceNumberLabel={invoiceNumberLabel}
               onInvoiceNumberLabelChange={setInvoiceNumberLabel}
+              invoiceNumber={invoiceNumber}
+              onInvoiceNumberChange={setInvoiceNumber}
               dateLabel={dateLabel}
               onDateLabelChange={setDateLabel}
               dueDateLabel={dueDateLabel}
@@ -176,7 +180,7 @@ export default function FlexibleInvoice() {
           </div>
 
           {/* Currency Selector */}
-          <div className="animate-fade-up animate-delay-3 currency-section no-print mx-auto mt-6 mb-6 flex items-center gap-3 rounded-lg border border-border bg-paper-warm px-4 py-3">
+          <div className="animate-fade-up animate-delay-3 currency-section no-print relative z-50 mx-auto mt-6 mb-6 flex items-center gap-3 rounded-lg border border-border bg-paper-warm px-4 py-3">
             <span className="text-sm font-medium text-ink-soft">Currency:</span>
             <CurrencySelector
               value={currencyCode}
@@ -226,7 +230,35 @@ export default function FlexibleInvoice() {
           </div>
 
           {/* Action Buttons */}
-          <ActionButtons />
+          <ActionButtons
+            invoiceTitle={invoiceTitle}
+            invoiceNumber={invoiceNumber}
+            invoiceNumberLabel={invoiceNumberLabel}
+            invoiceDate={invoiceDate}
+            dateLabel={dateLabel}
+            dueDate={dueDate}
+            dueDateLabel={dueDateLabel}
+            fromTitle={fromTitle}
+            fromFields={fromFields}
+            toTitle={toTitle}
+            toFields={toFields}
+            paymentTitle={paymentTitle}
+            paymentFields={paymentFields}
+            columns={columns}
+            rows={rows}
+            currencySymbol={currencySymbol}
+            subtotal={totals.subtotal}
+            taxEnabled={taxEnabled}
+            taxLabel={taxLabel}
+            taxPercentage={taxPercentage}
+            tax={totals.tax}
+            discountEnabled={discountEnabled}
+            discountLabel={discountLabel}
+            discountPercentage={discountPercentage}
+            discount={totals.discount}
+            totalLabel={totalLabel}
+            total={totals.total}
+          />
         </div>
       </div>
     </div>

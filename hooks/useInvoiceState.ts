@@ -72,6 +72,7 @@ export const useInvoiceState = () => {
 
   // Field labels state
   const [invoiceNumberLabel, setInvoiceNumberLabel] = useState('Invoice #:')
+  const [invoiceNumber, setInvoiceNumber] = useState('')
   const [dateLabel, setDateLabel] = useState('Issue Date:')
   const [dueDateLabel, setDueDateLabel] = useState('Due Date:')
   const [totalLabel, setTotalLabel] = useState('Total Amount Due:')
@@ -212,6 +213,8 @@ export const useInvoiceState = () => {
     // Field labels
     invoiceNumberLabel,
     setInvoiceNumberLabel,
+    invoiceNumber,
+    setInvoiceNumber,
     dateLabel,
     setDateLabel,
     dueDateLabel,

@@ -13,6 +13,8 @@ interface InvoiceHeaderProps {
   onInvoiceTitleChange: (title: string) => void
   invoiceNumberLabel: string
   onInvoiceNumberLabelChange: (label: string) => void
+  invoiceNumber: string
+  onInvoiceNumberChange: (number: string) => void
   dateLabel: string
   onDateLabelChange: (label: string) => void
   dueDateLabel: string
@@ -42,6 +44,8 @@ export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   onInvoiceTitleChange,
   invoiceNumberLabel,
   onInvoiceNumberLabelChange,
+  invoiceNumber,
+  onInvoiceNumberChange,
   dateLabel,
   onDateLabelChange,
   dueDateLabel,
@@ -82,6 +86,9 @@ export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
           />
           <input
             type="text"
+            aria-label="Invoice number"
+            value={invoiceNumber}
+            onChange={(e) => onInvoiceNumberChange(e.target.value)}
             placeholder={invoiceNumberPlaceholder}
             className={inputClasses}
           />

@@ -9,6 +9,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@myriaddreamin/typst-ts-renderer": "^0.6.1-rc5",
+    "@myriaddreamin/typst-ts-web-compiler": "^0.6.1-rc5",
+    "@myriaddreamin/typst.ts": "^0.6.1-rc5",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.87.1",
     "babel-plugin-react-compiler": "^1.0.0",
