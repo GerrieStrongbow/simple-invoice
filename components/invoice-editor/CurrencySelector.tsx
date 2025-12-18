@@ -73,7 +73,7 @@ export default function CurrencySelector({
       </button>
       
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-white border border-gray-300 rounded-sm shadow-lg z-50">
+        <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-white border border-gray-300 rounded-sm shadow-lg z-[100]">
           {currencies.map((currency) => (
             <button
               key={currency.code}
@@ -92,7 +92,7 @@ export default function CurrencySelector({
       {isOpen && (
         <button
           type="button"
-          className="fixed inset-0 z-40 cursor-default"
+          className="fixed inset-0 z-90 cursor-default"
           onClick={() => setIsOpen(false)}
           onKeyDown={(e) => e.key === 'Escape' && setIsOpen(false)}
           aria-label="Close currency selector"

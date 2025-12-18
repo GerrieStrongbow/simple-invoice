@@ -92,16 +92,44 @@ thead tr th:not(:first-child):hover::before {
   }
 
   /* Clean up input styling for print */
-  input[type="text"] {
+  input[type="text"],
+  input[type="text"]:focus,
+  input[type="text"]:hover,
+  input[type="text"]:active {
     background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
     border: none !important;
     padding: 2px 4px !important;
     outline: none !important;
-    box-shadow: none !important;
     font-family: var(--font-body), system-ui, -apple-system, sans-serif !important;
     font-size: inherit !important;
     font-weight: inherit !important;
     color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
+  }
+
+  /* Override autofill styling for print - must be transparent */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    background: transparent !important;
+    -webkit-text-fill-color: inherit !important;
+    color: inherit !important;
+  }
+
+  /* Remove highlight/selection in print */
+  .invoice-input,
+  .invoice-input:focus,
+  .invoice-input:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 
   /* Hide all editable borders in print */
