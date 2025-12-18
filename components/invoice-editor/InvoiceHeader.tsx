@@ -23,9 +23,19 @@ interface InvoiceHeaderProps {
   onDueDateChange: (date: string) => void
 }
 
-const labelClasses = 'w-[120px] min-w-[110px] rounded-lg border-2 border-slate-200 bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700 text-right outline-hidden transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
-const inputClasses = 'w-[130px] min-w-[130px] rounded-lg border-2 border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-800 text-right outline-hidden transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
-const titleClasses = 'w-full max-w-[260px] rounded-lg border-2 border-slate-200 bg-slate-100 px-4 py-2 text-4xl font-extrabold leading-tight text-slate-800 outline-hidden transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
+// Refined styling classes
+const labelClasses = 'w-[110px] min-w-[100px] rounded-md border border-border bg-transparent px-3 py-1.5 text-sm font-medium text-ink-muted text-right outline-none transition hover:bg-paper-warm focus:border-accent focus:bg-white focus:ring-2 focus:ring-accent-muted'
+const inputClasses = 'w-[130px] min-w-[120px] rounded-md border border-border bg-paper-warm px-3 py-1.5 text-sm font-medium text-ink tabular-nums text-right outline-none transition focus:border-accent focus:bg-white focus:ring-2 focus:ring-accent-muted'
+// Note: Font size is set via inline style (titleStyle) for html2canvas PDF compatibility
+const titleClasses = 'font-display tracking-tight text-ink bg-transparent border-none outline-none transition hover:text-ink-soft focus:text-ink'
+
+// Explicit style for html2canvas compatibility (CSS variables don't work in canvas rendering)
+const titleStyle: React.CSSProperties = {
+  fontFamily: 'Georgia, "Times New Roman", serif',
+  fontStyle: 'normal',
+  fontSize: '48px',
+  fontWeight: 400,
+}
 
 export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   invoiceTitle,
@@ -44,21 +54,25 @@ export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   const invoiceNumberPlaceholder = useMemo(() => getInvoiceNumberPlaceholder(), [])
 
   return (
-    <div className="invoice-header mb-10 flex flex-col justify-between gap-6 border-b-4 border-slate-100 pb-8 md:flex-row md:items-start">
-      <div>
-        <h1 className="text-4xl font-extrabold leading-tight">
-          <input
-            type="text"
-            aria-label="Invoice title"
-            value={invoiceTitle}
-            onChange={(e) => onInvoiceTitleChange(e.target.value)}
-            className={titleClasses}
-          />
-        </h1>
+    <div className="invoice-header mb-10 flex flex-col justify-between gap-8 border-b border-border pb-8 md:flex-row md:items-start">
+      {/* Invoice Title - Elegant serif */}
+      <div className="flex-1">
+        <input
+          type="text"
+          aria-label="Invoice title"
+          value={invoiceTitle}
+          onChange={(e) => onInvoiceTitleChange(e.target.value)}
+          className={titleClasses}
+          style={titleStyle}
+        />
+        {/* Accent underline */}
+        <div className="mt-3 h-0.5 w-12 bg-accent rounded-full" />
       </div>
 
-      <div className="invoice-details flex flex-col items-end gap-4 text-right">
-        <div className="flex items-center justify-end gap-3">
+      {/* Invoice Details - Right aligned */}
+      <div className="invoice-details flex flex-col items-end gap-3 text-right">
+        {/* Invoice Number */}
+        <div className="flex items-center justify-end gap-2">
           <input
             type="text"
             aria-label="Invoice number label"
@@ -73,7 +87,8 @@ export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
           />
         </div>
 
-        <div className="flex items-center justify-end gap-3">
+        {/* Date */}
+        <div className="flex items-center justify-end gap-2">
           <input
             type="text"
             aria-label="Date label"
@@ -88,13 +103,14 @@ export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
               onChange={(e) => onInvoiceDateChange(e.target.value)}
               className={inputClasses}
             />
-            <span className="print-only pointer-events-none absolute right-4 top-2 text-sm font-medium text-slate-700">
+            <span className="print-only pointer-events-none absolute right-3 top-1.5 text-sm font-medium text-ink">
               {formatDateForDisplay(invoiceDate)}
             </span>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3">
+        {/* Due Date */}
+        <div className="flex items-center justify-end gap-2">
           <input
             type="text"
             aria-label="Due date label"
@@ -109,7 +125,7 @@ export const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
               onChange={(e) => onDueDateChange(e.target.value)}
               className={inputClasses}
             />
-            <span className="print-only pointer-events-none absolute right-4 top-2 text-sm font-medium text-slate-700">
+            <span className="print-only pointer-events-none absolute right-3 top-1.5 text-sm font-medium text-ink">
               {formatDateForDisplay(dueDate)}
             </span>
           </div>

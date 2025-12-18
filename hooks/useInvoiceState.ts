@@ -1,8 +1,25 @@
 import { Column, Field, Row } from '@/lib/invoice-types'
 import { getCurrentDate, getEndOfMonth } from '@/lib/invoice-utils'
-import { useState } from 'react'
+import { getDefaultBusinessProfile } from '@/lib/supabase/business-profiles'
+import { getDefaultClient } from '@/lib/supabase/clients'
+import { getDefaultBankingDetails } from '@/lib/supabase/banking-details'
+import { useAuth } from '@/components/auth/AuthProvider'
+import { useState, useEffect } from 'react'
+
+// Type for tracking loaded records
+export interface LoadedRecord {
+  id: string
+  name: string
+}
 
 export const useInvoiceState = () => {
+  const { user } = useAuth()
+
+  // Loaded record tracking
+  const [loadedBusinessProfile, setLoadedBusinessProfile] = useState<LoadedRecord | null>(null)
+  const [loadedClient, setLoadedClient] = useState<LoadedRecord | null>(null)
+  const [loadedBanking, setLoadedBanking] = useState<LoadedRecord | null>(null)
+
   // State for individual fields
   const [fromFields, setFromFields] = useState<Field[]>([
     { id: '1', label: 'Your Business Name', value: '', placeholder: 'Your Business Name' },
@@ -79,6 +96,66 @@ export const useInvoiceState = () => {
     }
   ])
 
+  // Auto-load default business profile, client, and banking when user is logged in
+  useEffect(() => {
+    if (!user) return
+
+    const loadDefaults = async () => {
+      // Load default business profile for "From" section
+      try {
+        const defaultProfile = await getDefaultBusinessProfile()
+        if (defaultProfile?.fields) {
+          const mappedFields: Field[] = defaultProfile.fields.map((field, index) => ({
+            id: field.id || String(index + 1),
+            label: field.label,
+            value: field.value,
+            placeholder: field.placeholder || field.label
+          }))
+          setFromFields(mappedFields)
+          setLoadedBusinessProfile({ id: defaultProfile.id, name: defaultProfile.name })
+        }
+      } catch (error) {
+        console.error('Failed to load default business profile:', error)
+      }
+
+      // Load default client for "To" section
+      try {
+        const defaultClient = await getDefaultClient()
+        if (defaultClient?.fields) {
+          const mappedFields: Field[] = defaultClient.fields.map((field, index) => ({
+            id: field.id || String(index + 1),
+            label: field.label,
+            value: field.value,
+            placeholder: field.placeholder || field.label
+          }))
+          setToFields(mappedFields)
+          setLoadedClient({ id: defaultClient.id, name: defaultClient.name })
+        }
+      } catch (error) {
+        console.error('Failed to load default client:', error)
+      }
+
+      // Load default banking details for "Payment" section
+      try {
+        const defaultBanking = await getDefaultBankingDetails()
+        if (defaultBanking?.fields) {
+          const mappedFields: Field[] = defaultBanking.fields.map((field, index) => ({
+            id: field.id || String(index + 1),
+            label: field.label,
+            value: field.value,
+            placeholder: field.placeholder || field.label
+          }))
+          setPaymentFields(mappedFields)
+          setLoadedBanking({ id: defaultBanking.id, name: defaultBanking.name })
+        }
+      } catch (error) {
+        console.error('Failed to load default banking details:', error)
+      }
+    }
+
+    loadDefaults()
+  }, [user])
+
   return {
     // Fields
     fromFields,
@@ -87,6 +164,14 @@ export const useInvoiceState = () => {
     setToFields,
     paymentFields,
     setPaymentFields,
+
+    // Loaded record tracking
+    loadedBusinessProfile,
+    setLoadedBusinessProfile,
+    loadedClient,
+    setLoadedClient,
+    loadedBanking,
+    setLoadedBanking,
 
     // Tax and discount
     taxEnabled,

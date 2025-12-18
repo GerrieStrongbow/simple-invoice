@@ -17,7 +17,7 @@ export class PDFGenerator {
 
     try {
       const canvas = await html2canvas(element, {
-        scale: 1.5, // Reduced scale for better compatibility
+        scale: 2, // Higher scale for better quality and font rendering
         useCORS: true,
         allowTaint: false,
         backgroundColor: '#ffffff',

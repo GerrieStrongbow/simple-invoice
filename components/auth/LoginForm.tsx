@@ -45,88 +45,98 @@ export function LoginForm() {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-bold text-center mb-6">
-        {isSignUp ? 'Create Account' : 'Sign In'}
-      </h1>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="you@example.com"
-          />
+    <div className="w-full max-w-md mx-auto">
+      {/* Card Container */}
+      <div className="bg-white rounded-xl border border-border shadow-soft p-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="font-display text-3xl text-ink mb-2">
+            {isSignUp ? 'Create Account' : 'Welcome Back'}
+          </h1>
+          <p className="text-ink-muted text-sm">
+            {isSignUp ? 'Start creating professional invoices' : 'Sign in to your account'}
+          </p>
         </div>
 
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium mb-1">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="********"
-          />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-ink-soft mb-1.5">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-2.5 border border-border rounded-lg bg-paper-warm/50 text-ink placeholder:text-ink-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent-muted"
+              placeholder="you@example.com"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-ink-soft mb-1.5">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              className="w-full px-4 py-2.5 border border-border rounded-lg bg-paper-warm/50 text-ink placeholder:text-ink-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent-muted"
+              placeholder="********"
+            />
+          </div>
+
+          {error && (
+            <div className="p-3 bg-error/5 border border-error/20 text-error rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
+          {message && (
+            <div className="p-3 bg-success/5 border border-success/20 text-success rounded-lg text-sm">
+              {message}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-2.5 px-4 bg-ink text-white rounded-lg font-medium transition hover:bg-ink-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+          >
+            {loading && 'Loading...'}
+            {!loading && (isSignUp ? 'Create Account' : 'Sign In')}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={() => {
+              setIsSignUp(!isSignUp)
+              setError(null)
+              setMessage(null)
+            }}
+            className="text-accent hover:text-accent-soft transition-colors text-sm"
+          >
+            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+          </button>
         </div>
-
-        {error && (
-          <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-            {error}
-          </div>
-        )}
-
-        {message && (
-          <div className="p-3 bg-green-100 border border-green-400 text-green-700 rounded">
-            {message}
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
-        </button>
-      </form>
-
-      <div className="mt-4 text-center">
-        <button
-          type="button"
-          onClick={() => {
-            setIsSignUp(!isSignUp)
-            setError(null)
-            setMessage(null)
-          }}
-          className="text-blue-600 hover:underline"
-        >
-          {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-        </button>
       </div>
 
-      {/* Development hint */}
-      <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
-        <strong>Dev Mode:</strong> Check confirmation emails at{' '}
+      {/* Development hint - outside card for subtle appearance */}
+      <div className="mt-4 p-3 bg-paper-warm rounded-lg border border-border text-sm text-ink-muted text-center">
+        <strong className="text-ink-soft">Dev Mode:</strong> Check emails at{' '}
         <a
           href="http://127.0.0.1:54324"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline"
+          className="text-accent hover:underline"
         >
-          Mailpit (localhost:54324)
+          Mailpit
         </a>
       </div>
     </div>

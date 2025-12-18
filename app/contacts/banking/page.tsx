@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { ClientList } from '@/components/contacts/ClientList'
+import { BankingDetailsList } from '@/components/banking/BankingDetailsList'
 import Link from 'next/link'
 
-export default async function ClientsPage() {
+export default async function BankingDetailsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -19,7 +19,7 @@ export default async function ClientsPage() {
             ← Back to Contacts
           </Link>
         </div>
-        <ClientList />
+        <BankingDetailsList />
       </div>
     </div>
   )

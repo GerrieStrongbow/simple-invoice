@@ -11,9 +11,11 @@ interface ContactFormProps {
   onSave: (data: { name: string; fields: SectionField[]; notes?: string }) => Promise<void>
   onCancel: () => void
   submitLabel?: string
+  namePlaceholder?: string
+  defaultFields?: SectionField[]
 }
 
-const DEFAULT_FIELDS: SectionField[] = [
+const DEFAULT_CONTACT_FIELDS: SectionField[] = [
   { id: '1', label: 'Business Name', value: '', placeholder: 'Enter name' },
   { id: '2', label: 'Address', value: '', placeholder: 'Street address' },
   { id: '3', label: 'City', value: '', placeholder: 'City' },
@@ -24,15 +26,17 @@ const DEFAULT_FIELDS: SectionField[] = [
 
 export function ContactForm({
   initialName = '',
-  initialFields = DEFAULT_FIELDS,
+  initialFields,
   initialNotes = '',
   showNotes = false,
   onSave,
   onCancel,
   submitLabel = 'Save',
-}: ContactFormProps) {
+  namePlaceholder = 'e.g., My Business, Client ABC',
+  defaultFields = DEFAULT_CONTACT_FIELDS,
+}: Readonly<ContactFormProps>) {
   const [name, setName] = useState(initialName)
-  const [fields, setFields] = useState<SectionField[]>(initialFields)
+  const [fields, setFields] = useState<SectionField[]>(initialFields || defaultFields)
   const [notes, setNotes] = useState(initialNotes)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -77,27 +81,28 @@ export function ContactForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Display Name */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="contact-display-name" className="block text-sm font-medium text-ink-soft mb-1.5">
           Display Name *
         </label>
         <input
+          id="contact-display-name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g., My Business, Client ABC"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder={namePlaceholder}
+          className="w-full px-4 py-2.5 border border-border rounded-lg bg-paper-warm/50 text-ink placeholder:text-ink-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent-muted"
           required
         />
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1.5 text-sm text-ink-muted">
           This name helps you identify this contact in lists
         </p>
       </div>
 
       {/* Fields */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      <fieldset>
+        <legend className="block text-sm font-medium text-ink-soft mb-2">
           Contact Details
-        </label>
+        </legend>
         <div className="space-y-3">
           {fields.map((field) => (
             <div key={field.id} className="flex gap-2">
@@ -106,20 +111,20 @@ export function ContactForm({
                 value={field.label}
                 onChange={(e) => updateField(field.id, 'label', e.target.value)}
                 placeholder="Field label"
-                className="w-1/3 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                className="w-1/3 px-3 py-2.5 border border-border rounded-lg bg-paper-warm/50 text-ink text-sm placeholder:text-ink-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent-muted"
               />
               <input
                 type="text"
                 value={field.value}
                 onChange={(e) => updateField(field.id, 'value', e.target.value)}
                 placeholder="Value"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                className="flex-1 px-3 py-2.5 border border-border rounded-lg bg-paper-warm/50 text-ink placeholder:text-ink-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent-muted"
               />
               <button
                 type="button"
                 onClick={() => removeField(field.id)}
                 disabled={fields.length <= 1}
-                className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-md disabled:opacity-30 disabled:cursor-not-allowed"
+                className="px-3 py-2 text-error hover:bg-error/5 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 ✕
               </button>
@@ -129,31 +134,32 @@ export function ContactForm({
         <button
           type="button"
           onClick={addField}
-          className="mt-2 text-sm text-blue-600 hover:text-blue-800"
+          className="mt-3 text-sm text-accent hover:text-accent-soft transition-colors"
         >
           + Add Field
         </button>
-      </div>
+      </fieldset>
 
       {/* Notes (clients only) */}
       {showNotes && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="contact-notes" className="block text-sm font-medium text-ink-soft mb-1.5">
             Notes (optional)
           </label>
           <textarea
+            id="contact-notes"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Any notes about this client..."
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2.5 border border-border rounded-lg bg-paper-warm/50 text-ink placeholder:text-ink-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent-muted resize-none"
           />
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+        <div className="p-3 bg-error/5 border border-error/20 text-error rounded-lg text-sm">
           {error}
         </div>
       )}
@@ -163,14 +169,14 @@ export function ContactForm({
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+          className="px-4 py-2 text-ink-soft border border-border rounded-lg hover:bg-paper-warm transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+          className="px-4 py-2 bg-ink text-white rounded-lg font-medium transition hover:bg-ink-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
         >
           {loading ? 'Saving...' : submitLabel}
         </button>

@@ -14,7 +14,7 @@ import { useTableManagement } from '../hooks/useTableManagement'
 
 export default function FlexibleInvoice() {
   const invoiceRef = useRef<HTMLDivElement>(null)
-  
+
   // All state management
   const {
     fromFields,
@@ -23,6 +23,14 @@ export default function FlexibleInvoice() {
     setToFields,
     paymentFields,
     setPaymentFields,
+    // Loaded record tracking
+    loadedBusinessProfile,
+    setLoadedBusinessProfile,
+    loadedClient,
+    setLoadedClient,
+    loadedBanking,
+    setLoadedBanking,
+    // Tax and discount
     taxEnabled,
     setTaxEnabled,
     taxPercentage,
@@ -84,7 +92,7 @@ export default function FlexibleInvoice() {
       const amountCol = columns.find(col => col.isAmount)
       if (amountCol) {
         const calculatedAmount = calculateRowAmount(row)
-        if (calculatedAmount !== (row.cells as any)[amountCol.id]) {
+        if (calculatedAmount !== (row.cells as Record<string, string | number>)[amountCol.id]) {
           return {
             ...row,
             cells: {
@@ -96,69 +104,80 @@ export default function FlexibleInvoice() {
       }
       return row
     })
-    
+
     const hasChanges = updatedRows.some((row, index) => {
       const amountCol = columns.find(col => col.isAmount)
-      return amountCol && (row.cells as any)[amountCol.id] !== (rows[index].cells as any)[amountCol.id]
+      return amountCol && (row.cells as Record<string, string | number>)[amountCol.id] !== (rows[index].cells as Record<string, string | number>)[amountCol.id]
     })
-    
+
     if (hasChanges) {
       setRows(updatedRows)
     }
   }, [rows, columns, calculateRowAmount, setRows])
 
-  const handleCellUpdate = (rowId: string, columnId: string, value: any) => {
+  const handleCellUpdate = (rowId: string, columnId: string, value: string | number) => {
     updateCell(rowId, columnId, value, rows, setRows)
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#667eea] to-[#764ba2] px-6 py-10 text-[14px] font-inter sm:px-10">
+    <div className="min-h-screen bg-paper px-6 py-12 text-[14px] sm:px-10">
+      {/* Invoice Card Container */}
       <div
         ref={invoiceRef}
-        className="invoice-container mx-auto w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 print:max-w-[8.27in] print:w-[8.27in]"
+        className="invoice-container invoice-card paper-texture mx-auto w-full max-w-4xl rounded-lg print:max-w-[8.27in] print:w-[8.27in] print:rounded-none print:shadow-none print:border-none"
       >
-        <div className="p-8 sm:p-12">
-          
+        <div className="relative p-8 sm:p-12">
+
           {/* Invoice Header */}
-          <InvoiceHeader
-            invoiceTitle={invoiceTitle}
-            onInvoiceTitleChange={setInvoiceTitle}
-            invoiceNumberLabel={invoiceNumberLabel}
-            onInvoiceNumberLabelChange={setInvoiceNumberLabel}
-            dateLabel={dateLabel}
-            onDateLabelChange={setDateLabel}
-            dueDateLabel={dueDateLabel}
-            onDueDateLabelChange={setDueDateLabel}
-            invoiceDate={invoiceDate}
-            onInvoiceDateChange={setInvoiceDate}
-            dueDate={dueDate}
-            onDueDateChange={setDueDate}
-          />
+          <div className="animate-fade-up">
+            <InvoiceHeader
+              invoiceTitle={invoiceTitle}
+              onInvoiceTitleChange={setInvoiceTitle}
+              invoiceNumberLabel={invoiceNumberLabel}
+              onInvoiceNumberLabelChange={setInvoiceNumberLabel}
+              dateLabel={dateLabel}
+              onDateLabelChange={setDateLabel}
+              dueDateLabel={dueDateLabel}
+              onDueDateLabelChange={setDueDateLabel}
+              invoiceDate={invoiceDate}
+              onInvoiceDateChange={setInvoiceDate}
+              dueDate={dueDate}
+              onDueDateChange={setDueDate}
+            />
+          </div>
 
           {/* From/To Details */}
-          <ContactDetails
-            fromTitle={fromTitle}
-            onFromTitleChange={setFromTitle}
-            fromFields={fromFields}
-            onFromFieldsChange={setFromFields}
-            toTitle={toTitle}
-            onToTitleChange={setToTitle}
-            toFields={toFields}
-            onToFieldsChange={setToFields}
-          />
+          <div className="animate-fade-up animate-delay-1">
+            <ContactDetails
+              fromTitle={fromTitle}
+              onFromTitleChange={setFromTitle}
+              fromFields={fromFields}
+              onFromFieldsChange={setFromFields}
+              toTitle={toTitle}
+              onToTitleChange={setToTitle}
+              toFields={toFields}
+              onToFieldsChange={setToFields}
+              loadedBusinessProfile={loadedBusinessProfile}
+              onLoadedBusinessProfileChange={setLoadedBusinessProfile}
+              loadedClient={loadedClient}
+              onLoadedClientChange={setLoadedClient}
+            />
+          </div>
 
           {/* Services Table */}
-          <ServicesTable
-            columns={columns}
-            rows={rows}
-            onColumnsChange={setColumns}
-            onRowsChange={setRows}
-            onCellUpdate={handleCellUpdate}
-          />
+          <div className="animate-fade-up animate-delay-2">
+            <ServicesTable
+              columns={columns}
+              rows={rows}
+              onColumnsChange={setColumns}
+              onRowsChange={setRows}
+              onCellUpdate={handleCellUpdate}
+            />
+          </div>
 
           {/* Currency Selector */}
-          <div className="currency-section no-print mx-auto mt-5 mb-5 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-4">
-            <span className="text-[15px] font-semibold text-slate-700">Currency:</span>
+          <div className="animate-fade-up animate-delay-3 currency-section no-print mx-auto mt-6 mb-6 flex items-center gap-3 rounded-lg border border-border bg-paper-warm px-4 py-3">
+            <span className="text-sm font-medium text-ink-soft">Currency:</span>
             <CurrencySelector
               value={currencyCode}
               symbol={currencySymbol}
@@ -170,41 +189,46 @@ export default function FlexibleInvoice() {
           </div>
 
           {/* Totals Section */}
-          <TotalsSection
-            subtotal={totals.subtotal}
-            tax={totals.tax}
-            discount={totals.discount}
-            total={totals.total}
-            taxEnabled={taxEnabled}
-            taxPercentage={taxPercentage}
-            taxLabel={taxLabel}
-            discountEnabled={discountEnabled}
-            discountPercentage={discountPercentage}
-            discountLabel={discountLabel}
-            currencySymbol={currencySymbol}
-            totalLabel={totalLabel}
-            onTaxToggle={setTaxEnabled}
-            onTaxPercentageChange={setTaxPercentage}
-            onTaxLabelChange={setTaxLabel}
-            onDiscountToggle={setDiscountEnabled}
-            onDiscountPercentageChange={setDiscountPercentage}
-            onDiscountLabelChange={setDiscountLabel}
-            onTotalLabelChange={setTotalLabel}
-          />
+          <div className="animate-fade-up animate-delay-4">
+            <TotalsSection
+              subtotal={totals.subtotal}
+              tax={totals.tax}
+              discount={totals.discount}
+              total={totals.total}
+              taxEnabled={taxEnabled}
+              taxPercentage={taxPercentage}
+              taxLabel={taxLabel}
+              discountEnabled={discountEnabled}
+              discountPercentage={discountPercentage}
+              discountLabel={discountLabel}
+              currencySymbol={currencySymbol}
+              totalLabel={totalLabel}
+              onTaxToggle={setTaxEnabled}
+              onTaxPercentageChange={setTaxPercentage}
+              onTaxLabelChange={setTaxLabel}
+              onDiscountToggle={setDiscountEnabled}
+              onDiscountPercentageChange={setDiscountPercentage}
+              onDiscountLabelChange={setDiscountLabel}
+              onTotalLabelChange={setTotalLabel}
+            />
+          </div>
 
           {/* Bank Details */}
-          <PaymentDetails
-            paymentTitle={paymentTitle}
-            onPaymentTitleChange={setPaymentTitle}
-            paymentFields={paymentFields}
-            onPaymentFieldsChange={setPaymentFields}
-          />
+          <div className="animate-fade-up animate-delay-5">
+            <PaymentDetails
+              paymentTitle={paymentTitle}
+              onPaymentTitleChange={setPaymentTitle}
+              paymentFields={paymentFields}
+              onPaymentFieldsChange={setPaymentFields}
+              loadedBanking={loadedBanking}
+              onLoadedBankingChange={setLoadedBanking}
+            />
+          </div>
 
           {/* Action Buttons */}
           <ActionButtons />
         </div>
       </div>
-
     </div>
   )
 }

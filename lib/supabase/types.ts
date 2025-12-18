@@ -49,3 +49,26 @@ export interface ClientUpdate {
   is_default?: boolean
   notes?: string
 }
+
+// Banking details types
+export interface BankingDetails {
+  id: string
+  user_id: string
+  name: string
+  fields: SectionField[]
+  is_default: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface BankingDetailsInsert {
+  name: string
+  fields: SectionField[]
+  is_default?: boolean
+}
+
+export interface BankingDetailsUpdate {
+  name?: string
+  fields?: SectionField[]
+  is_default?: boolean
+}

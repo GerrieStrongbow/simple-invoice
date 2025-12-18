@@ -1,144 +1,192 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-inter: var(--font-inter), Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+  /* Typography - Distinctive but professional */
+  --font-display: var(--font-instrument-serif), Georgia, serif;
+  --font-body: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  --color-invoice-blue: #2c3e50;
-  --color-invoice-gray: #f8f9fa;
-  --color-invoice-border: #e9ecef;
+  /* Refined Paper Palette - Warm, professional, minimal */
+  --color-paper: #fafaf8;
+  --color-paper-warm: #f5f4f0;
+  --color-paper-deep: #efeee8;
+
+  /* Ink Colors - Rich, not harsh */
+  --color-ink: #1c1917;
+  --color-ink-soft: #44403c;
+  --color-ink-muted: #78716c;
+  --color-ink-faint: #a8a29e;
+
+  /* Single Bold Accent - Sophisticated rust/terracotta */
+  --color-accent: #b45309;
+  --color-accent-soft: #d97706;
+  --color-accent-muted: #fef3c7;
+
+  /* Functional */
+  --color-border: #e7e5e0;
+  --color-border-strong: #d6d3cd;
+  --color-success: #166534;
+  --color-error: #b91c1c;
+
+  /* Shadows with warm undertones */
+  --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.04);
+  --shadow-md: 0 4px 12px rgba(28, 25, 23, 0.06), 0 1px 3px rgba(28, 25, 23, 0.04);
+  --shadow-lg: 0 12px 40px rgba(28, 25, 23, 0.08), 0 4px 12px rgba(28, 25, 23, 0.04);
+  --shadow-xl: 0 20px 60px rgba(28, 25, 23, 0.1), 0 8px 24px rgba(28, 25, 23, 0.06);
 }
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+/* Base styles */
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+    border-color: var(--color-border);
   }
-}
 
-@layer base {
+  html {
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    @apply bg-invoice-gray;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+  }
+
+  /* Refined selection color */
+  ::selection {
+    background-color: var(--color-accent-muted);
+    color: var(--color-ink);
   }
 }
 
+/* Utility classes for the design system */
+@layer components {
+  /* Paper texture overlay - subtle noise */
+  .paper-texture {
+    position: relative;
+  }
+
+  .paper-texture::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+
+  /* Invoice card styling */
+  .invoice-card {
+    background: linear-gradient(180deg, #ffffff 0%, var(--color-paper) 100%);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--color-border);
+  }
+
+  /* Refined input styling */
+  .invoice-input {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 4px 8px;
+    transition: all 0.2s ease;
+  }
+
+  .invoice-input:hover {
+    background: var(--color-paper-warm);
+  }
+
+  .invoice-input:focus {
+    background: white;
+    border-color: var(--color-accent);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-accent-muted);
+  }
+
+  /* Section divider */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
+  }
+
+  /* Accent underline for headings */
+  .accent-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .accent-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 32px;
+    height: 2px;
+    background: var(--color-accent);
+    border-radius: 1px;
+  }
+
+  /* Staggered animation classes */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-delay-1 { animation-delay: 0.1s; }
+  .animate-delay-2 { animation-delay: 0.2s; }
+  .animate-delay-3 { animation-delay: 0.3s; }
+  .animate-delay-4 { animation-delay: 0.4s; }
+  .animate-delay-5 { animation-delay: 0.5s; }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Button press effect */
+  .btn-press {
+    transition: all 0.15s ease;
+  }
+
+  .btn-press:active {
+    transform: scale(0.97);
+  }
+
+  /* Monospace numbers in tables */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+  }
+}
+
+/* Print styles - Additional styles that complement invoice-print.css */
 @media print {
-  body {
-    @apply bg-white;
-    margin: 0 !important;
-    padding: 0 !important;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-
-  /* Hide all interactive elements and buttons */
-  .no-print,
-  button,
-  [type="button"],
-  [role="button"],
-  input[type="button"],
-  .relative button,
-  .absolute,
-  .opacity-0,
-  .group:hover .opacity-0,
-  svg,
-  .border.border-gray-300 {
-    display: none !important;
-    visibility: hidden !important;
-  }
-
-  .print-only {
-    display: block !important;
-  }
-
-  /* Remove any interactive hover elements - use attribute selectors */
-  [class*="hover:"],
-  [class*="group-hover:"],
-  .transition-opacity {
+  /* Reset animations for print */
+  .animate-fade-up {
     opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
   }
 
-  .cursor-pointer {
-    cursor: text !important;
-  }
-
-  /* Ensure table borders and colors print correctly */
-  table {
-    border-collapse: collapse;
-  }
-
-  th, td {
-    border: 1px solid #e9ecef !important;
-  }
-
-  /* Make sure all colors print */
-  * {
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  /* Compact spacing for print - use attribute selectors */
-  [class*="print:p-0"] {
-    padding: 0 !important;
-  }
-
-  [class*="print:shadow-none"] {
+  /* Ensure new design elements print correctly */
+  .invoice-card {
     box-shadow: none !important;
-  }
-
-  /* Hide all dropdowns and selectors in print */
-  select,
-  .relative > div,
-  .absolute {
-    display: none !important;
-  }
-
-  /* Ensure clean invoice content shows */
-  .bg-white {
-    background-color: white !important;
-  }
-
-  /* Clean up the layout for print */
-  .rounded-lg {
-    border-radius: 0 !important;
-  }
-
-  .shadow-lg {
-    box-shadow: none !important;
-  }
-
-  /* Show only essential content - use attribute selector */
-  [class*="print:hidden"] {
-    display: none !important;
-  }
-
-  /* Hide editable field indicators in print */
-  [contenteditable="true"],
-  .cursor-text,
-  input:not([type="hidden"]),
-  textarea {
-    background: transparent !important;
     border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
+    background: white !important;
   }
 
-  /* Ensure background colors still print - use attribute selector */
-  [class*="bg-[#f8f9fa]"] {
-    background-color: #f8f9fa !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  .paper-texture::before {
+    display: none !important;
   }
 }

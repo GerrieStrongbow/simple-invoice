@@ -48,6 +48,3 @@ next-env.d.ts
 PROMPT.md
 PROMPT_REFINED.md
 PROGRESS.md
-
-# MCP configuration (local)
-.mcp.json

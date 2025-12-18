@@ -1,25 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { createBusinessProfile } from '@/lib/supabase/business-profiles'
-import { createClientRecord } from '@/lib/supabase/clients'
+import { createBankingDetails } from '@/lib/supabase/banking-details'
 import type { SectionField } from '@/lib/types'
 
-interface SaveContactModalProps {
-  type: 'business' | 'client'
+interface SaveBankingModalProps {
   fields: SectionField[]
   isOpen: boolean
   onClose: () => void
   onSaved: (id: string, name: string) => void
 }
 
-export function SaveContactModal({
-  type,
+export function SaveBankingModal({
   fields,
   isOpen,
   onClose,
   onSaved,
-}: Readonly<SaveContactModalProps>) {
+}: Readonly<SaveBankingModalProps>) {
   const [name, setName] = useState('')
   const [setAsDefault, setSetAsDefault] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -37,20 +34,11 @@ export function SaveContactModal({
     setError(null)
 
     try {
-      let createdRecord
-      if (type === 'business') {
-        createdRecord = await createBusinessProfile({
-          name: name.trim(),
-          fields,
-          is_default: setAsDefault,
-        })
-      } else {
-        createdRecord = await createClientRecord({
-          name: name.trim(),
-          fields,
-          is_default: setAsDefault,
-        })
-      }
+      const createdRecord = await createBankingDetails({
+        name: name.trim(),
+        fields,
+        is_default: setAsDefault,
+      })
       const savedName = name.trim()
       setName('')
       setSetAsDefault(false)
@@ -76,20 +64,20 @@ export function SaveContactModal({
       {/* Modal */}
       <div className="relative bg-white rounded-xl shadow-xl border border-border w-full max-w-sm p-6">
         <h2 className="font-display text-lg text-ink mb-4">
-          Save as {type === 'business' ? 'Business Profile' : 'Client'}
+          Save Banking Details
         </h2>
 
         <div className="space-y-4">
           <div>
-            <label htmlFor="contact-name" className="block text-sm font-medium text-ink-soft mb-1.5">
+            <label htmlFor="banking-name" className="block text-sm font-medium text-ink-soft mb-1.5">
               Name
             </label>
             <input
-              id="contact-name"
+              id="banking-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder={type === 'business' ? 'My Business' : 'Client Name'}
+              placeholder="Main Business Account"
               className="w-full px-4 py-2.5 border border-border rounded-lg bg-paper-warm/50 text-ink placeholder:text-ink-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent-muted"
               autoFocus
             />

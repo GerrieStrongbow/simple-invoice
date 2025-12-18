@@ -1,5 +1,11 @@
 import React from 'react'
 
+// Inline style for html2canvas PDF compatibility (prevents italic rendering)
+const headingStyle: React.CSSProperties = {
+  fontFamily: 'Georgia, "Times New Roman", serif',
+  fontStyle: 'normal',
+}
+
 interface TotalsSectionProps {
   subtotal: string
   tax: string
@@ -21,24 +27,6 @@ interface TotalsSectionProps {
   onDiscountLabelChange: (label: string) => void
   onTotalLabelChange: (label: string) => void
 }
-
-const totalValueClasses = 'inline-block min-w-[100px] rounded-sm border border-slate-200 bg-slate-100 px-2 py-1 text-right font-medium text-slate-700'
-const totalLabelClasses = 'inline-block min-w-[140px] cursor-text rounded-lg border-2 border-slate-200 bg-slate-100 px-3 py-1.5 text-base font-semibold text-slate-700 transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100'
-const percentageInput = (enabled: boolean) => [
-  'w-16 rounded-md border-2 px-2 py-1 text-center text-sm font-semibold transition outline-hidden',
-  enabled
-    ? 'border-slate-200 bg-white text-slate-800 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100'
-    : 'border-slate-200 bg-slate-100 text-slate-400'
-].join(' ')
-
-const percentageLabel = (enabled: boolean) => enabled ? 'text-slate-800 font-medium' : 'text-slate-400 font-medium'
-
-const labelInputClasses = (enabled: boolean) => [
-  'cursor-text rounded border-transparent bg-transparent px-1 py-0.5 text-sm transition outline-hidden',
-  enabled
-    ? 'hover:bg-slate-100 focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100'
-    : 'text-slate-400'
-].join(' ')
 
 export const TotalsSection: React.FC<TotalsSectionProps> = ({
   subtotal,
@@ -62,68 +50,76 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
   onTotalLabelChange
 }) => {
   return (
-    <div className="total-section mt-5 mb-5 border-t-2 border-slate-200 pt-5">
+    <div className="total-section mt-6 mb-6 border-t border-border pt-6">
+      {/* Subtotal Row */}
       <div className="total-row mb-3 flex items-center justify-between text-sm">
-        <span>Subtotal:</span>
-        <span className={totalValueClasses}>
-          {currencySymbol}
-          {subtotal}
+        <span className="text-ink-muted">Subtotal:</span>
+        <span className="tabular-nums font-medium text-ink-soft">
+          {currencySymbol}{subtotal}
         </span>
       </div>
 
+      {/* Discount Row */}
       {discountEnabled && (
         <div className="total-row mb-3 flex items-center justify-between text-sm">
-          <span>
+          <span className="text-ink-muted">
             <input
               type="text"
               value={discountLabel}
               onChange={(e) => onDiscountLabelChange(e.target.value)}
-              className={labelInputClasses(true)}
+              className="invoice-input w-auto bg-transparent text-ink-muted"
               style={{ width: `${Math.max(discountLabel.length + 2, 6)}ch` }}
             />
             ({discountPercentage}%):
           </span>
-          <span className={totalValueClasses}>
-            ({currencySymbol}
-            {discount})
+          <span className="tabular-nums font-medium text-success">
+            ({currencySymbol}{discount})
           </span>
         </div>
       )}
 
+      {/* Tax Row */}
       {taxEnabled && (
         <div className="total-row mb-3 flex items-center justify-between text-sm">
-          <span>
+          <span className="text-ink-muted">
             <input
               type="text"
               value={taxLabel}
               onChange={(e) => onTaxLabelChange(e.target.value)}
-              className={labelInputClasses(true)}
+              className="invoice-input w-auto bg-transparent text-ink-muted"
               style={{ width: `${Math.max(taxLabel.length + 2, 5)}ch` }}
             />
             ({taxPercentage}%):
           </span>
-          <span className={totalValueClasses}>
-            {currencySymbol}
-            {tax}
+          <span className="tabular-nums font-medium text-ink-soft">
+            {currencySymbol}{tax}
           </span>
         </div>
       )}
 
-      <div className="no-print mb-4 flex flex-wrap items-center gap-6 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm">
+      {/* Tax/Discount Controls */}
+      <div className="no-print mb-6 flex flex-wrap items-center gap-6 rounded-lg border border-border bg-paper-warm p-4 text-sm">
+        {/* Discount Toggle */}
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
             checked={discountEnabled}
             onChange={(e) => onDiscountToggle(e.target.checked)}
-            className="h-4 w-4 rounded-sm border-slate-300 text-sky-600 focus:ring-sky-500"
+            className="h-4 w-4 rounded border-border-strong text-accent focus:ring-accent"
           />
-          <span className={percentageLabel(discountEnabled)}>Add</span>
+          <span className={discountEnabled ? 'text-ink font-medium' : 'text-ink-muted'}>
+            Add
+          </span>
           <input
             type="text"
             value={discountLabel}
             onChange={(e) => onDiscountLabelChange(e.target.value)}
             disabled={!discountEnabled}
-            className={`${percentageInput(discountEnabled)} w-24`}
+            className={`w-20 rounded-md border px-2 py-1 text-center text-sm transition outline-none ${
+              discountEnabled
+                ? 'border-border bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent-muted'
+                : 'border-border bg-paper-warm text-ink-faint'
+            }`}
             placeholder="Discount"
           />
           <input
@@ -131,25 +127,36 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
             value={discountPercentage}
             onChange={(e) => onDiscountPercentageChange(e.target.value)}
             disabled={!discountEnabled}
-            className={percentageInput(discountEnabled)}
+            className={`w-14 rounded-md border px-2 py-1 text-center text-sm tabular-nums transition outline-none ${
+              discountEnabled
+                ? 'border-border bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent-muted'
+                : 'border-border bg-paper-warm text-ink-faint'
+            }`}
           />
-          <span className={percentageLabel(discountEnabled)}>%</span>
+          <span className={discountEnabled ? 'text-ink-soft font-medium' : 'text-ink-faint'}>%</span>
         </label>
 
+        {/* Tax Toggle */}
         <label className="flex items-center gap-2">
           <input
             type="checkbox"
             checked={taxEnabled}
             onChange={(e) => onTaxToggle(e.target.checked)}
-            className="h-4 w-4 rounded-sm border-slate-300 text-sky-600 focus:ring-sky-500"
+            className="h-4 w-4 rounded border-border-strong text-accent focus:ring-accent"
           />
-          <span className={percentageLabel(taxEnabled)}>Add</span>
+          <span className={taxEnabled ? 'text-ink font-medium' : 'text-ink-muted'}>
+            Add
+          </span>
           <input
             type="text"
             value={taxLabel}
             onChange={(e) => onTaxLabelChange(e.target.value)}
             disabled={!taxEnabled}
-            className={`${percentageInput(taxEnabled)} w-20`}
+            className={`w-16 rounded-md border px-2 py-1 text-center text-sm transition outline-none ${
+              taxEnabled
+                ? 'border-border bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent-muted'
+                : 'border-border bg-paper-warm text-ink-faint'
+            }`}
             placeholder="Tax"
           />
           <input
@@ -157,23 +164,28 @@ export const TotalsSection: React.FC<TotalsSectionProps> = ({
             value={taxPercentage}
             onChange={(e) => onTaxPercentageChange(e.target.value)}
             disabled={!taxEnabled}
-            className={percentageInput(taxEnabled)}
+            className={`w-14 rounded-md border px-2 py-1 text-center text-sm tabular-nums transition outline-none ${
+              taxEnabled
+                ? 'border-border bg-white text-ink focus:border-accent focus:ring-2 focus:ring-accent-muted'
+                : 'border-border bg-paper-warm text-ink-faint'
+            }`}
           />
-          <span className={percentageLabel(taxEnabled)}>%</span>
+          <span className={taxEnabled ? 'text-ink-soft font-medium' : 'text-ink-faint'}>%</span>
         </label>
       </div>
 
-      <div className="total-row total-final flex items-center justify-between border-t border-slate-200 pt-4 text-lg font-semibold text-slate-800">
+      {/* Total Row - Prominent */}
+      <div className="total-row total-final flex items-center justify-between border-t border-border-strong pt-4">
         <input
           type="text"
           aria-label="Total amount label"
           value={totalLabel}
           onChange={(e) => onTotalLabelChange(e.target.value)}
-          className={totalLabelClasses}
+          className="invoice-input font-display text-lg text-ink"
+          style={headingStyle}
         />
-        <span className={`${totalValueClasses} font-bold`}>
-          {currencySymbol}
-          {total}
+        <span className="tabular-nums text-xl font-semibold text-ink">
+          {currencySymbol}{total}
         </span>
       </div>
     </div>

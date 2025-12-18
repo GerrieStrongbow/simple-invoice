@@ -12,10 +12,10 @@ export default async function BusinessProfilesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-paper">
       <div className="max-w-4xl mx-auto py-8 px-4">
         <div className="mb-6">
-          <Link href="/contacts" className="text-blue-600 hover:underline text-sm">
+          <Link href="/contacts" className="text-accent hover:text-accent-soft transition-colors text-sm">
             ← Back to Contacts
           </Link>
         </div>

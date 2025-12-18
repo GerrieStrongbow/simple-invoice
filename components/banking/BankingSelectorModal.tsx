@@ -1,33 +1,29 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getBusinessProfiles } from '@/lib/supabase/business-profiles'
-import { getClients, searchClients } from '@/lib/supabase/clients'
-import type { BusinessProfile, Client } from '@/lib/supabase/types'
+import { getBankingDetails } from '@/lib/supabase/banking-details'
+import type { BankingDetails } from '@/lib/supabase/types'
 import type { SectionField } from '@/lib/types'
 
-export interface ContactSelection {
+export interface BankingSelection {
   id: string
   name: string
   fields: SectionField[]
 }
 
-interface ContactSelectorModalProps {
-  type: 'business' | 'client'
+interface BankingSelectorModalProps {
   isOpen: boolean
   onClose: () => void
-  onSelect: (selection: ContactSelection) => void
+  onSelect: (selection: BankingSelection) => void
 }
 
-export function ContactSelectorModal({
-  type,
+export function BankingSelectorModal({
   isOpen,
   onClose,
   onSelect,
-}: Readonly<ContactSelectorModalProps>) {
-  const [items, setItems] = useState<(BusinessProfile | Client)[]>([])
+}: Readonly<BankingSelectorModalProps>) {
+  const [items, setItems] = useState<BankingDetails[]>([])
   const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     if (!isOpen) return
@@ -35,28 +31,21 @@ export function ContactSelectorModal({
     const load = async () => {
       setLoading(true)
       try {
-        if (type === 'business') {
-          const data = await getBusinessProfiles()
-          setItems(data)
-        } else {
-          const data = searchQuery
-            ? await searchClients(searchQuery)
-            : await getClients()
-          setItems(data)
-        }
+        const data = await getBankingDetails()
+        setItems(data)
       } catch (error) {
-        console.error('Failed to load contacts:', error)
+        console.error('Failed to load banking details:', error)
       } finally {
         setLoading(false)
       }
     }
 
     load()
-  }, [isOpen, type, searchQuery])
+  }, [isOpen])
 
   if (!isOpen) return null
 
-  const handleSelect = (item: BusinessProfile | Client) => {
+  const handleSelect = (item: BankingDetails) => {
     onSelect({
       id: item.id,
       name: item.name,
@@ -73,7 +62,7 @@ export function ContactSelectorModal({
     if (items.length === 0) {
       return (
         <div className="p-4 text-center text-ink-muted">
-          No {type === 'business' ? 'profiles' : 'clients'} found
+          No saved banking details found
         </div>
       )
     }
@@ -122,7 +111,7 @@ export function ContactSelectorModal({
         <div className="p-4 border-b border-border">
           <div className="flex justify-between items-center">
             <h2 className="font-display text-lg text-ink">
-              Select {type === 'business' ? 'Business Profile' : 'Client'}
+              Select Banking Details
             </h2>
             <button
               onClick={onClose}
@@ -131,17 +120,6 @@ export function ContactSelectorModal({
               ✕
             </button>
           </div>
-
-          {/* Search (clients only) */}
-          {type === 'client' && (
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search clients..."
-              className="mt-3 w-full px-4 py-2.5 border border-border rounded-lg bg-paper-warm/50 text-ink placeholder:text-ink-faint outline-none transition focus:border-accent focus:ring-2 focus:ring-accent-muted"
-            />
-          )}
         </div>
 
         <div className="overflow-y-auto max-h-96 p-2">
@@ -150,10 +128,10 @@ export function ContactSelectorModal({
 
         <div className="p-4 border-t border-border bg-paper-warm">
           <a
-            href={`/contacts/${type === 'business' ? 'business' : 'clients'}`}
+            href="/contacts/banking"
             className="text-sm text-accent hover:text-accent-soft transition-colors"
           >
-            Manage {type === 'business' ? 'Business Profiles' : 'Clients'} →
+            Manage Banking Details →
           </a>
         </div>
       </div>
