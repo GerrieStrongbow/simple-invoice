@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <!-- Background - accent color -->
+  <rect width="180" height="180" rx="40" fill="#b45309"/>
+  <!-- Document body - warm paper -->
+  <path
+    d="M45 40C45 35.5817 48.5817 32 53 32H95L135 72V145C135 149.418 131.418 153 127 153H53C48.5817 153 45 149.418 45 145V40Z"
+    fill="#f5f4f0"
+  />
+  <!-- Document border -->
+  <path
+    d="M45 40C45 35.5817 48.5817 32 53 32H95L135 72V145C135 149.418 131.418 153 127 153H53C48.5817 153 45 149.418 45 145V40Z"
+    stroke="#d6d3cd"
+    stroke-width="2"
+    fill="none"
+  />
+  <!-- Folded corner -->
+  <path
+    d="M95 32V62C95 66.4183 98.5817 70 103 70H135L95 32Z"
+    fill="#e7e5e0"
+  />
+  <!-- Text lines - ink colors -->
+  <rect x="58" y="88" width="64" height="8" rx="4" fill="#1c1917"/>
+  <rect x="58" y="104" width="44" height="8" rx="4" fill="#78716c"/>
+  <rect x="58" y="120" width="54" height="8" rx="4" fill="#78716c"/>
+</svg>
