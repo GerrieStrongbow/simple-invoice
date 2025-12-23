@@ -26,7 +26,7 @@ export function LoginForm() {
         if (error) {
           setError(error.message)
         } else {
-          setMessage('Check your email (Mailpit) to confirm your account!')
+          setMessage('Check your email to confirm your account!')
         }
       } else {
         const { error } = await signIn(email, password)
@@ -127,18 +127,20 @@ export function LoginForm() {
         </div>
       </div>
 
-      {/* Development hint - outside card for subtle appearance */}
-      <div className="mt-4 p-3 bg-paper-warm rounded-lg border border-border text-sm text-ink-muted text-center">
-        <strong className="text-ink-soft">Dev Mode:</strong> Check emails at{' '}
-        <a
-          href="http://127.0.0.1:54324"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-accent hover:underline"
-        >
-          Mailpit
-        </a>
-      </div>
+      {/* Development hint - only shown in dev mode */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="mt-4 p-3 bg-paper-warm rounded-lg border border-border text-sm text-ink-muted text-center">
+          <strong className="text-ink-soft">Dev Mode:</strong> Check emails at{' '}
+          <a
+            href="http://127.0.0.1:54324"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-accent hover:underline"
+          >
+            Mailpit
+          </a>
+        </div>
+      )}
     </div>
   )
 }
